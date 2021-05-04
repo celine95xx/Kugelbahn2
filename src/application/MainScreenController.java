@@ -60,6 +60,7 @@ public class MainScreenController
 	public void initialize() 
 	{
 		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
+		gravity.setValue("Gravitation");
 	}
 	
 }

@@ -31,7 +31,8 @@
                </font>
             </Label>
             <Button fx:id="startBtn" layoutX="725.0" layoutY="81.0" mnemonicParsing="false" onAction="#start" text="START" />
-            <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0" />
+            <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0" 
+            />
             <TextField fx:id="velocityText" layoutX="363.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" text="5" />
             <Label layoutX="233.0" layoutY="18.0" text="Startgeschwindigkeit">
                <font>

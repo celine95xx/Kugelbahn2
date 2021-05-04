@@ -1,9 +1,15 @@
 package application;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Circle;
 
@@ -17,6 +23,9 @@ public class MainScreenController
 	
 	@FXML
 	private TextField velocityText;
+	
+	@FXML
+	private ChoiceBox<String> gravity;
 	
 	
 	public void start (ActionEvent event) throws Exception
@@ -46,5 +55,11 @@ public class MainScreenController
 		//circle.getBoundsInLocal().getHeight();
 	}
 	
+	
+	@FXML
+	public void initialize() 
+	{
+		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
+	}
 	
 }

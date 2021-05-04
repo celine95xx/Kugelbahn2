@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainScreenController">
+<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainScreenController">
    <children>
       <Pane prefHeight="580.0" prefWidth="814.0">
          <children>
@@ -31,7 +31,7 @@
                </font>
             </Label>
             <Button fx:id="startBtn" layoutX="725.0" layoutY="81.0" mnemonicParsing="false" onAction="#start" text="START" />
-            <ChoiceBox layoutX="233.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0" />
+            <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0" />
             <TextField fx:id="velocityText" layoutX="363.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" text="5" />
             <Label layoutX="233.0" layoutY="18.0" text="Startgeschwindigkeit">
                <font>

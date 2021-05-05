@@ -24,9 +24,19 @@ public class MainScreenController
 	@FXML
 	private TextField velocityText;
 	
+	
+	
 	@FXML
 	private ChoiceBox<String> gravity;
 	
+	
+	
+	
+	private double acceleration = 0.3; // * 0.165; // Der Mond hat 16,5% der Erdanziehungskraft
+	
+	private double currentVelocity = 0;
+	
+	private double weight = 3;
 	
 	public void start (ActionEvent event) throws Exception
 	{
@@ -48,19 +58,30 @@ public class MainScreenController
 	
 	public void dosomething(float deltaT)
 	{
-		int velocity = Integer.parseInt(velocityText.getText());
-		System.out.println(velocity);
-		circle.setTranslateX(velocity+circle.getTranslateX()); //deltaT??
-		circle.setTranslateY(5+circle.getTranslateY());
+		int startSpeed = Integer.parseInt(velocityText.getText());
+		circle.setTranslateY(startSpeed + currentVelocity + circle.getTranslateY()); //deltaT??
+		//circle.setTranslateX(5+circle.getTranslateX());
 		//circle.getBoundsInLocal().getHeight();
+		
+		if (currentVelocity < weight)
+		currentVelocity += acceleration;
 	}
 	
 	
 	@FXML
 	public void initialize() 
-	{
+	{ 
 		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
 		gravity.setValue("Gravitation");
+			
 	}
 	
+	//public void getGravity (ActionEvent event) {
+		
+		//if (gravity.getSelectionModel().getSelectedItem()) {
+			
+	//	}
+		
+//	}
+
 }

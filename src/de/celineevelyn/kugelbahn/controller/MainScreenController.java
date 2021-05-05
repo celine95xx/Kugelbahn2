@@ -1,87 +1,119 @@
-package application;
+package de.celineevelyn.kugelbahn.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
 
+import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.objects.BasicNode;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.shape.Circle;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-public class MainScreenController 
-{
+public class MainScreenController {
 	@FXML
 	private Button startBtn;
-	
-	@FXML
-	private Circle circle;
-	
+
 	@FXML
 	private TextField velocityText;
-	
-	
-	
+
 	@FXML
 	private ChoiceBox<String> gravity;
 	
+	private AnimationTimer timer;
 	
-	
-	
-	private double acceleration = 0.3; // * 0.165; // Der Mond hat 16,5% der Erdanziehungskraft
-	
-	private double currentVelocity = 0;
-	
-	private double weight = 3;
-	
-	public void start (ActionEvent event) throws Exception
-	{
-	    AnimationTimer timer = new AnimationTimer() 
-	    {
-            // Zeitstempel
-            private long last = 0;
-
-            @Override
-            public void handle(long now) {
-
-                // Aufrufen der Updateroutine des Spiels mit Angabe der Delta-Zeit
-                dosomething((float) ((now - last) / 1000_000.0));
-                last = now;
-            }
-        };
-        timer.start();
-	}
-	
-	public void dosomething(float deltaT)
-	{
-		int startSpeed = Integer.parseInt(velocityText.getText());
-		circle.setTranslateY(startSpeed + currentVelocity + circle.getTranslateY()); //deltaT??
-		//circle.setTranslateX(5+circle.getTranslateX());
-		//circle.getBoundsInLocal().getHeight();
-		
-		if (currentVelocity < weight)
-		currentVelocity += acceleration;
-	}
-	
+	private Level level;
 	
 	@FXML
-	public void initialize() 
-	{ 
-		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
-		gravity.setValue("Gravitation");
-			
+	private Group group;
+	
+	
+
+	/**
+	 * Wird aufgerufen, wenn der Nutzer auf Start klickt
+	 * @param event
+	 */
+	@FXML
+	public void start(ActionEvent event) {
+		
+		// TODO: Level Werte der TextFelder übergeben
+		ArrayList<BasicNode> nodeList = level.start(10,10, 10.0, 0.981, 1.0, Integer.parseInt(velocityText.getText()));
+		
+		for(BasicNode node : nodeList) {
+			//group.getChildren().add(node.getNode());
+		}
+		
+		// Starte Physiksimulation
+		timer.start();
+		
 	}
 	
-	//public void getGravity (ActionEvent event) {
+	
+	/**
+	 * Initialisiere Fenster-Objekte
+	 * Hier kann noch nicht auf die Szene zugegriffen werden
+	 */
+	@FXML
+	public void initialize() {
 		
-		//if (gravity.getSelectionModel().getSelectedItem()) {
-			
-	//	}
+		// Fülle gravity ChoiceBox mit Inhalt
+		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
+		gravity.setValue("Gravitation");
 		
-//	}
+		// Timer initialisieren
+		initTimer();
+		
+		level = new Level();
+	}
+	
+	
+	
+	/**
+	 * Post Initialize Methode
+	 * Hier kann auf die Szene zugegriffen werden
+	 */
+	public void postInit() {
+		
+		// Registriere Handler für Mausklicks
+		gravity.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                double mouseX = event.getSceneX();
+                double mouseY = event.getSceneY();
+                
+                // Erstelle eine Test-Marble zum Platzieren mit der Maus
+                BasicNode marble = level.placeMarble(mouseX, mouseY);
+                group.getChildren().add(marble.getNode());
+                
+            }
 
+        });
+	}
+
+	
+	/**
+	 * Baue Timer
+	 */
+	private void initTimer() {
+		timer = new AnimationTimer() {
+			// Zeitstempel
+			private long last = 0;
+
+			@Override
+			public void handle(long now) {
+				double deltaT = (double) ((now - last) / 1000_000.0);
+				level.update(deltaT);
+				last = now;
+			}
+		};
+	}
+	
 }

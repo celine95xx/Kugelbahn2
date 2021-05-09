@@ -5,9 +5,18 @@ import java.util.ArrayList;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 
-public class Level {
+/**
+ * 
+ * @author Evelyn Romenjuk
+ * @author Celine Viehmann
+ *
+ */
+public class Level 
+{
 	
 	private Marble marble;
+	
+	private static double gravity = 9.81;
 	
 	/**
 	 * Liste aller Objekte auf der Bahn
@@ -15,42 +24,16 @@ public class Level {
 	private ArrayList<BasicNode> nodeList;
 	
 	
-	public Level() {
-		this.nodeList = new ArrayList<>();
-	}
-	
-	
-	
-	/**
-	 * Startet das Level mit Physik und angegebenen Marble-Eigenschaften
-	 * @param marbleStartX
-	 * @param marbleStartY
-	 * @param radius
-	 * @param weight
-	 * @param gravity
-	 * @param startSpeed
-	 * @return
-	 */
-	public ArrayList<BasicNode> start(double marbleStartX, double marbleStartY, double radius, double gravity, double weight, double startSpeed) 
+	public Level() 
 	{
-		
-		// TODO
-		marble.startSpeed = startSpeed;
-		
-		nodeList.add(marble);
-		
-		return nodeList;
-		
-	}
-	
+		this.nodeList = new ArrayList<>();
+	}	
 	
 	/**
-	 * Temporäre Methode damit Marble platziert werden kann vor dem Startknopf
-	 * @param x
-	 * @param y
-	 * @return
+	 * Temporäre Methode damit Marble vor dem Start der Simulation platziert werden kann
 	 */
-	public BasicNode placeMarble(double x, double y) {
+	public BasicNode placeMarble(double x, double y) 
+	{
 		marble = new Marble(x, y, 10, 10,"green");
 		return marble;
 	}
@@ -64,7 +47,12 @@ public class Level {
 	
 	public void setGravity(double gravity)
 	{
-		marble.setGravity(gravity);
+		this.gravity = gravity;
+	}
+
+	public static double getGravity()
+	{
+		return gravity;
 	}
 	
 	public double getVelX()
@@ -76,11 +64,11 @@ public class Level {
 	{
 		return marble.getCurrentVelocityY();
 	}
+
 	
-	public void update(double deltaT) {
-		marble.update(deltaT);
-		
-		// TODO: Kollisionen berechnen
+	public void update(double deltaTime) 
+	{
+		marble.update(deltaTime);
 	}
 	
 	

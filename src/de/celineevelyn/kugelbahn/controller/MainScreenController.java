@@ -20,7 +20,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class MainScreenController {
+/**
+ * 
+ * @author Evelyn Romanjuk
+ * @author Celine Viehmann
+ *
+ */
+public class MainScreenController 
+{
 	@FXML
 	private Button startBtn;
 
@@ -42,18 +49,11 @@ public class MainScreenController {
 
 	/**
 	 * Wird aufgerufen, wenn der Nutzer auf Start klickt
-	 * @param event
 	 */
 	@FXML
 	public void start(ActionEvent event) 
 	{
-		// TODO: Level Werte der TextFelder übergeben
-//		ArrayList<BasicNode> nodeList = level.start(10,10, 10.0, 9.81, 1.0, Integer.parseInt(velocityText.getText()));
-//		for(BasicNode node : nodeList) {
-//			//group.getChildren().add(node.getNode());
-//		}
 		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
-		//level.setGravity(9.81);
 		
 		// Starte Physiksimulation
 		timer.start();
@@ -63,7 +63,6 @@ public class MainScreenController {
 	
 	/**
 	 * Initialisiere Fenster-Objekte
-	 * Hier kann noch nicht auf die Szene zugegriffen werden
 	 */
 	@FXML
 	public void initialize() 
@@ -72,17 +71,14 @@ public class MainScreenController {
 		// Fülle gravity ChoiceBox mit Inhalt
 		String gravityValues[] = {"keine Gravitation", "Erde", "Mond"};
 		gravity.getItems().addAll(FXCollections.observableArrayList(gravityValues));
-//		gravity.setValue("Gravitation");
 		gravity.getSelectionModel().select(1);
 		gravity.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
 
 			@Override
-			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) 
+			public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) 
 			{
-				System.out.println("old Selected Option: " + gravityValues[arg1.intValue()] + " | New Selected Option: " + gravityValues[arg2.intValue()]);
-				
-				String selectedItem = gravityValues[arg2.intValue()];
+				String selectedItem = gravityValues[newValue.intValue()];
 				
 				switch(selectedItem)
 				{
@@ -98,25 +94,19 @@ public class MainScreenController {
 					default:
 						level.setGravity(9.81);
 						break;
-						
-				}
-				
-			}
-			
+				}				
+			}			
 		});
 		
 		// Timer initialisieren
 		initTimer();
-		
 		level = new Level();
-		
 	}
 	
 	
 	
 	/**
-	 * Post Initialize Methode
-	 * Hier kann auf die Szene zugegriffen werden
+	 * Post Initialize Methode, Handler zum Setzen der Murmel
 	 */
 	public void postInit() {
 		
@@ -139,31 +129,28 @@ public class MainScreenController {
                 {
                 	System.out.println("There is a marble already.");
                 }
-                
             }
-
         });
 	}
 
 	
 	/**
-	 * Erstelle Timer
+	 * Erstellen des AnimationTimers, Berechnung von deltaTime, sowie Update des Levels und Anzeigen der momentanen Geschwindigkeiten
 	 */
 	private void initTimer() 
 	{
 		timer = new AnimationTimer() 
 		{
-			// Zeitstempel
-			private long last = 0;
+			double last = 0;
 
 			@Override
 			public void handle(long now) 
 			{
 				
-				double deltaT = (double) ((now - last) / 1000_000_000.0);
+				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
-					level.update(deltaT);
+					level.update(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
 				last = now;

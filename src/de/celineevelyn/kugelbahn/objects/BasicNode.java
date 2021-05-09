@@ -4,15 +4,15 @@ import javafx.scene.Node;
 
 
 /**
- * Grundklasse für alle Objekte die später auf dem Bildschirm gezeichnet werden sollen und Teil der Murmelbahn sind
- * @author Celine
+ * Grundklasse für alle Objekte, die später auf dem Bildschirm gezeichnet werden sollen und Teil der Murmelbahn sind
+ * @author Celine Viehmann
  *
  */
 public abstract class BasicNode {
 	
 	
 	/**
-	 * JavaFX Node Klasse (Nodes sind Objekte, die JavaFX auf dem Bildschirm zeichnen kann)
+	 * JavaFX Node Klasse
 	 */
 	protected Node node;
 	
@@ -24,7 +24,6 @@ public abstract class BasicNode {
 	
 	/**
 	 * Alle erbenden Klassen müssen eine update-Methode bereitstellen
-	 * @param deltaT
 	 */
 	public abstract void update(double deltaT);
 	

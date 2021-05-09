@@ -1,11 +1,17 @@
 package de.celineevelyn.kugelbahn.objects;
 
+import de.celineevelyn.kugelbahn.Level;
 import javafx.scene.shape.Circle;
 
+/**
+ * 
+ * @author Evelyn Romanjuk
+ * @author Celine Viehmann
+ *
+ */
 public class Marble extends BasicNode  
 {
  
-	public double startSpeed;
 	
 	public double weight;
 	
@@ -14,53 +20,48 @@ public class Marble extends BasicNode
 	public  String color;
 	
 	private double currentVelocityX;
+	
 	private double currentVelocityY;
-	
-	private double gravity;
-	
-//	private double forceX;
-//	private double forceY;
-	
 	
 	
 	public Marble (double startX, double startY, double radius, double weight, String color) 
 	{
 		super(new Circle(startX,startY,radius));
 		
-//		currentVelocityY = 2;
-//		currentVelocityX = 1;
-		
-		this.startSpeed = currentVelocityY;
 		this.weight = weight; 
 		this.color = color; 
 		this.radius = radius;
-		
-//		this.forceY = gravity;
+	
 	}
 	
-	
 
-	public double getWeight() {
+	public double getWeight() 
+	{
 		return weight;
 	}
 
-	public void setWeight(double weight) {
+	public void setWeight(double weight) 
+	{
 		this.weight = weight;
 	}
 	
-	public  double getRadius() {
+	public  double getRadius() 
+	{
 		return radius;
 	}
 
-	public void setRadius(double radius) {
+	public void setRadius(double radius)
+	{
 		this.radius = radius;
 	}
 	
-	public  String getColor() {
+	public  String getColor() 
+	{
 		return color;
 	}
 
-	public void setColor(String color) {
+	public void setColor(String color) 
+	{
 		this.color = color;
 	}
 	
@@ -72,11 +73,6 @@ public class Marble extends BasicNode
 	public void setCurrentVelocityY(double currentVelY)
 	{
 		currentVelocityY = currentVelY;
-	}
-
-	public void setGravity(double gravity)
-	{
-		this.gravity = gravity;
 	}
 	
 	public double getCurrentVelocityX()
@@ -90,27 +86,23 @@ public class Marble extends BasicNode
 	}
 
 	@Override
-	public void update(double deltaT) {
+	public void update(double deltaTime) 
+	{
 		
-		this.node.setTranslateX(this.node.getTranslateX() + (currentVelocityX * deltaT)*833);
-		this.node.setTranslateY(this.node.getTranslateY() - (currentVelocityY * deltaT)*833);
+		double gravity = Level.getGravity();
 		
-		double currentPosX = this.node.getTranslateX();
-		double currentPosY = this.node.getTranslateY();
+		this.node.setTranslateX(this.node.getTranslateX() + (currentVelocityX * deltaTime)*1667);
+		this.node.setTranslateY(this.node.getTranslateY() - (currentVelocityY * deltaTime)*1667);
 		
-		System.out.println("CurrentVelX: " + currentVelocityX + "CurrentVelY: " + currentVelocityY + " X Position: " + currentPosX + " | Y Position: " + currentPosY);
+		double currentPositionX = this.node.getTranslateX();
+		double currentPositionY = this.node.getTranslateY();
+		
 		System.out.println("Gravity: " + gravity);
-		//if(this.node.getTranslateY()>100)
-		//	currentVelocityY*=-0.75;
+		System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
 		
-		//this.node.setTranslateX(5+this.node.getTranslateX());
-		// circle.setTranslateX(5+circle.getTranslateX());
-		// circle.getBoundsInLocal().getHeight();
 
-		//if (currentVelocityY < weight)
-		currentVelocityY = currentVelocityY + (-gravity*deltaT);
-			
-			//currentVelocityX -= 0.05/deltaT;
+		currentVelocityY = currentVelocityY + (-gravity*deltaTime);
+
 		
 	}
 }

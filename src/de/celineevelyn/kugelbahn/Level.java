@@ -31,7 +31,8 @@ public class Level {
 	 * @param startSpeed
 	 * @return
 	 */
-	public ArrayList<BasicNode> start(double marbleStartX, double marbleStartY, double radius, double weight, double gravity, double startSpeed) {
+	public ArrayList<BasicNode> start(double marbleStartX, double marbleStartY, double radius, double gravity, double weight, double startSpeed) 
+	{
 		
 		// TODO
 		marble.startSpeed = startSpeed;
@@ -50,8 +51,30 @@ public class Level {
 	 * @return
 	 */
 	public BasicNode placeMarble(double x, double y) {
-		marble = new Marble(x, y,10 ,0.3,10,0,"green");
+		marble = new Marble(x, y, 10, 10,"green");
 		return marble;
+	}
+	
+	public void setMarbleStartVelocity(double currentVelX, double currentVelY)
+	{
+		marble.setCurrentVelocityX(currentVelX);
+		marble.setCurrentVelocityY(currentVelY);
+		
+	}
+	
+	public void setGravity(double gravity)
+	{
+		marble.setGravity(gravity);
+	}
+	
+	public double getVelX()
+	{
+		return marble.getCurrentVelocityX();
+	}
+	
+	public double getVelY()
+	{
+		return marble.getCurrentVelocityY();
 	}
 	
 	public void update(double deltaT) {

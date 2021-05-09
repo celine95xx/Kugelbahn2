@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
+<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
    <children>
    		
    
@@ -19,22 +19,43 @@
          </children></Pane>
       <Pane layoutY="580.0" prefHeight="120.0" prefWidth="814.0">
          <children>
-            <TextField layoutX="94.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="14.0" layoutY="18.0" text="X-Position">
+            <TextField fx:id="startVelX" layoutX="94.0" layoutY="31.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="14.0" layoutY="35.0" text="X-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField layoutX="94.0" layoutY="48.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="14.0" layoutY="52.0" text="Y-Position">
+            <TextField fx:id="startVelY" layoutX="94.0" layoutY="65.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="14.0" layoutY="69.0" text="Y-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Button fx:id="startBtn" layoutX="725.0" layoutY="81.0" mnemonicParsing="false" onAction="#start" text="START" />
-            <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="48.0" prefHeight="25.0" prefWidth="169.0" />
-            <TextField fx:id="velocityText" layoutX="363.0" layoutY="14.0" prefHeight="25.0" prefWidth="88.0" text="5" />
-            <Label layoutX="233.0" layoutY="18.0" text="Startgeschwindigkeit">
+            <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="31.0" prefHeight="25.0" prefWidth="169.0" />
+            <Label layoutX="43.0" layoutY="6.0" text="Startgeschwindigkeit">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="286.0" layoutY="6.0" text="Gravitation">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="currentVelX" editable="false" layoutX="556.0" layoutY="32.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="476.0" layoutY="36.0" text="X-Richtung">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="currentVelY" editable="false" layoutX="556.0" layoutY="66.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="476.0" layoutY="70.0" text="Y-Richtung">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="474.0" layoutY="6.0" text="Momentane Geschwindigkeit">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

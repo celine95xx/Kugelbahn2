@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 public class MainScreenController 
 {
 	@FXML
-	private Button startBtn;
+	private Button startBtn, resetBtn;
 
 	@FXML
 	private TextField startVelX, startVelY, currentVelX, currentVelY;
@@ -38,9 +38,11 @@ public class MainScreenController
 	@FXML
 	private ChoiceBox<String> gravity;
 	
-	private AnimationTimer timer;
+	private static AnimationTimer timer;
 	
 	private Level level;
+	
+	private static long timeStart;
 	
 	@FXML
 	private Group group;
@@ -56,10 +58,29 @@ public class MainScreenController
 		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
 		
 		// Starte Physiksimulation
+		timeStart = System.currentTimeMillis();
 		timer.start();
 		
 	}
 	
+	public static void end()
+	{
+		timer.stop();
+		long timeEnd = System.currentTimeMillis();
+		calculateSimulationTime(timeEnd);
+	}
+	
+	public void endSimulation(ActionEvent event) throws Exception
+	{
+		timer.stop();
+		
+	}
+	
+	public static void calculateSimulationTime(long timeEnd)
+	{
+		long simulationTime = timeEnd - timeStart;
+		System.out.println("Die Gesamtzeit betrug: " + simulationTime);
+	}
 	
 	/**
 	 * Initialisiere Fenster-Objekte

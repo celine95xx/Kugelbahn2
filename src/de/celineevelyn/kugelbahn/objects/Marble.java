@@ -1,6 +1,7 @@
 package de.celineevelyn.kugelbahn.objects;
 
 import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import javafx.scene.shape.Circle;
 
 /**
@@ -89,19 +90,32 @@ public class Marble extends BasicNode
 	public void update(double deltaTime) 
 	{
 		
-		double gravity = Level.getGravity();
+		//double gravity2 = Level.getGravity();
+		double gravity = 1.62;
+		double windVelocity = 0.1;
+		double accX;
 		
-		this.node.setTranslateX(this.node.getTranslateX() + (currentVelocityX * deltaTime)*1667);
-		this.node.setTranslateY(this.node.getTranslateY() - (currentVelocityY * deltaTime)*1667);
+		accX = windVelocity / deltaTime;
+		
+		this.node.setTranslateX(this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*1667);
+		//this.node.setTranslateY(this.node.getTranslateY() - (currentVelocityY * deltaTime)*1667);
+		
+		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*gravity*deltaTime*deltaTime))*1667);
 		
 		double currentPositionX = this.node.getTranslateX();
 		double currentPositionY = this.node.getTranslateY();
 		
 		System.out.println("Gravity: " + gravity);
 		System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
-		
+		System.out.println("deltaTime: " + deltaTime + " | deltaTime zum Quadrat " + deltaTime*deltaTime);
 
 		currentVelocityY = currentVelocityY + (-gravity*deltaTime);
+		currentVelocityX = currentVelocityX + windVelocity;
+		
+		if(this.node.getTranslateY() >= 700)
+		{
+			MainScreenController.end();
+		}
 
 		
 	}

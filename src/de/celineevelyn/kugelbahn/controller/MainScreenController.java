@@ -1,7 +1,9 @@
 package de.celineevelyn.kugelbahn.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import javafx.animation.AnimationTimer;
@@ -18,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -34,7 +38,12 @@ public class MainScreenController
 	@FXML
 	private TextField startVelX, startVelY, currentVelX, currentVelY;
 	
-
+	@FXML
+	private Circle collisionCircle;
+	
+	@FXML
+	private Rectangle colRect;
+	
 	@FXML
 	private ChoiceBox<String> gravity;
 	
@@ -43,6 +52,8 @@ public class MainScreenController
 	private Level level;
 	
 	private static long timeStart;
+	
+	private static List<Rectangle> envShapes = new ArrayList<Rectangle>();
 	
 	@FXML
 	private Group group;
@@ -88,6 +99,7 @@ public class MainScreenController
 	@FXML
 	public void initialize() 
 	{
+		level = new Level();
 		
 		// Fülle gravity ChoiceBox mit Inhalt
 		String gravityValues[] = {"keine Gravitation", "Erde", "Mond"};
@@ -104,7 +116,7 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "keine Gravitation":
-						level.setGravity(0);
+						level.setGravity(0.05);
 						break;
 					case "Erde":
 						level.setGravity(9.81);
@@ -119,9 +131,14 @@ public class MainScreenController
 			}			
 		});
 		
+		addEnvShapesToList();
+		level.addToNodeList(collisionCircle);
+		//CollisionManager.initializeCollisionManager(level.getTestList()); //fuer Test Circle
+		CollisionManager.initializeCollisionManager(envShapes);
+		
 		// Timer initialisieren
 		initTimer();
-		level = new Level();
+		//level = new Level();
 	}
 	
 	
@@ -143,8 +160,9 @@ public class MainScreenController
                 // Erstelle eine Test-Marble zum Platzieren mit der Maus
                 if(group.getChildren().isEmpty())
                 {
-                	BasicNode marble = level.placeMarble(mouseX, mouseY);
-                	group.getChildren().add(marble.getNode());
+                	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
+                	group.getChildren().add(marbleNode.getNode());
+                	CollisionManager.setMarble(level.getMarble());
                 }
                 else
                 {
@@ -171,6 +189,11 @@ public class MainScreenController
 				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
+//					if(CollisionManager.checkCollisionTest())
+//					{
+//						System.out.println("COLLISION DETECTED");
+//						end();
+//					}
 					level.update(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
@@ -185,4 +208,14 @@ public class MainScreenController
 		currentVelY.setText(Double.toString(velY));
 	}
 	
+	public void addEnvShapesToList()
+	{	
+		envShapes.add(colRect);
+	}
+	
+	
+	public List<Rectangle> getEnvShapes()
+	{
+		return envShapes;
+	}
 }

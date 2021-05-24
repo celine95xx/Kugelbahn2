@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import javafx.scene.shape.Circle;
 
 /**
  * 
- * @author Evelyn Romenjuk
+ * @author Evelyn Romanjuk
  * @author Celine Viehmann
  *
  */
@@ -22,11 +23,21 @@ public class Level
 	 * Liste aller Objekte auf der Bahn
 	 */
 	private ArrayList<BasicNode> nodeList;
+	private ArrayList<Circle> testList;
 	
+	public void addToNodeList(Circle circle)
+	{
+		testList.add(circle);
+	}
+	
+	public ArrayList<Circle> getTestList()
+	{
+		return testList;
+	}
 	
 	public Level() 
 	{
-		this.nodeList = new ArrayList<>();
+		this.testList = new ArrayList<>();
 	}	
 	
 	/**
@@ -43,6 +54,11 @@ public class Level
 		marble.setCurrentVelocityX(currentVelX);
 		marble.setCurrentVelocityY(currentVelY);
 		
+	}
+	
+	public Marble getMarble()
+	{
+		return marble;
 	}
 	
 	public void setGravity(double gravity)

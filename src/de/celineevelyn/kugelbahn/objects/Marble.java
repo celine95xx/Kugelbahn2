@@ -1,5 +1,7 @@
 package de.celineevelyn.kugelbahn.objects;
 
+import java.util.Vector;
+
 import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import javafx.scene.shape.Circle;
@@ -13,6 +15,9 @@ import javafx.scene.shape.Circle;
 public class Marble extends BasicNode  
 {
  
+	private double startX;
+	
+	private double startY;
 	
 	public double weight;
 	
@@ -24,11 +29,15 @@ public class Marble extends BasicNode
 	
 	private double currentVelocityY;
 	
+	private double lastPosX, lastPosY, currPosX, currPosY;
+	
 	
 	public Marble (double startX, double startY, double radius, double weight, String color) 
 	{
 		super(new Circle(startX,startY,radius));
 		
+		this.startX = startX;
+		this.startY = startY;
 		this.weight = weight; 
 		this.color = color; 
 		this.radius = radius;
@@ -85,38 +94,76 @@ public class Marble extends BasicNode
 	{
 		return currentVelocityY;
 	}
+	
+	public double getStartX()
+	{
+		return startX;
+	}
+	
+	public double getStartY()
+	{
+		return startY;
+	}
+	
+
 
 	@Override
 	public void update(double deltaTime) 
 	{
+		double gravity = Level.getGravity();
+		double windAcc = 0;
 		
-		//double gravity2 = Level.getGravity();
-		double gravity = 1.62;
-		double windVelocity = 0.1;
-		double accX;
+		double accX = 0;
+		double accY = 0;
 		
-		accX = windVelocity / deltaTime;
+		// apply wind
+		accX+=windAcc;
+				
+		// apply gravity
+		accY+=gravity;
+		
+		saveLastPos(this.node.getTranslateX(), this.node.getTranslateY());
 		
 		this.node.setTranslateX(this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*1667);
-		//this.node.setTranslateY(this.node.getTranslateY() - (currentVelocityY * deltaTime)*1667);
-		
-		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*gravity*deltaTime*deltaTime))*1667);
+		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*accY*deltaTime*deltaTime))*1667);
 		
 		double currentPositionX = this.node.getTranslateX();
 		double currentPositionY = this.node.getTranslateY();
 		
-		System.out.println("Gravity: " + gravity);
-		System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
-		System.out.println("deltaTime: " + deltaTime + " | deltaTime zum Quadrat " + deltaTime*deltaTime);
+		saveCurrentPos(currentPositionX, currentPositionY);
+		
+		//System.out.println("Gravity: " + gravity);
+		//System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
 
-		currentVelocityY = currentVelocityY + (-gravity*deltaTime);
-		currentVelocityX = currentVelocityX + windVelocity;
+		currentVelocityX = currentVelocityX + (accX*deltaTime);
+		currentVelocityY = currentVelocityY + (-accY*deltaTime);
 		
 		if(this.node.getTranslateY() >= 700)
 		{
 			MainScreenController.end();
-		}
-
+		}	
+	}
+	
+	public void saveLastPos(double lastPositionX, double lastPositionY)
+	{
+		lastPosX = lastPositionX;
+		lastPosY = lastPositionY;
+	}
+	
+	public void saveCurrentPos(double currPositionX, double currPositionY)
+	{
+		currPosX = currPositionX;
+		currPosY = currPositionY;
+	}
+	
+	public double[] getDirectionVector()
+	{
+		double[] directionVector = new double[2];
+		
+		directionVector[0] = currPosX - lastPosX;
+		directionVector[1] = currPosY - lastPosY;
+		
+		return directionVector;
 		
 	}
 }

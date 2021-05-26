@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
  */
 public class Marble extends BasicNode  
 {
- 
+ 	
 	private double startX;
 	
 	private double startY;
@@ -122,15 +122,17 @@ public class Marble extends BasicNode
 		// apply gravity
 		accY+=gravity;
 		
-		saveLastPos(this.node.getTranslateX(), this.node.getTranslateY());
+		//saveLastPos(this.node.getTranslateX(), this.node.getTranslateY());
 		
-		this.node.setTranslateX(this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*1667);
-		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*accY*deltaTime*deltaTime))*1667);
+		//curPosX = ... this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*100
+		
+		this.node.setTranslateX(this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*100);
+		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*accY*deltaTime*deltaTime))*100);
 		
 		double currentPositionX = this.node.getTranslateX();
 		double currentPositionY = this.node.getTranslateY();
 		
-		saveCurrentPos(currentPositionX, currentPositionY);
+		//saveCurrentPos(currentPositionX, currentPositionY);
 		
 		//System.out.println("Gravity: " + gravity);
 		//System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
@@ -165,5 +167,14 @@ public class Marble extends BasicNode
 		
 		return directionVector;
 		
+	}
+	
+	public double[] getCurrentPos()
+	{
+		double[] currentPosition = new double[2];
+		currentPosition[0] = getStartX() + this.node.getTranslateX();
+		currentPosition[1] = getStartY()  + this.node.getTranslateY();
+		
+		return currentPosition;
 	}
 }

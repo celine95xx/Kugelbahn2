@@ -42,7 +42,7 @@ public class MainScreenController
 	private Circle collisionCircle;
 	
 	@FXML
-	private Rectangle colRect;
+	private Rectangle colRect, colRect2;
 	
 	@FXML
 	private ChoiceBox<String> gravity;
@@ -116,7 +116,7 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "keine Gravitation":
-						level.setGravity(0.05);
+						level.setGravity(0.0);
 						break;
 					case "Erde":
 						level.setGravity(9.81);
@@ -135,7 +135,6 @@ public class MainScreenController
 		level.addToNodeList(collisionCircle);
 		//CollisionManager.initializeCollisionManager(level.getTestList()); //fuer Test Circle
 		CollisionManager.initializeCollisionManager(envShapes);
-		
 		// Timer initialisieren
 		initTimer();
 		//level = new Level();
@@ -163,6 +162,7 @@ public class MainScreenController
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
                 	CollisionManager.setMarble(level.getMarble());
+                	CollisionManager.checkCollisionsStart();
                 }
                 else
                 {
@@ -189,11 +189,11 @@ public class MainScreenController
 				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
-//					if(CollisionManager.checkCollisionTest())
-//					{
-//						System.out.println("COLLISION DETECTED");
-//						end();
-//					}
+					if(CollisionManager.checkCollisionsStart())
+					{
+						System.out.println("COLLISION DETECTED");
+						end();
+					}
 					level.update(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
@@ -211,6 +211,7 @@ public class MainScreenController
 	public void addEnvShapesToList()
 	{	
 		envShapes.add(colRect);
+		envShapes.add(colRect2);
 	}
 	
 	

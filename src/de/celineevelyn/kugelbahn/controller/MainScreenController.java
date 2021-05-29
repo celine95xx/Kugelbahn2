@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.PhysicsManager;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
@@ -116,7 +117,7 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "keine Gravitation":
-						level.setGravity(0.0);
+						level.setGravity(0);
 						break;
 					case "Erde":
 						level.setGravity(9.81);
@@ -161,7 +162,10 @@ public class MainScreenController
                 {
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
+                	
                 	CollisionManager.setMarble(level.getMarble());
+                	PhysicsManager.setMarble(level.getMarble());
+                	
                 	CollisionManager.checkCollisionsStart();
                 }
                 else
@@ -194,7 +198,8 @@ public class MainScreenController
 						System.out.println("COLLISION DETECTED");
 						end();
 					}
-					level.update(deltaTime);
+					//level.update(deltaTime);  //alte update methode  
+					PhysicsManager.moveMarble(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
 				last = now;

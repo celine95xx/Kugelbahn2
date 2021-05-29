@@ -25,9 +25,9 @@ public class Marble extends BasicNode
 
 	public  String color;
 	
-	private double currentVelocityX;
+	private static double currentVelocityX;
 	
-	private double currentVelocityY;
+	private static double currentVelocityY;
 	
 	private double lastPosX, lastPosY, currPosX, currPosY;
 	
@@ -122,7 +122,6 @@ public class Marble extends BasicNode
 		// apply gravity
 		accY+=gravity;
 		
-		//saveLastPos(this.node.getTranslateX(), this.node.getTranslateY());
 		
 		//curPosX = ... this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*100
 		
@@ -132,10 +131,6 @@ public class Marble extends BasicNode
 		double currentPositionX = this.node.getTranslateX();
 		double currentPositionY = this.node.getTranslateY();
 		
-		//saveCurrentPos(currentPositionX, currentPositionY);
-		
-		//System.out.println("Gravity: " + gravity);
-		//System.out.println("Current VelocityX: " + currentVelocityX + " | Current VelocityY: " +  currentVelocityY + " | Current PositionX: " + currentPositionX + " | Current PositionY: " + currentPositionY);
 
 		currentVelocityX = currentVelocityX + (accX*deltaTime);
 		currentVelocityY = currentVelocityY + (-accY*deltaTime);
@@ -144,6 +139,22 @@ public class Marble extends BasicNode
 		{
 			MainScreenController.end();
 		}	
+	}
+	
+	public void setPosition(double sx, double sy)
+	{
+		this.node.setTranslateX(sx);
+		this.node.setTranslateY(sy);
+	}
+	
+	public void setCurrVelX(double velX)
+	{
+		currentVelocityX = velX;
+	}
+	
+	public void setCurrVelY(double velY)
+	{
+		currentVelocityY = velY;
 	}
 	
 	public void saveLastPos(double lastPositionX, double lastPositionY)
@@ -156,6 +167,21 @@ public class Marble extends BasicNode
 	{
 		currPosX = currPositionX;
 		currPosY = currPositionY;
+	}
+	
+	public void setNextPosition(double nextPosX, double nextPosY) //to check if marble would collide in the next frame
+	{
+		currPosX = nextPosX;
+		currPosY = nextPosY;
+	}
+	
+	public double[] getCurrentPosition2()
+	{
+		double[] currentPosition = new double[2];
+		currentPosition[0] = currPosX;
+		currentPosition[1] = currPosY;
+		
+		return currentPosition;
 	}
 	
 	public double[] getDirectionVector()

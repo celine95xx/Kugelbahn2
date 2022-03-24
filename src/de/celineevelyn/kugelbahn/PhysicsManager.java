@@ -1,11 +1,15 @@
 package de.celineevelyn.kugelbahn;
 
+import java.util.List;
+
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import javafx.scene.shape.Rectangle;
 
 public class PhysicsManager 
 {
 	private static Marble marble;
+	private static boolean positionCorrected = false;
 	
 	public static void setMarble (Marble m)
 	{
@@ -23,25 +27,46 @@ public class PhysicsManager
 		double accX = 0;
 		double accY = 0;
 		
-		// apply wind
-		accX+=windAcc;
-						
-		// apply gravity
-		accY+=gravity;
+	
+		if(CollisionManager.checkCollisionsStart() && positionCorrected)
+		{
+			//Edge
+			double[] corner1 = CollisionManager.getClosestEdgeCorner1();
+			double[] corner2 = CollisionManager.getClosestEdgeCorner2();
+			
+			double m = MathUtil.berechneSteigung(corner1, corner2);
+			double angle = Math.atan(m);
+			double gradeResistance = Math.sin(angle) * gravity; //Hangabtriebskraft
+			
+//			accY += Math.sin(angle) * gradeResistance;
+//			accX += Math.cos(angle) * gradeResistance * 20;
+		
+			
+			System.out.println("ACC:::" + accX + ", " + accY + " Grade Resistance " + gradeResistance + " Gravity: " + gravity);
+		}
+		else
+		{
+			// apply wind
+			accX += windAcc;
+							
+			// apply gravity
+			accY += gravity;
+			
+		}
+		
+		System.out.println("Marble Direction Vectore before: " + marble.getDirectionVector()[0] + ", " + marble.getDirectionVector()[1]);
 		
 		double sxNext = marble.getNode().getTranslateX() + ((marble.getCurrentVelocityX() * deltaTime) + (0.5*accX*deltaTime*deltaTime))*proportionFactor;
 		double syNext = marble.getNode().getTranslateY() + ((marble.getCurrentVelocityY() * deltaTime) + (0.5*accY*deltaTime*deltaTime))*proportionFactor;
 		
 		marble.setNextPosition(sxNext, syNext);
+		
 		boolean collisionInNextFrame = CollisionManager.checkCollisionsStart();
-		
-		System.out.println("Before collision: " + sxNext + ", " + syNext);
-		
-		if(collisionInNextFrame) 
-		{
-			System.out.println("--- Marble Collided, calculate new position!");
+		if(collisionInNextFrame ) 
+		{	
 			//move back along reversed direction vector of marble
 			double[] marbleDirectionVector = marble.getDirectionVector();
+			System.out.println("Marble Dir Vector BEFORe: " + marbleDirectionVector[0] + ", " + marbleDirectionVector[1] );
 			double[] marbleReversedDirVector = MathUtil.reverseDirVector(marbleDirectionVector);	
 			double[] marbleReversedNormDirVector = MathUtil.getNormalizedDirVector(marbleReversedDirVector);
 			
@@ -52,6 +77,8 @@ public class PhysicsManager
 			double[] corner1 = CollisionManager.getClosestEdgeCorner1();
 			double[] corner2 = CollisionManager.getClosestEdgeCorner2();
 			double[] edgeVector = MathUtil.getDirVector(corner1, corner2);
+			double m = MathUtil.berechneSteigung(corner1, corner2);
+			double edgeAngle = Math.atan(m);
 			
 			//Intersection between marble line and edge
 			double[] intersection = MathUtil.calculateIntersection(marbleDirectionVector, marblePosition, corner1, corner2);
@@ -66,11 +93,9 @@ public class PhysicsManager
 			}
 			else
 			{
-				//double angleRadian = Math.toRadians(angle);
 				setback = (marble.getRadius() / Math.sin(angle));
 			}
 						
-			System.out.println("Marble getCurrentPosition() BEFORE: " + marble.getCurrentPos()[0] + ", " + marble.getCurrentPos()[1]);
 			
 			double[] gewuenschtePosition = new double[2];
 			gewuenschtePosition[0] = intersection[0] + marbleReversedNormDirVector[0]*(setback);
@@ -84,14 +109,19 @@ public class PhysicsManager
 			
 			marble.setPosition(sx, sy);
 			
-			System.out.println("New Position: " + sx + ", " + sy);
-			System.out.println("Intersection: " + intersection[0] + ", " + intersection[1]);
-			System.out.println("Edgevector: " + edgeVector[0] + ", " + edgeVector[1]);
-			System.out.println("Marble  reversed normalized dir Vector:" + marbleReversedNormDirVector[0] + ", " + marbleReversedNormDirVector[1]);
-			System.out.println("Marble getCurrentPosition(): " + marble.getCurrentPos()[0] + ", " + marble.getCurrentPos()[1]);
-			System.out.println("Setback: " + setback);
+			System.out.println("BEFORE CURRENT VELOCITY Y::" + marble.getCurrentVelocityY());
 			
-			MainScreenController.end();
+			double angle2 = Math.toRadians(90) - (angle - Math.toRadians(90)) - edgeAngle;
+			//mirrorDirectionVector(corner1, corner2, m, );
+			
+			
+			marble.setCurrVelX((marble.getCurrentVelocityY() + (accY * deltaTime))*Math.cos(angle2)); //sin cos vertauscht???
+			marble.setCurrentVelocityY(-(marble.getCurrentVelocityY() + (accY * deltaTime)) * Math.sin(angle2));
+			
+			System.out.println("Marble Direction Vector after: " + marble.getDirectionVector()[0] + ", " + marble.getDirectionVector()[1]);
+			
+			System.out.println("AFTER CLEANUP: CURRENT VELOCITY::::: " + marble.getCurrentVelocityX() + " , " + marble.getCurrentVelocityY());
+			
 		}
 		else
 		{
@@ -99,16 +129,52 @@ public class PhysicsManager
 			sy = syNext;
 			
 			marble.setPosition(sx, sy);
+			
+			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
+			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
+			
+			System.out.println("CurrentPosition: " + marble.getCurrentPos()[0] + ", " + marble.getCurrentPos()[1]);
 		}
 		
-//		marble.setPosition(sx, sy);
-//		MainScreenController.end();
-		
-		marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
-		marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
 
 	}
 	
+	public static double[] mirrorDirectionVector(double[] corner1, double[] corner2, double mEdge, double[] marblePosition, double[] intersection, double[] marbleDirVector)
+	{
+		double mNormal;
+		double[] mirroredDirectionVector = new double[2];
+
+//		boolean isSpecialEdge = MathUtil.checkEdgeType(corner2, corner2);
+//		if(!isSpecialEdge)
+//		{
+//			mNormal = - (1)/(mEdge);
+//			double bNormal = MathUtil.berechneYAchsenabschnitt(intersection, mNormal);
+//			double secondPointX = intersection[0] + marblePosition[0] + 10;
+//			double secondPointY = MathUtil.berechneGeradenschnittpunktY(secondPointX, mNormal, bNormal);
+//			double[] secondPoint = new double[2];
+//			secondPoint[0] = secondPointX;
+//			secondPoint[1] = secondPointY;
+//			
+//			double[] mirrorPoint = CollisionManager.calculateLotfusspunkt(intersection, secondPoint, marblePosition);
+//			
+//			double vectorMarbleMirrorPointX = mirrorPoint[0] - marblePosition[0];
+//			double vectorMarbleMirrorPointY = mirrorPoint[1] - marblePosition[1];
+//			
+//			double mirroredPointX = mirrorPoint[0] + vectorMarbleMirrorPointX;
+//			double mirroredPointY = mirrorPoint[1] + vectorMarbleMirrorPointY;
+//			
+//			mirroredDirectionVector[0] = mirroredPointX - intersection[0];
+//			mirroredDirectionVector[1] = mirroredPointY - intersection[1];
+//		}
+
+		if(marbleDirVector[1] > 0 & marbleDirVector[0] > 0 )
+		{
+			mirroredDirectionVector[0] = 
+		}
+		
+		return mirroredDirectionVector;
+
+	}
 
 	
 

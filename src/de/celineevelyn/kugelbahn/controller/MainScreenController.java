@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.NewPhysicsManager;
 import de.celineevelyn.kugelbahn.PhysicsManager;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import javafx.animation.AnimationTimer;
@@ -48,6 +49,9 @@ public class MainScreenController
 	@FXML
 	private ChoiceBox<String> gravity;
 	
+	@FXML
+	private ChoiceBox<String> winddirection;
+	
 	private static AnimationTimer timer;
 	
 	private Level level;
@@ -71,7 +75,7 @@ public class MainScreenController
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
-		timer.start();
+		timer.start(); //handle-Methode wird in jedem Frame ausgeführt
 		
 	}
 	
@@ -117,7 +121,7 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "keine Gravitation":
-						level.setGravity(0);
+						level.setGravity(0.5);
 						break;
 					case "Erde":
 						level.setGravity(9.81);
@@ -131,6 +135,39 @@ public class MainScreenController
 				}				
 			}			
 		});
+		
+		
+		winddirection.getItems().addAll(FXCollections.observableArrayList("Nord","Ost", "Süd", "West"));
+		winddirection.getSelectionModel().select(3);
+		winddirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
+		{
+
+			@Override
+			public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) 
+			{
+				String selectedItem = gravityValues[newValue.intValue()];
+				
+				switch(selectedItem)
+				{
+					case "Nord":
+						level.setGravity(0.5);
+						break;
+					case "Ost":
+						level.setGravity(9.81);
+						break;
+					case "Süd":
+						level.setGravity(1.62);
+						break;
+					case "West":
+						level.setGravity(1.62);
+						break;
+					default:
+						level.setGravity(9.81);
+						break;
+				}				
+			}			
+		});
+
 		
 		addEnvShapesToList();
 		level.addToNodeList(collisionCircle);
@@ -146,8 +183,8 @@ public class MainScreenController
 	/**
 	 * Post Initialize Methode, Handler zum Setzen der Murmel
 	 */
-	public void postInit() {
-		
+	public void postInit() 
+	{	
 		// Registriere Handler für Mausklicks
 		gravity.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() 
 		{
@@ -164,7 +201,8 @@ public class MainScreenController
                 	group.getChildren().add(marbleNode.getNode());
                 	
                 	CollisionManager.setMarble(level.getMarble());
-                	PhysicsManager.setMarble(level.getMarble());
+                	//PhysicsManager.setMarble(level.getMarble());
+                	NewPhysicsManager.setMarble(level.getMarble());
                 	
                 	CollisionManager.checkCollisionsStart();
                 }
@@ -190,16 +228,17 @@ public class MainScreenController
 			public void handle(long now) 
 			{
 				
+				//deltaTime = Differenz zwischen diesem und letztem Frame; Timestamp in Nanosekunden, deshalb durch 1.000.000.000 geteilt
 				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
 					if(CollisionManager.checkCollisionsStart())
 					{
 						System.out.println("COLLISION DETECTED");
-						end();
 					}
 					//level.update(deltaTime);  //alte update methode  
-					PhysicsManager.moveMarble(deltaTime);
+					//PhysicsManager.moveMarble(deltaTime);
+					NewPhysicsManager.moveMarble(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
 				last = now;

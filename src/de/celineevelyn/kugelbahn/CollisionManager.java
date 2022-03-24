@@ -129,13 +129,11 @@ public class CollisionManager
 		System.out.println("Marble X : " + marbleXPosition + " , Marble Y : " + marbleYPosition + "| CC X : " + ccXPosition + "cc Y : " + ccYPosition);
 		System.out.println("RADIUS -- Marble : " + marbleRadius + " | CC: " + ccRadius);
 		
-		if(distance < 2+marbleRadius)
+		if(distance < marbleRadius)
 		{
 			collided = true;
 		}
-		
-		
-		
+
 		return collided;
 	}
 
@@ -184,7 +182,7 @@ public class CollisionManager
 			double[] buffer = corner1;
 			corner1 = corner2;
 			corner2 = buffer;
-			System.out.println("Points were reversed");
+			//System.out.println("Points were reversed");
 		}
 		
 		boolean isSpecialEdge = MathUtil.checkEdgeType(corner1, corner2);
@@ -254,10 +252,6 @@ public class CollisionManager
 	public static double calculateDistanceToPoint(double[] p1, double[] p2)
 	{
 		double distance = Math.sqrt(Math.pow((p2[0]-p1[0]),2)+Math.pow((p2[1]-p1[1]),2));;
-		
-//		System.out.println("Punkt: " + p1[0] + "|" + p1[1] + ", closest point: " + p2[0] + "|" + p2[1] );
-//		System.out.println("Punkt 1: " + p1[0] + "|" + p1[1] + ", Punkt 2: " + p2[0] + "|" + p2[1]);
-//		System.out.println("Distance: " + distance);
 		
 		return distance;
 	}

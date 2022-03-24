@@ -11,18 +11,18 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
+<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
    <children>
    		
    
-      <Pane layoutY="-3.0" prefHeight="573.0" prefWidth="851.0">
+      <Pane layoutY="-3.0" prefHeight="574.0" prefWidth="899.0">
          <children>
             <Group fx:id="group" />
             <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="426.0" layoutY="517.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="93.0" layoutX="66.0" layoutY="384.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="223.0" />
-            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="93.0" layoutX="365.0" layoutY="231.0" rotate="34.7" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="223.0" />
+            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="16.0" layoutY="268.0" rotate="18.4" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="697.0" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="93.0" layoutY="480.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="851.0" />
          </children></Pane>
-      <Pane layoutY="580.0" prefHeight="120.0" prefWidth="814.0">
+      <Pane layoutY="580.0" prefHeight="181.0" prefWidth="814.0">
          <children>
             <TextField fx:id="startVelX" layoutX="94.0" layoutY="31.0" prefHeight="25.0" prefWidth="88.0" />
             <Label layoutX="14.0" layoutY="35.0" text="X-Richtung">
@@ -66,6 +66,13 @@
                </font>
             </Label>
             <Button fx:id="resetBtn" layoutX="725.0" layoutY="79.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+            <ChoiceBox fx:id="winddirection" layoutX="233.0" layoutY="92.0" prefWidth="150.0" />
+            <TextField fx:id="windvalocity" layoutX="234.0" layoutY="132.0" />
+            <Label layoutX="276.0" layoutY="69.0" text="Wind">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

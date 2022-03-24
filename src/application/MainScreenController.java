@@ -24,10 +24,15 @@ public class MainScreenController
 	@FXML
 	private TextField velocityText;
 	
+	@FXML
+	private TextField windvalocity;
 	
 	
 	@FXML
 	private ChoiceBox<String> gravity;
+	
+	@FXML	
+	private ChoiceBox<String> winddirection;
 	
 	
 	
@@ -70,6 +75,8 @@ public class MainScreenController
 	{ 
 		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
 		gravity.setValue("Gravitation");
+		winddirection.getItems().addAll(FXCollections.observableArrayList("Nord","Ost", "Süd", "West"));
+		winddirection.setValue("West");
 			
 	}
 	

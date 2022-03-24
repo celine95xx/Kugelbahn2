@@ -145,6 +145,11 @@ public class Marble extends BasicNode
 	{
 		this.node.setTranslateX(sx);
 		this.node.setTranslateY(sy);
+		
+		if(this.node.getTranslateY() >= 700)
+		{
+			MainScreenController.end();
+		}	
 	}
 	
 	public void setCurrVelX(double velX)

@@ -23,13 +23,15 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader(rootfxml);
 			Parent root = (Parent)loader.load();
 			MainScreenController controller = (MainScreenController)loader.getController();
-			Scene scene = new Scene(root,800,700);
+			Scene scene = new Scene(root,800,800);
 			scene.getStylesheets().add(getClass().getResource("/de/celineevelyn/kugelbahn/css/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
 			controller.postInit();
-		} catch(Exception e) {
+		} 
+		catch(Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}

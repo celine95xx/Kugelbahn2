@@ -169,7 +169,7 @@ public class PhysicsManager
 
 		if(marbleDirVector[1] > 0 & marbleDirVector[0] > 0 )
 		{
-			mirroredDirectionVector[0] = 
+		
 		}
 		
 		return mirroredDirectionVector;

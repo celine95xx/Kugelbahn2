@@ -2,6 +2,8 @@ package de.celineevelyn.kugelbahn;
 
 import java.util.ArrayList;
 
+import org.apache.commons.math3.linear.RealVector;
+
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 import javafx.scene.shape.Circle;
@@ -18,7 +20,7 @@ public class Level
 	private Marble marble;
 	
 	private static double gravity = 9.81;
-	
+	private static RealVector winddirection;
 	/**
 	 * Liste aller Objekte auf der Bahn
 	 */
@@ -87,6 +89,15 @@ public class Level
 		marble.update(deltaTime);
 	}
 	
-	
+	public void setWinddirection(RealVector nord)
+	{
+		Level.winddirection = nord;
+	}
+
+	public static RealVector getWinddirection()
+	{
+		return winddirection;
+	}
+
 	
 }

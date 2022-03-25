@@ -1,5 +1,7 @@
 package de.celineevelyn.kugelbahn;
 
+import org.apache.commons.math3.linear.RealVector;
+
 import de.celineevelyn.kugelbahn.objects.Marble;
 
 public class NewPhysicsManager 
@@ -19,13 +21,13 @@ public class NewPhysicsManager
 		double sy;
 		double proportionFactor = 100; //TODO: woher kam das??
 		double gravity = Level.getGravity();
-		double windAcc = 2 ; 
+		RealVector windAcc = Level.getWinddirection() ; 
 		
 		double accX = 0;
 		double accY = 0;
 		
 		// TODO: apply wind via GUI
-		accX += windAcc;
+		accX = windAcc;
 									
 		// apply gravity
 		accY += gravity;

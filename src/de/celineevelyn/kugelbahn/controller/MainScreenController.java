@@ -1,7 +1,11 @@
 package de.celineevelyn.kugelbahn.controller;
 
 import java.util.ArrayList;
+
 import java.util.List;
+
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 
 import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
@@ -25,6 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 
 /**
  * 
@@ -104,6 +109,11 @@ public class MainScreenController
 	@FXML
 	public void initialize() 
 	{
+		RealVector nord = new ArrayRealVector(new double []{0, 1});
+        RealVector ost = new ArrayRealVector(new double []{1,1});
+        RealVector sued = new ArrayRealVector(new double []{-1,1});
+        RealVector west = new ArrayRealVector(new double []{-1,-1});
+        
 		level = new Level();
 		
 		// Fülle gravity ChoiceBox mit Inhalt
@@ -137,7 +147,8 @@ public class MainScreenController
 		});
 		
 		
-		winddirection.getItems().addAll(FXCollections.observableArrayList("Nord","Ost", "Süd", "West"));
+		String winddirectionValues[] = {"Nord","Ost", "Süd", "West"};
+		winddirection.getItems().addAll(FXCollections.observableArrayList(winddirectionValues));
 		winddirection.getSelectionModel().select(3);
 		winddirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
@@ -145,24 +156,24 @@ public class MainScreenController
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) 
 			{
-				String selectedItem = gravityValues[newValue.intValue()];
+				String selectedItem = winddirectionValues[newValue.intValue()];
 				
 				switch(selectedItem)
 				{
 					case "Nord":
-						level.setGravity(0.5);
+						level.setWinddirection(nord);
 						break;
 					case "Ost":
-						level.setGravity(9.81);
+						level.setWinddirection(ost);
 						break;
 					case "Süd":
-						level.setGravity(1.62);
+						level.setWinddirection(sued);
 						break;
 					case "West":
-						level.setGravity(1.62);
+						level.setWinddirection(west);
 						break;
 					default:
-						level.setGravity(9.81);
+						level.setWinddirection(west);
 						break;
 				}				
 			}			
@@ -245,7 +256,7 @@ public class MainScreenController
 			}
 		};
 	}
-	
+
 	public void showVelocities(double velX, double velY)
 	{
 		currentVelX.setText(Double.toString(velX));

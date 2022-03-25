@@ -43,7 +43,7 @@ public class MainScreenController
 	private Button startBtn, resetBtn;
 
 	@FXML
-	private TextField startVelX, startVelY, currentVelX, currentVelY;
+	private TextField startVelX, startVelY, currentVelX, currentVelY, windVelocity;
 	
 	@FXML
 	private Circle collisionCircle;
@@ -55,7 +55,7 @@ public class MainScreenController
 	private ChoiceBox<String> gravity;
 	
 	@FXML
-	private ChoiceBox<String> winddirection;
+	private ChoiceBox<String> windDirection;
 	
 	private static AnimationTimer timer;
 	
@@ -77,10 +77,11 @@ public class MainScreenController
 	public void start(ActionEvent event) 
 	{
 		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
+		level.setWindVelocity(Double.parseDouble(windVelocity.getText()));
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
-		timer.start(); //handle-Methode wird in jedem Frame ausgeführt
+		timer.start(); //handle-Methode wird in jedem Frame ausgefï¿½hrt
 		
 	}
 	
@@ -110,13 +111,14 @@ public class MainScreenController
 	public void initialize() 
 	{
 		RealVector nord = new ArrayRealVector(new double []{0, 1});
-        RealVector ost = new ArrayRealVector(new double []{1,1});
-        RealVector sued = new ArrayRealVector(new double []{-1,1});
-        RealVector west = new ArrayRealVector(new double []{-1,-1});
+        RealVector ost = new ArrayRealVector(new double []{1,0});
+        RealVector sued = new ArrayRealVector(new double []{0,-1});
+        RealVector west = new ArrayRealVector(new double []{-1,0});
         
 		level = new Level();
+		Level.instance = level;
 		
-		// Fülle gravity ChoiceBox mit Inhalt
+		// Fï¿½lle gravity ChoiceBox mit Inhalt
 		String gravityValues[] = {"keine Gravitation", "Erde", "Mond"};
 		gravity.getItems().addAll(FXCollections.observableArrayList(gravityValues));
 		gravity.getSelectionModel().select(1);
@@ -131,7 +133,7 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "keine Gravitation":
-						level.setGravity(0.5);
+						level.setGravity(0);
 						break;
 					case "Erde":
 						level.setGravity(9.81);
@@ -147,10 +149,10 @@ public class MainScreenController
 		});
 		
 		
-		String winddirectionValues[] = {"Nord","Ost", "Süd", "West"};
-		winddirection.getItems().addAll(FXCollections.observableArrayList(winddirectionValues));
-		winddirection.getSelectionModel().select(3);
-		winddirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
+		String winddirectionValues[] = {"Nord","Ost", "Sued", "West"};
+		windDirection.getItems().addAll(FXCollections.observableArrayList(winddirectionValues));
+		windDirection.getSelectionModel().select(3);
+		windDirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
 
 			@Override
@@ -161,19 +163,19 @@ public class MainScreenController
 				switch(selectedItem)
 				{
 					case "Nord":
-						level.setWinddirection(nord);
+						level.setWindDirection(nord);
 						break;
 					case "Ost":
-						level.setWinddirection(ost);
+						level.setWindDirection(ost);
 						break;
-					case "Süd":
-						level.setWinddirection(sued);
+					case "Sued":
+						level.setWindDirection(sued);
 						break;
 					case "West":
-						level.setWinddirection(west);
+						level.setWindDirection(west);
 						break;
 					default:
-						level.setWinddirection(west);
+						level.setWindDirection(west);
 						break;
 				}				
 			}			
@@ -196,7 +198,7 @@ public class MainScreenController
 	 */
 	public void postInit() 
 	{	
-		// Registriere Handler für Mausklicks
+		// Registriere Handler fï¿½r Mausklicks
 		gravity.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() 
 		{
             @Override

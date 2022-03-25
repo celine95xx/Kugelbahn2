@@ -110,7 +110,7 @@ public class Marble extends BasicNode
 	@Override
 	public void update(double deltaTime) 
 	{
-		double gravity = Level.getGravity();
+		double gravity = Level.instance.getGravity();
 		double windAcc = 0;
 		
 		double accX = 0;

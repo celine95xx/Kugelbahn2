@@ -2,6 +2,7 @@ package de.celineevelyn.kugelbahn;
 
 import java.util.ArrayList;
 
+import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
 import de.celineevelyn.kugelbahn.objects.BasicNode;
@@ -17,15 +18,26 @@ import javafx.scene.shape.Circle;
 public class Level 
 {
 	
+	public static Level instance;
+	
 	private Marble marble;
 	
-	private static double gravity = 9.81;
-	private static RealVector winddirection;
+	private double gravity = 9.81;
+	private RealVector windDirection = new ArrayRealVector(new double []{-1,0});
+	private double windVelocity = 0;
+	
 	/**
 	 * Liste aller Objekte auf der Bahn
 	 */
 	private ArrayList<BasicNode> nodeList;
 	private ArrayList<Circle> testList;
+	
+	
+
+	public Level() 
+	{
+		this.testList = new ArrayList<>();
+	}	
 	
 	public void addToNodeList(Circle circle)
 	{
@@ -37,10 +49,6 @@ public class Level
 		return testList;
 	}
 	
-	public Level() 
-	{
-		this.testList = new ArrayList<>();
-	}	
 	
 	/**
 	 * Temporäre Methode damit Marble vor dem Start der Simulation platziert werden kann
@@ -55,7 +63,6 @@ public class Level
 	{
 		marble.setCurrentVelocityX(currentVelX);
 		marble.setCurrentVelocityY(currentVelY);
-		
 	}
 	
 	public Marble getMarble()
@@ -68,7 +75,7 @@ public class Level
 		this.gravity = gravity;
 	}
 
-	public static double getGravity()
+	public double getGravity()
 	{
 		return gravity;
 	}
@@ -89,14 +96,24 @@ public class Level
 		marble.update(deltaTime);
 	}
 	
-	public void setWinddirection(RealVector nord)
+	public void setWindDirection(RealVector windDirection)
 	{
-		Level.winddirection = nord;
+		this.windDirection = windDirection;
 	}
 
-	public static RealVector getWinddirection()
+	public RealVector getWindDirection()
 	{
-		return winddirection;
+		return windDirection;
+	}
+	
+	public void setWindVelocity(double windVelocity)
+	{
+		this.windVelocity = windVelocity;
+	}
+	
+	public double getWindVelocity()
+	{
+		return windVelocity;
 	}
 
 	

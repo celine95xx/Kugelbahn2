@@ -23,32 +23,31 @@ public class NewPhysicsManager
 		double proportionFactor = 100; 
 		double gravity = Level.instance.getGravity();
 		
-		RealVector windDirection = Level.instance.getWindDirection(); 
-		RealVector windVelocityVector = new ArrayRealVector();
-		double windVelocity = Level.instance.getWindVelocity();
+		double windAngle =  Level.instance.getWindAngle();
+		double windVelocity = Level.instance.getWindVelocity(); //user input
 		
-		windVelocityVector = windDirection.mapMultiply(windVelocity);
+		double windVelX = windVelocity * Math.cos(windAngle);
+		double windVelY = windVelocity * Math.sin(windAngle);
+
 		
-		double windDirectionX = windVelocityVector.getEntry(0);
-		double windDirectionY = windVelocityVector.getEntry(1);
-		
-		
+		double windAccX = (windVelocity * Math.cos(windAngle)) / deltaTime;
+		double windAccY = (windVelocity * Math.sin(windAngle)) / deltaTime;
+
 		
 		double accX = 0;
 		double accY = 0;
 		
-		// TODO: apply wind via GUI
 		
 		
-		
-		System.out.println("wind: " + windVelocityVector + ", Wind Velocity: " + windVelocity);
+		System.out.println("Wind Velocity: " + windVelocity + ", X-Direction: " + windVelX  + ", Y-Direction: " + windVelY);
+		System.out.println("Wind Acceleration: X-Direction: " + windAccX  + ", Y-Direction: " + windAccY + ", Deltatime: " + deltaTime);
 		System.out.println("gravity : " + gravity);
 		
 									
 		// apply accelerations
 		accY += gravity;
-		accY += windDirectionY;
-		accX += windDirectionX;
+		accY += windAccY;
+		accX += windAccX;
 		
 		double sxNext = marble.getNode().getTranslateX() + ((marble.getCurrentVelocityX() * deltaTime) + (0.5*accX*deltaTime*deltaTime))*proportionFactor;
 		double syNext = marble.getNode().getTranslateY() + ((marble.getCurrentVelocityY() * deltaTime) + (0.5*accY*deltaTime*deltaTime))*proportionFactor;

@@ -24,6 +24,7 @@ public class Level
 	
 	private double gravity = 9.81;
 	private RealVector windDirection = new ArrayRealVector(new double []{-1,0});
+	private double windAngle = Math.PI;
 	private double windVelocity = 0;
 	
 	/**
@@ -96,15 +97,28 @@ public class Level
 		marble.update(deltaTime);
 	}
 	
-	public void setWindDirection(RealVector windDirection)
+	
+	//REMOVE LATER! Wind now calculated by angle!
+//	public void setWindDirection(RealVector windDirection)
+//	{
+//		this.windDirection = windDirection;
+//	}
+	
+//	public RealVector getWindDirection()
+//	{
+//		return windDirection;
+//	}
+	
+	public void setWindAngle (double angle)
 	{
-		this.windDirection = windDirection;
+		this.windAngle = angle;
+	}
+	
+	public double getWindAngle()
+	{
+		return windAngle;
 	}
 
-	public RealVector getWindDirection()
-	{
-		return windDirection;
-	}
 	
 	public void setWindVelocity(double windVelocity)
 	{

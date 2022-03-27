@@ -81,7 +81,7 @@ public class MainScreenController
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
-		timer.start(); //handle-Methode wird in jedem Frame ausgef�hrt
+		timer.start(); //handle-Methode wird in jedem Frame ausgefuehrt
 		
 	}
 	
@@ -100,8 +100,9 @@ public class MainScreenController
 	
 	public static void calculateSimulationTime(long timeEnd)
 	{
-		long simulationTime = timeEnd - timeStart;
-		System.out.println("Die Gesamtzeit betrug: " + simulationTime);
+		long simulationTime = (timeEnd - timeStart);
+		System.out.println("Die Gesamtzeit betrug: " + (simulationTime/1000.0) + "Sekunden, bzw " + simulationTime + " Millisekunden");
+		
 	}
 	
 	/**
@@ -110,10 +111,6 @@ public class MainScreenController
 	@FXML
 	public void initialize() 
 	{
-		RealVector nord = new ArrayRealVector(new double []{0, 1});
-        RealVector ost = new ArrayRealVector(new double []{1,0});
-        RealVector sued = new ArrayRealVector(new double []{0,-1});
-        RealVector west = new ArrayRealVector(new double []{-1,0});
         
 		level = new Level();
 		Level.instance = level;
@@ -148,8 +145,21 @@ public class MainScreenController
 			}			
 		});
 		
+//		RealVector nord = new ArrayRealVector(new double []{0, 1});
+//        RealVector ost = new ArrayRealVector(new double []{1,0});
+//        RealVector sued = new ArrayRealVector(new double []{0,-1});
+//        RealVector west = new ArrayRealVector(new double []{-1,0});
 		
-		String winddirectionValues[] = {"Nord","Ost", "Sued", "West"};
+		double north = 0.5 * Math.PI;
+		double northwest = (3/4) * Math.PI;
+		double west =  Math.PI;
+		double southwest = (5/4) * Math.PI;
+		double south = (3/2) * Math.PI;
+		double southeast = (7/4) * Math.PI;
+		double east = 0;
+		double northeast = (1/4) * Math.PI;
+		
+		String winddirectionValues[] = {"North","Northwest", "West", "Southwest", "South", "Southeast", "East" , "Northeast"};
 		windDirection.getItems().addAll(FXCollections.observableArrayList(winddirectionValues));
 		windDirection.getSelectionModel().select(3);
 		windDirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
@@ -162,20 +172,32 @@ public class MainScreenController
 				
 				switch(selectedItem)
 				{
-					case "Nord":
-						level.setWindDirection(nord);
+					case "North":
+						level.setWindAngle(north);
 						break;
-					case "Ost":
-						level.setWindDirection(ost);
-						break;
-					case "Sued":
-						level.setWindDirection(sued);
+					case "Northwest":
+						level.setWindAngle(northwest);
 						break;
 					case "West":
-						level.setWindDirection(west);
+						level.setWindAngle(west);
+						break;
+					case "Southwest":
+						level.setWindAngle(southwest);
+						break;
+					case "South":
+						level.setWindAngle(south);
+						break;
+					case "Southeast":
+						level.setWindAngle(southeast);
+						break;
+					case "East":
+						level.setWindAngle(east);
+						break;
+					case "Northeast":
+						level.setWindAngle(northeast);
 						break;
 					default:
-						level.setWindDirection(west);
+						level.setWindAngle(west);
 						break;
 				}				
 			}			

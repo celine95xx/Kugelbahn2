@@ -30,8 +30,8 @@ public class NewPhysicsManager
 		double windVelY = windVelocity * Math.sin(windAngle);
 
 		
-		double windAccX = (windVelocity * Math.cos(windAngle)) / deltaTime;
-		double windAccY = (windVelocity * Math.sin(windAngle)) / deltaTime;
+		double windAccX = windVelX / deltaTime;
+		double windAccY = windVelY / deltaTime;
 
 		
 		double accX = 0;
@@ -42,6 +42,7 @@ public class NewPhysicsManager
 		System.out.println("Wind Velocity: " + windVelocity + ", X-Direction: " + windVelX  + ", Y-Direction: " + windVelY);
 		System.out.println("Wind Acceleration: X-Direction: " + windAccX  + ", Y-Direction: " + windAccY + ", Deltatime: " + deltaTime);
 		System.out.println("gravity : " + gravity);
+		System.out.println("Winkel : " + windAngle);
 		
 									
 		// apply accelerations

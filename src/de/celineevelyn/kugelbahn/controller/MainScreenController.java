@@ -151,13 +151,13 @@ public class MainScreenController
 //        RealVector west = new ArrayRealVector(new double []{-1,0});
 		
 		double north = 0.5 * Math.PI;
-		double northwest = (3/4) * Math.PI;
-		double west =  Math.PI;
-		double southwest = (5/4) * Math.PI;
-		double south = (3/2) * Math.PI;
-		double southeast = (7/4) * Math.PI;
-		double east = 0;
-		double northeast = (1/4) * Math.PI;
+		double northwest = 0.25 * Math.PI;
+		double west =  0;
+		double southwest = 1.75 * Math.PI;
+		double south = 1.5 * Math.PI;
+		double southeast = 1.25 * Math.PI;
+		double east = Math.PI;
+		double northeast = 0.75 * Math.PI;
 		
 		String winddirectionValues[] = {"North","Northwest", "West", "Southwest", "South", "Southeast", "East" , "Northeast"};
 		windDirection.getItems().addAll(FXCollections.observableArrayList(winddirectionValues));

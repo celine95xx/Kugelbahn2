@@ -24,7 +24,7 @@ public class Level
 	
 	private double gravity = 9.81;
 	private RealVector windDirection = new ArrayRealVector(new double []{-1,0});
-	private double windAngle = Math.PI;
+	private double windAngle = 0;
 	private double windVelocity = 0;
 	
 	/**

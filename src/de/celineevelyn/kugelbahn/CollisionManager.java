@@ -35,6 +35,8 @@ public class CollisionManager
 	
 	public static boolean checkCollisions(List<Rectangle> shape)
 	{
+		
+		
 		Rectangle closestRect = null;
 		double shortestDistance = 10000;
 		double[] marblePos = marble.getCurrentPos();
@@ -103,7 +105,9 @@ public class CollisionManager
 		{
 			System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
 		}
-		
+		if (collisionDetected) {
+			System.out.println("WOOOOOOOOW");
+		}
 		return collisionDetected;
 		
 	}

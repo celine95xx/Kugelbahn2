@@ -43,7 +43,7 @@ public class MainScreenController
 	private Button startBtn, resetBtn;
 
 	@FXML
-	private TextField startVelX, startVelY, currentVelX, currentVelY, windVelocity;
+	private TextField startVelX, startVelY, currentVelX, currentVelY, windAcceleration;
 	
 	@FXML
 	private Circle collisionCircle;
@@ -77,7 +77,7 @@ public class MainScreenController
 	public void start(ActionEvent event) 
 	{
 		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
-		level.setWindVelocity(Double.parseDouble(windVelocity.getText()));
+		level.setWindVelocity(Double.parseDouble(windAcceleration.getText()));
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();

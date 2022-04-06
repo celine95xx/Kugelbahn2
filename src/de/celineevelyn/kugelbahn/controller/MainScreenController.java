@@ -9,6 +9,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.NewCollisionManager;
 import de.celineevelyn.kugelbahn.NewPhysicsManager;
 import de.celineevelyn.kugelbahn.PhysicsManager;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
@@ -207,7 +208,11 @@ public class MainScreenController
 		addEnvShapesToList();
 		level.addToNodeList(collisionCircle);
 		//CollisionManager.initializeCollisionManager(level.getTestList()); //fuer Test Circle
-		CollisionManager.initializeCollisionManager(envShapes);
+		//CollisionManager.initializeCollisionManager(envShapes); //DAS ALTE
+		
+		NewCollisionManager.initializeCollisionManager(envShapes);
+		
+		
 		// Timer initialisieren
 		initTimer();
 		//level = new Level();
@@ -235,11 +240,13 @@ public class MainScreenController
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
                 	
-                	CollisionManager.setMarble(level.getMarble());
+                	//CollisionManager.setMarble(level.getMarble());
                 	//PhysicsManager.setMarble(level.getMarble());
                 	NewPhysicsManager.setMarble(level.getMarble());
+                	NewCollisionManager.setMarble(level.getMarble());
                 	
-                	CollisionManager.checkCollisionsStart();
+                	//CollisionManager.checkCollisionsStart();
+                	NewCollisionManager.checkCollisionsStart();
                 }
                 else
                 {
@@ -267,7 +274,7 @@ public class MainScreenController
 				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
-					if(CollisionManager.checkCollisionsStart())
+					if(NewCollisionManager.checkCollisionsStart())
 					{
 						System.out.println("COLLISION DETECTED");
 					}

@@ -21,12 +21,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Studium/Semester 4.2/Kugelbahn2/commons-math3-3.6/commons-math3-3.6.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/Studium/Semester 4.2/Kugelbahn2/commons-math3-3.6/commons-math3-3.6-javadoc.jar">
+	<classpathentry kind="lib" path="C:/Users/Evelyn/Desktop/CVD/6.Semester/ModSim/Kugelbahn2/commons-math3-3.6/commons-math3-3.6.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

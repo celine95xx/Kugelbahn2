@@ -20,7 +20,11 @@
             <Group fx:id="group" />
             <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="426.0" layoutY="517.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="8.0" layoutY="203.0" rotate="18.4" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="93.0" layoutY="481.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="899.0" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="33.0" layoutX="523.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="242.0" />
+            <Rectangle fx:id="colRect21" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="8.0" layoutY="203.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
+            <Circle fill="DODGERBLUE" layoutX="8.0" layoutY="203.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="199.0" layoutY="215.5" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#ff1f8e" layoutX="85.0" layoutY="107.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
          </children></Pane>
       <Pane layoutY="580.0" prefHeight="182.0" prefWidth="899.0">
          <children>

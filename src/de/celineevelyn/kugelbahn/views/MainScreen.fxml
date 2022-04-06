@@ -15,14 +15,14 @@
    <children>
    		
    
-      <Pane layoutY="-3.0" prefHeight="574.0" prefWidth="899.0">
+      <Pane prefHeight="574.0" prefWidth="899.0">
          <children>
             <Group fx:id="group" />
             <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="426.0" layoutY="517.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="16.0" layoutY="268.0" rotate="18.4" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="697.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="93.0" layoutY="480.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="851.0" />
+            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="8.0" layoutY="203.0" rotate="18.4" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="93.0" layoutY="481.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="899.0" />
          </children></Pane>
-      <Pane layoutY="580.0" prefHeight="181.0" prefWidth="814.0">
+      <Pane layoutY="580.0" prefHeight="182.0" prefWidth="899.0">
          <children>
             <TextField fx:id="startVelX" layoutX="94.0" layoutY="31.0" prefHeight="25.0" prefWidth="88.0" />
             <Label layoutX="14.0" layoutY="35.0" text="X-Richtung">
@@ -36,7 +36,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="startBtn" layoutX="725.0" layoutY="48.0" mnemonicParsing="false" onAction="#start" text="START" />
+            <Button fx:id="startBtn" layoutX="349.0" layoutY="119.0" mnemonicParsing="false" onAction="#start" text="START" />
             <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="31.0" prefHeight="25.0" prefWidth="169.0" />
             <Label layoutX="43.0" layoutY="6.0" text="Startgeschwindigkeit">
                <font>
@@ -48,27 +48,27 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="currentVelX" editable="false" layoutX="556.0" layoutY="32.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="476.0" layoutY="36.0" text="X-Richtung">
+            <TextField fx:id="currentVelX" editable="false" layoutX="714.0" layoutY="35.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="634.0" layoutY="39.0" text="X-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="currentVelY" editable="false" layoutX="556.0" layoutY="66.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="476.0" layoutY="70.0" text="Y-Richtung">
+            <TextField fx:id="currentVelY" editable="false" layoutX="714.0" layoutY="69.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="634.0" layoutY="73.0" text="Y-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="474.0" layoutY="6.0" text="Momentane Geschwindigkeit">
+            <Label layoutX="632.0" layoutY="9.0" text="Momentane Geschwindigkeit">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="resetBtn" layoutX="725.0" layoutY="79.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
-            <ChoiceBox fx:id="windDirection" layoutX="233.0" layoutY="92.0" prefWidth="150.0" />
-            <TextField fx:id="windAcceleration" layoutX="234.0" layoutY="132.0" promptText="Wind Acceleration" />
-            <Label layoutX="276.0" layoutY="69.0" text="Wind">
+            <Button fx:id="resetBtn" layoutX="426.0" layoutY="119.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+            <ChoiceBox fx:id="windDirection" layoutX="450.0" layoutY="31.0" prefWidth="150.0" />
+            <TextField fx:id="windAcceleration" layoutX="451.0" layoutY="71.0" promptText="Wind Acceleration" />
+            <Label layoutX="493.0" layoutY="8.0" text="Wind">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

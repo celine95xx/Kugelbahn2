@@ -21,7 +21,7 @@ public class PhysicsManager
 		double sx;
 		double sy;
 		double proportionFactor = 100;
-		double gravity = Level.getGravity();
+		//double gravity = Level.getGravity();
 		double windAcc = 0 ; //ueber GUI!!
 		
 		double accX = 0;
@@ -36,13 +36,13 @@ public class PhysicsManager
 			
 			double m = MathUtil.berechneSteigung(corner1, corner2);
 			double angle = Math.atan(m);
-			double gradeResistance = Math.sin(angle) * gravity; //Hangabtriebskraft
+			//double gradeResistance = Math.sin(angle) * gravity; //Hangabtriebskraft
 			
 //			accY += Math.sin(angle) * gradeResistance;
 //			accX += Math.cos(angle) * gradeResistance * 20;
 		
 			
-			System.out.println("ACC:::" + accX + ", " + accY + " Grade Resistance " + gradeResistance + " Gravity: " + gravity);
+			//System.out.println("ACC:::" + accX + ", " + accY + " Grade Resistance " + gradeResistance + " Gravity: " + gravity);
 		}
 		else
 		{
@@ -50,7 +50,7 @@ public class PhysicsManager
 			accX += windAcc;
 							
 			// apply gravity
-			accY += gravity;
+			//accY += gravity;
 			
 		}
 		

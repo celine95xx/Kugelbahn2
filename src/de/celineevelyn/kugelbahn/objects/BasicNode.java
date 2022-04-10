@@ -20,12 +20,6 @@ public abstract class BasicNode {
 	public BasicNode(Node node) {
 		this.node = node;
 	}
-
-	
-	/**
-	 * Alle erbenden Klassen müssen eine update-Methode bereitstellen
-	 */
-	public abstract void update(double deltaT);
 	
 	public Node getNode() {
 		return node;

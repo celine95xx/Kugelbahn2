@@ -41,9 +41,7 @@ public class Marble extends BasicNode
 		this.weight = weight; 
 		this.color = color; 
 		this.radius = radius;
-	
 	}
-	
 
 	public double getWeight() 
 	{
@@ -103,42 +101,6 @@ public class Marble extends BasicNode
 	public double getStartY()
 	{
 		return startY;
-	}
-	
-
-
-	@Override
-	public void update(double deltaTime) 
-	{
-		double gravity = Level.instance.getGravity();
-		double windAcc = 0;
-		
-		double accX = 0;
-		double accY = 0;
-		
-		// apply wind
-		accX+=windAcc;
-				
-		// apply gravity
-		accY+=gravity;
-		
-		
-		//curPosX = ... this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*100
-		
-		this.node.setTranslateX(this.node.getTranslateX() + ((currentVelocityX * deltaTime)+(0.5*accX*deltaTime*deltaTime))*100);
-		this.node.setTranslateY(this.node.getTranslateY() - ((currentVelocityY * deltaTime)+(-0.5*accY*deltaTime*deltaTime))*100);
-		
-		double currentPositionX = this.node.getTranslateX();
-		double currentPositionY = this.node.getTranslateY();
-		
-
-		currentVelocityX = currentVelocityX + (accX*deltaTime);
-		currentVelocityY = currentVelocityY + (-accY*deltaTime);
-		
-		if(this.node.getTranslateY() >= 700)
-		{
-			MainScreenController.end();
-		}	
 	}
 	
 	public void setPosition(double sx, double sy)

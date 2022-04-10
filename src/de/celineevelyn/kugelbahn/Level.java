@@ -25,7 +25,7 @@ public class Level
 	private double gravity = 9.81;
 	private RealVector windDirection = new ArrayRealVector(new double []{-1,0});
 	private double windAngle = 0;
-	private double windVelocity = 0;
+	private double windAcc = 0;
 	
 	/**
 	 * Liste aller Objekte auf der Bahn
@@ -90,24 +90,6 @@ public class Level
 	{
 		return marble.getCurrentVelocityY();
 	}
-
-	
-	public void update(double deltaTime) 
-	{
-		marble.update(deltaTime);
-	}
-	
-	
-	//REMOVE LATER! Wind now calculated by angle!
-//	public void setWindDirection(RealVector windDirection)
-//	{
-//		this.windDirection = windDirection;
-//	}
-	
-//	public RealVector getWindDirection()
-//	{
-//		return windDirection;
-//	}
 	
 	public void setWindAngle (double angle)
 	{
@@ -120,14 +102,14 @@ public class Level
 	}
 
 	
-	public void setWindVelocity(double windVelocity)
+	public void setWindAcc(double windAcc)
 	{
-		this.windVelocity = windVelocity;
+		this.windAcc = windAcc;
 	}
 	
-	public double getWindVelocity()
+	public double getWindAcc()
 	{
-		return windVelocity;
+		return windAcc;
 	}
 
 	

@@ -78,7 +78,7 @@ public class MainScreenController
 	public void start(ActionEvent event) 
 	{
 		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
-		level.setWindVelocity(Double.parseDouble(windAcceleration.getText()));
+		level.setWindAcc(Double.parseDouble(windAcceleration.getText()));
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
@@ -116,7 +116,7 @@ public class MainScreenController
 		level = new Level();
 		Level.instance = level;
 		
-		// F�lle gravity ChoiceBox mit Inhalt
+		// Gravity Choicebox
 		String gravityValues[] = {"keine Gravitation", "Erde", "Mond"};
 		gravity.getItems().addAll(FXCollections.observableArrayList(gravityValues));
 		gravity.getSelectionModel().select(1);
@@ -146,11 +146,7 @@ public class MainScreenController
 			}			
 		});
 		
-//		RealVector nord = new ArrayRealVector(new double []{0, 1});
-//        RealVector ost = new ArrayRealVector(new double []{1,0});
-//        RealVector sued = new ArrayRealVector(new double []{0,-1});
-//        RealVector west = new ArrayRealVector(new double []{-1,0});
-		
+		//Wind Choicebox, Winkel in Radiant
 		double north = 0.5 * Math.PI;
 		double northwest = 0.25 * Math.PI;
 		double west =  0;
@@ -206,26 +202,21 @@ public class MainScreenController
 
 		
 		addEnvShapesToList();
-		level.addToNodeList(collisionCircle);
-		//CollisionManager.initializeCollisionManager(level.getTestList()); //fuer Test Circle
-		//CollisionManager.initializeCollisionManager(envShapes); //DAS ALTE
+		//level.addToNodeList(collisionCircle);
 		
 		NewCollisionManager.initializeCollisionManager(envShapes);
 		
 		
 		// Timer initialisieren
 		initTimer();
-		//level = new Level();
 	}
-	
-	
 	
 	/**
 	 * Post Initialize Methode, Handler zum Setzen der Murmel
 	 */
 	public void postInit() 
 	{	
-		// Registriere Handler f�r Mausklicks
+		// Registriere Handler fuer Mausklicks
 		gravity.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() 
 		{
             @Override
@@ -240,12 +231,9 @@ public class MainScreenController
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
                 	
-                	//CollisionManager.setMarble(level.getMarble());
-                	//PhysicsManager.setMarble(level.getMarble());
                 	NewPhysicsManager.setMarble(level.getMarble());
                 	NewCollisionManager.setMarble(level.getMarble());
                 	
-                	//CollisionManager.checkCollisionsStart();
                 	NewCollisionManager.checkCollisionsStart();
                 }
                 else
@@ -278,8 +266,6 @@ public class MainScreenController
 					{
 						System.out.println("COLLISION DETECTED");
 					}
-					//level.update(deltaTime);  //alte update methode  
-					//PhysicsManager.moveMarble(deltaTime);
 					NewPhysicsManager.moveMarble(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}

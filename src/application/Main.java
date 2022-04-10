@@ -1,4 +1,4 @@
-package de.celineevelyn.kugelbahn;
+package application;
 	
 import java.net.URL;
 

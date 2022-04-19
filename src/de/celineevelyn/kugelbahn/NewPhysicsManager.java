@@ -20,7 +20,7 @@ public class NewPhysicsManager
 	{
 		double sx;
 		double sy;
-		double proportionFactor = 100; //eigentlich 1667 
+		double proportionFactor = 727; //1667 = 12mm Durchmesser, 727 = 8px Radius, 11mm Radius
 		double gravity = Level.instance.getGravity();
 		
 		double windAngle =  Level.instance.getWindAngle();

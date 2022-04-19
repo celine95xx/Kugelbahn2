@@ -18,13 +18,9 @@
       <Pane prefHeight="574.0" prefWidth="899.0">
          <children>
             <Group fx:id="group" />
-            <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="426.0" layoutY="517.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="34.0" layoutY="520.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="8.0" layoutY="203.0" rotate="18.4" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="33.0" layoutX="523.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="242.0" />
-            <Rectangle fx:id="colRect21" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="8.0" layoutY="203.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
-            <Circle fill="DODGERBLUE" layoutX="8.0" layoutY="203.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="199.0" layoutY="215.5" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#ff1f8e" layoutX="85.0" layoutY="107.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="33.0" layoutY="544.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="899.0" />
          </children></Pane>
       <Pane layoutY="580.0" prefHeight="182.0" prefWidth="899.0">
          <children>
@@ -40,7 +36,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="startBtn" layoutX="349.0" layoutY="119.0" mnemonicParsing="false" onAction="#start" text="START" />
+            <Button fx:id="startBtn" layoutX="352.0" layoutY="132.0" mnemonicParsing="false" onAction="#start" text="START" />
             <ChoiceBox fx:id="gravity" layoutX="233.0" layoutY="31.0" prefHeight="25.0" prefWidth="169.0" />
             <Label layoutX="43.0" layoutY="6.0" text="Startgeschwindigkeit">
                <font>
@@ -64,15 +60,15 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="632.0" layoutY="9.0" text="Momentane Geschwindigkeit">
+            <Label layoutX="632.0" layoutY="6.0" text="Momentane Geschwindigkeit">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="resetBtn" layoutX="426.0" layoutY="119.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+            <Button fx:id="resetBtn" layoutX="451.0" layoutY="132.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
             <ChoiceBox fx:id="windDirection" layoutX="450.0" layoutY="31.0" prefWidth="150.0" />
             <TextField fx:id="windAcceleration" layoutX="451.0" layoutY="71.0" promptText="Wind Acceleration" />
-            <Label layoutX="493.0" layoutY="8.0" text="Wind">
+            <Label layoutX="510.0" layoutY="6.0" text="Wind">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

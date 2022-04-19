@@ -56,7 +56,7 @@ public class Level
 	 */
 	public BasicNode placeMarble(double x, double y) 
 	{
-		marble = new Marble(x, y, 10, 10,"green");
+		marble = new Marble(x, y, 8, 10,"green");
 		return marble;
 	}
 	

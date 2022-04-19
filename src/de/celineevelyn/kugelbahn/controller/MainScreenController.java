@@ -277,7 +277,7 @@ public class MainScreenController
 	public void showVelocities(double velX, double velY)
 	{
 		currentVelX.setText(Double.toString(velX));
-		currentVelY.setText(Double.toString(velY));
+		currentVelY.setText(Double.toString(velY * (-1)));
 	}
 	
 	public void addEnvShapesToList()

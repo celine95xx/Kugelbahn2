@@ -39,12 +39,10 @@ public class NewCollisionManager
 	{
 		Rectangle closestRect = null;
 		double shortestDistance = 10000;
-		double[] marblePos = marble.getCurrentPos();
 		
-		Vector2d marblePosition = new Vector2d(marblePos[0], marblePos[1]);	
+		Vector2d marblePosition =  marble.getCurrentPos(); //getCurrPos
 		
 		boolean collisionDetected = false;
-		boolean isIntersected = false;
 		closestEdgeCorner1 = new Vector2d(0,0);
 		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
@@ -53,42 +51,45 @@ public class NewCollisionManager
 		{
 			List<Vector2d> cornerList = shapeToCorners(rect);
 			
-			isIntersected = checkIntersection(marblePos, cornerList);
+			//Liste von Distanzen
+			//für jede Kante s berechnen
+			//Wenn s zwischen 0 und 1 --> berechne Distanz
+			//Falls nicht: berechne Distanz nicht.
+			//Dann aus der Liste alle Distanzen vergleichen
 			
-			double distance1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //Edge oben
-			double distance2 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(2)); //Edge links
-			double distance3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //Edge rechts
-			double distance4 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(3)); //Edge unten
 			
-			System.out.println("DISTANCES: 1 = " + distance1 + ", 2 = " + distance2 + ", 3 = " + distance3 + ", 4 = " + distance4);
+			double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1));
+			double d2 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(2));
+			double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3));
+			double d4 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(3));
 			
-			if(distance1 < shortestDistance)
+			if(d1 < shortestDistance)
 			{
-				shortestDistance = distance1;
+				shortestDistance = d1;
 				closestRect = rect;
 				closestEdgeCorner1 = cornerList.get(0);
 				closestEdgeCorner2 = cornerList.get(1);
 				edge = "edge 1";
 			}
-			if(distance2 < shortestDistance)
+			if(d2 < shortestDistance)
 			{
-				shortestDistance = distance2;
+				shortestDistance = d2;
 				closestRect = rect;
 				closestEdgeCorner1 = cornerList.get(0);
 				closestEdgeCorner2 = cornerList.get(2);
 				edge = "edge 2";
 			}
-			if(distance3 < shortestDistance)
+			if(d3 < shortestDistance)
 			{
-				shortestDistance = distance3;
+				shortestDistance = d3;
 				closestRect = rect;
 				closestEdgeCorner1 = cornerList.get(1);
 				closestEdgeCorner2 = cornerList.get(3);
 				edge = "edge 3";
 			}
-			if(distance4 < shortestDistance)
+			if(d4 < shortestDistance)
 			{
-				shortestDistance = distance4;
+				shortestDistance = d4;
 				closestRect = rect;
 				closestEdgeCorner1 = cornerList.get(2);
 				closestEdgeCorner2 = cornerList.get(3);
@@ -106,29 +107,18 @@ public class NewCollisionManager
 
 		if(closestRect != null)
 		{
-			System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
+			//System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
 		}
 		
 		if (collisionDetected) 
 		{
 			System.out.println("(NewCollisionManager) COLLISION DETECTED, Shortest Distance: " + shortestDistance + ", Edge: " + edge );
 		}
-		return isIntersected; //collisionDetected
+		return collisionDetected; 
 		
 	}
 	
-	public static boolean checkIntersection(double[] marblePos, List<Vector2d> cornerList)
-	{
-		boolean intersected = false;
-		
-		if((marblePos[0] + marble.getRadius() >= cornerList.get(0).getX()) && marblePos[0] <= cornerList.get(1).getX() && 
-				(marblePos[1] + marble.getRadius() >= cornerList.get(0).getY()) && marblePos[1] <= cornerList.get(2).getY())
-		{
-			intersected = true;
-		}
-		
-		return intersected;
-	}
+
 	
 	//Get corner coordinates of a rectangle
 	public static List<Vector2d> shapeToCorners(Rectangle rect)
@@ -158,7 +148,7 @@ public class NewCollisionManager
 		
 		for(int j = 0 ; j < cornerList.size(); j++)
 		{
-			System.out.println("Corner " + j + ": " + cornerList.get(j).getVector2d());
+			//System.out.println("Corner " + j + ": " + cornerList.get(j).getVector2d());
 		}
 		
 		if(angle != 0) //calculate new coordinates, if shape is rotated
@@ -176,31 +166,44 @@ public class NewCollisionManager
 		return cornerList;
 	}
 	
-	@SuppressWarnings("exports")
-	public static double calculateDistance(Vector2d marblePosition, Vector2d corner1, Vector2d corner2)
+	public static double calculateDistance(Vector2d p, Vector2d q, Vector2d r)
 	{
-
-		// d = |(p-a) x b| / |b| 
-		// p: Mittelpunkt der Murmel
-		// a: Ecke 1
-		// b : Ecke 2 - Ecke 1
+		//marblePosition = P
+		//corner1 = Q
+		//corner2 = R
+		Vector2d rq = r.subtract(q); //Richtungvektor: Ecke 2 - Ecke 1
+		Vector2d qp = q.subtract(p); //Ecke1 - marblePosition
+		double dot1 = qp.dotProduct(rq) * (-1); //Skalarprodukt: qp * rq
+		double dot2 = rq.dotProduct(rq);
 		
-		Vector2d c = marblePosition.subtract(corner1); // p-a
-		Vector2d b = corner2.subtract(corner1); //Richtungsvektor b = Ecke 2 - Ecke 1
-		double detAbsolute = Math.abs(c.crossProduct(b)); //Betrag der Determinante
-		double bLengthAbsolute = Math.abs(b.getNorm());
+		double s = dot1/dot2;
+		double distance;
 		
-		System.out.println("Marble Position - Corner 1 = " + marblePosition.getVector2d() + " - " + corner1.getVector2d() + " = " + c.getVector2d() );
-		System.out.println("b = " + b.getVector2d());
-		System.out.println("norm1 = " + detAbsolute);
-		System.out.println("norm2 = " + bLengthAbsolute);
-
-		double distance =  detAbsolute / bLengthAbsolute;
+		if(s>=0 && s<= 1)
+		{
+			Vector2d lfp = calculateLFP(q, r, s);
+			
+			Vector2d lp = lfp.subtract(p);
+			
+			distance = lp.getNorm();
+		}
+		else
+		{
+			distance = 1000000;
+		}
 		
-		System.out.println("CALCULATED DISTANCE: " + distance);
-				
 		return distance;
+		
 	}
+	
+	public static Vector2d calculateLFP(Vector2d q, Vector2d r, double s)
+	{
+		Vector2d rq = r.subtract(q); //Richtungvektor: Ecke 2 - Ecke 1
+		Vector2d lfp = q.add(rq.multiply(s));
+		
+		return lfp;
+	}
+	
 	
 	//Falls Shape rotiert, rechne neue Eck-Koordinaten
 	public static Vector2d calcRotCoordinates(double angle, Vector2d corner, double[] rectCenter)
@@ -216,5 +219,66 @@ public class NewCollisionManager
 		Vector2d newCoordinates = new Vector2d(newCornerX, newCornerY);
 		
 		return newCoordinates;
+	}
+
+	public static Vector2d calculateTranslation(Vector2d marblePosition) 
+	{
+		Vector2d marbleDV = marble.getDirectionVector(); //Richtungsvektor Murmel
+		Vector2d marbleDVreversed = marbleDV.multiply(-1); //umgekehrter Richtungsvektor
+		Vector2d marbleDVreversednormalized = marbleDVreversed.normalize();
+		
+		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
+		double angle = marbleDVreversed.calculateAngle(edge);
+		double setback;
+		if(angle == 0)
+		{
+			setback = marble.getRadius();
+		}
+		else
+		{
+			setback = (marble.getRadius() / Math.sin(angle));
+		}
+		
+		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
+		
+		Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback));
+		
+		double tx = Math.abs(marblePosition.getX() - marbleNew.getX());
+		double ty = Math.abs(marblePosition.getY() - marbleNew.getY());
+		
+		double tx2 = marbleDVreversednormalized.getX() * tx;
+		double ty2 = marbleDVreversednormalized.getY() * ty;
+		
+		Vector2d translation = new Vector2d(tx2, ty2);
+		
+		System.out.println("Translation: " + translation.getVector2d());
+		
+		
+		return translation;
+	}
+	
+	public static Vector2d calculateCollisionPoint(Vector2d marblePosition, Vector2d q, Vector2d r)
+	{
+		Vector2d rv = r.subtract(q); //Richtungsvektor Gerade
+		Vector2d marbleRV = marble.getDirectionVector();
+		Vector2d marbleRVnorm = marbleRV.normalize();
+		
+		Vector2d mq = q.subtract(marblePosition); //Corner 1 - marblePosition
+		Vector2d marbleRVnormT = marbleRVnorm.transform();
+		
+		double qx = mq.getX() * marbleRVnorm.getX() + mq.getY() * marbleRVnorm.getY();
+		double qy = mq.getX() * marbleRVnormT.getX() + mq.getY() * marbleRVnormT.getY();
+		
+		double sx = rv.getX() * marbleRVnorm.getX() + rv.getY() * marbleRVnorm.getY();
+		double sy = rv.getX() * marbleRVnormT.getX() + rv.getY() * marbleRVnormT.getY();
+		
+		if(sy == 0)
+			return null;
+		
+		double a = qx - qy * sx / sy;
+		
+		Vector2d collisionPoint = marblePosition.add(marbleRVnorm.multiply(a));
+		
+		return collisionPoint;
 	}
 }

@@ -3,6 +3,7 @@ package de.celineevelyn.kugelbahn.objects;
 import java.util.Vector;
 
 import de.celineevelyn.kugelbahn.Level;
+import de.celineevelyn.kugelbahn.Vector2d;
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import javafx.scene.shape.Circle;
 
@@ -29,7 +30,7 @@ public class Marble extends BasicNode
 	
 	private static double currentVelocityY;
 	
-	private double lastPosX, lastPosY, currPosX, currPosY;
+	private double lastPosX, lastPosY, currPosX, currPosY, nextPosX, nextPosY;
 	
 	
 	public Marble (double startX, double startY, double radius, double weight, String color) 
@@ -124,50 +125,60 @@ public class Marble extends BasicNode
 		currentVelocityY = velY;
 	}
 	
-	public void saveLastPos(double lastPositionX, double lastPositionY)
-	{
-		lastPosX = lastPositionX;
-		lastPosY = lastPositionY;
-	}
-	
-	public void saveCurrentPos(double currPositionX, double currPositionY)
-	{
-		currPosX = currPositionX;
-		currPosY = currPositionY;
-	}
+//	public void saveLastPos(double lastPositionX, double lastPositionY)
+//	{
+//		lastPosX = lastPositionX;
+//		lastPosY = lastPositionY;
+//	}
+//	
+//	public void saveCurrentPos(double currPositionX, double currPositionY)
+//	{
+//		currPosX = currPositionX;
+//		currPosY = currPositionY;
+//	}
 	
 	public void setNextPosition(double nextPosX, double nextPosY) //to check if marble would collide in the next frame
 	{
 		currPosX = nextPosX;
 		currPosY = nextPosY;
+		
+		this.nextPosX = nextPosX;
+		this.nextPosY = nextPosY;
 	}
 	
-	public double[] getCurrentPosition2()
-	{
-		double[] currentPosition = new double[2];
-		currentPosition[0] = currPosX;
-		currentPosition[1] = currPosY;
-		
-		return currentPosition;
-	}
+//	public double[] getCurrentPosition2()
+//	{
+//		double[] currentPosition = new double[2];
+//		currentPosition[0] = currPosX;
+//		currentPosition[1] = currPosY;
+//		
+//		return currentPosition;
+//	}
 	
-	public double[] getDirectionVector()
-	{
-		double[] directionVector = new double[2];
+	public Vector2d getDirectionVector()
+	{	
+		double x = currPosX - lastPosX;
+		double y = currPosY - lastPosY;
 		
-		directionVector[0] = currPosX - lastPosX;
-		directionVector[1] = currPosY - lastPosY;
+		Vector2d directionVector = new Vector2d(x,y);
 		
 		return directionVector;
 		
 	}
 	
-	public double[] getCurrentPos()
+	public Vector2d getCurrentPos()
 	{
-		double[] currentPosition = new double[2];
-		currentPosition[0] = getStartX() + this.node.getTranslateX();
-		currentPosition[1] = getStartY()  + this.node.getTranslateY();
+		double currentPositionX = getStartX() + this.node.getTranslateX();
+		double currentPositionY = getStartY()  + this.node.getTranslateY();
+		
+		Vector2d currentPosition = new Vector2d(currentPositionX, currentPositionY);
 		
 		return currentPosition;
+	}
+	
+	public Vector2d getNextPosition()
+	{
+		Vector2d nextPosition = new Vector2d(nextPosX, nextPosY);
+		return nextPosition;
 	}
 }

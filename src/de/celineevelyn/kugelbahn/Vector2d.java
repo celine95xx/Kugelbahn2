@@ -55,11 +55,66 @@ public class Vector2d
 		double crossProduct = this.getX() * v.getY() - this.getY() * v.getX();
 		return crossProduct;
 	}
+	
+	public double dotProduct(Vector2d v)
+	{
+		double dotProduct = this.getX() * v.getX() + this.getY() * v.getY();
+		return dotProduct;
+	}
+	
+	public Vector2d multiply(double s)
+	{
+		double x = this.getX() * s;
+		double y = this.getY() * s;
+		
+		Vector2d v = new Vector2d(x,y);
+		return v;
+	}
 
 	public double getNorm() //Euklidische Norm: sqrt(x^2 + y^2)
 	{
 		double norm = Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2));
 		return norm;
+	}
+	
+	public Vector2d normalize()
+	{
+		double invertedLength = 1/this.getNorm();
+		Vector2d normalized = this.multiply(invertedLength);
+		
+		return normalized;
+	}
+	
+	public Vector2d transform()
+	{
+		double x = this.getY() * (-1);
+		double y = this.getX();
+		Vector2d transformed = new Vector2d(x,y);
+		
+		return transformed;
+	}
+	
+	public Vector2d absolute()
+	{
+		double x = Math.abs(this.getX());
+		double y = Math.abs(this.getY());
+		
+		Vector2d abs = new Vector2d(x,y);
+		return abs;
+	}
+	
+	public double calculateAngle(Vector2d v2)
+	{
+		double dotProduct = this.dotProduct(v2);
+		double v1Length = this.getNorm();
+		double v2Length = v2.getNorm();
+		
+		double cosangle = dotProduct/(v1Length * v2Length);
+		
+		double angle = Math.acos(cosangle);
+		
+		return angle;
+		
 	}
 
 	

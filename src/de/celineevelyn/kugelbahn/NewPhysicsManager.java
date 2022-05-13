@@ -44,10 +44,29 @@ public class NewPhysicsManager
 		
 		marble.setNextPosition(sxNext, syNext);
 		
-		sx = sxNext;
-		sy = syNext;
-		
-		marble.setPosition(sx, sy);
+		boolean collisionInNextFrame = NewCollisionManager.checkCollisionsStart();
+		if(collisionInNextFrame)
+		{
+			
+			System.out.println("Before: " + marble.getCurrentPos().getVector2d());
+			Vector2d marblePosition = marble.getCurrentPos();
+			
+			Vector2d translation = NewCollisionManager.calculateTranslation(marblePosition);
+			
+			sx = marble.getNode().getTranslateX() + translation.getX();
+			sy = marble.getNode().getTranslateY() + translation.getY();
+			
+			marble.setPosition(sx, sy);
+			System.out.println("After: " + marble.getCurrentPos().getVector2d());
+			
+		}
+		else
+		{
+			sx = sxNext;
+			sy = syNext;
+			
+			marble.setPosition(sx, sy);
+		}
 		
 		marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
 		marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));

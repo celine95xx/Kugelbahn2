@@ -1,8 +1,10 @@
 package de.celineevelyn.kugelbahn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -14,8 +16,8 @@ public class NewCollisionManager
 {
 	private static Marble marble;
 	private static List<Rectangle> envShapes;
-	private static RealVector closestEdgeCorner1;
-	private static RealVector closestEdgeCorner2;
+	private static Vector2d closestEdgeCorner1;
+	private static Vector2d closestEdgeCorner2;
 	
 	public static void initializeCollisionManager(List<Rectangle> env) //ArrayList<Circle> list
 	{
@@ -39,20 +41,19 @@ public class NewCollisionManager
 		double shortestDistance = 10000;
 		double[] marblePos = marble.getCurrentPos();
 		
-		RealVector marblePosition = new ArrayRealVector(2);
-		
-		marblePosition.setEntry(0, marblePos[0]);
-		marblePosition.setEntry(1, marblePos[1]);
-		
+		Vector2d marblePosition = new Vector2d(marblePos[0], marblePos[1]);	
 		
 		boolean collisionDetected = false;
-		closestEdgeCorner1 = new ArrayRealVector(2);
-		closestEdgeCorner2 = new ArrayRealVector(2);
+		boolean isIntersected = false;
+		closestEdgeCorner1 = new Vector2d(0,0);
+		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
 		
 		for(Rectangle rect : shape)
 		{
-			List<RealVector> cornerList = shapeToCorners(rect);
+			List<Vector2d> cornerList = shapeToCorners(rect);
+			
+			isIntersected = checkIntersection(marblePos, cornerList);
 			
 			double distance1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //Edge oben
 			double distance2 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(2)); //Edge links
@@ -94,6 +95,7 @@ public class NewCollisionManager
 				edge = "edge 4";
 			}
 			
+			//später entkommentieren???
 			if(shortestDistance <= (marble.getRadius()))
 			{
 				collisionDetected = true;
@@ -111,12 +113,25 @@ public class NewCollisionManager
 		{
 			System.out.println("(NewCollisionManager) COLLISION DETECTED, Shortest Distance: " + shortestDistance + ", Edge: " + edge );
 		}
-		return collisionDetected;
+		return isIntersected; //collisionDetected
 		
 	}
 	
+	public static boolean checkIntersection(double[] marblePos, List<Vector2d> cornerList)
+	{
+		boolean intersected = false;
+		
+		if((marblePos[0] + marble.getRadius() >= cornerList.get(0).getX()) && marblePos[0] <= cornerList.get(1).getX() && 
+				(marblePos[1] + marble.getRadius() >= cornerList.get(0).getY()) && marblePos[1] <= cornerList.get(2).getY())
+		{
+			intersected = true;
+		}
+		
+		return intersected;
+	}
+	
 	//Get corner coordinates of a rectangle
-	public static List<RealVector> shapeToCorners(Rectangle rect)
+	public static List<Vector2d> shapeToCorners(Rectangle rect)
 	{
 		double width = rect.getWidth();
 		double height = rect.getHeight();
@@ -126,80 +141,79 @@ public class NewCollisionManager
 		rectCenter[1] = rect.getLayoutY() + 0.5 * height;
 		
 		
-		List<RealVector> cornerList = new ArrayList<RealVector>();
+		List<Vector2d> cornerList = new ArrayList<Vector2d>();
 		
-		RealVector corner1 = new ArrayRealVector(2);
-		corner1.setEntry(0, rect.getLayoutX());
-		corner1.setEntry(1, rect.getLayoutY());
+		Vector2d corner1 = new Vector2d(rect.getLayoutX(), rect.getLayoutY());
 		
-		RealVector corner2 = new ArrayRealVector(2);
-		corner2.setEntry(0, rect.getLayoutX() + width);
-		corner2.setEntry(1, rect.getLayoutY());
+		Vector2d corner2 = new Vector2d(rect.getLayoutX() + width, rect.getLayoutY());
+
+		Vector2d corner3 = new Vector2d(rect.getLayoutX(), rect.getLayoutY() + height);
 		
-		RealVector corner3 = new ArrayRealVector(2);
-		corner3.setEntry(0, rect.getLayoutX());
-		corner3.setEntry(1, rect.getLayoutY() + height);
-		
-		RealVector corner4 = new ArrayRealVector(2);
-		corner4.setEntry(0, rect.getLayoutX() + width);
-		corner4.setEntry(1, rect.getLayoutY() + height);
-		
-//		double[] corner1 = {rect.getLayoutX(), rect.getLayoutY()}; //oben links
-//		double[] corner2 = {rect.getLayoutX() + width, rect.getLayoutY()}; //oben rechts
-//		double[] corner3 = {rect.getLayoutX(), rect.getLayoutY() + height}; //unten links
-//		double[] corner4 = {rect.getLayoutX() + width, rect.getLayoutY() + height}; //unten rechts
+		Vector2d corner4 = new Vector2d(rect.getLayoutX() + width, rect.getLayoutY() + height);
 		
 		cornerList.add(corner1);
 		cornerList.add(corner2);
 		cornerList.add(corner3);
 		cornerList.add(corner4);
 		
-		if(angle != 0)
+		for(int j = 0 ; j < cornerList.size(); j++)
+		{
+			System.out.println("Corner " + j + ": " + cornerList.get(j).getVector2d());
+		}
+		
+		if(angle != 0) //calculate new coordinates, if shape is rotated
 		{
 			for(int i = 0; i < cornerList.size(); i++)
 			{
-				RealVector newCoordinate = calcRotCoordinates(angle, cornerList.get(i), rectCenter);
+				Vector2d newCoordinate = calcRotCoordinates(angle, cornerList.get(i), rectCenter);
 				cornerList.set(i, newCoordinate);
 				
-//				System.out.println("New Coordinates: " + newCoordinate[0] + ", " + newCoordinate[1]);
+				//System.out.println("New Coordinates: " + newCoordinate.getVector2d());
 			}
 		}
+		
 		
 		return cornerList;
 	}
 	
 	@SuppressWarnings("exports")
-	public static double calculateDistance(RealVector marblePosition, RealVector corner1, RealVector corner2)
+	public static double calculateDistance(Vector2d marblePosition, Vector2d corner1, Vector2d corner2)
 	{
-		//NEU
+
+		// d = |(p-a) x b| / |b| 
+		// p: Mittelpunkt der Murmel
+		// a: Ecke 1
+		// b : Ecke 2 - Ecke 1
 		
-		RealVector c = marblePosition.subtract(corner1);
-		RealMatrix outerProductMatrix = c.outerProduct(corner2);
-		RealVector outerProduct = outerProductMatrix.getColumnVector(0);
-		double norm1 = outerProduct.getNorm();
-		double norm2 = corner2.getNorm();
+		Vector2d c = marblePosition.subtract(corner1); // p-a
+		Vector2d b = corner2.subtract(corner1); //Richtungsvektor b = Ecke 2 - Ecke 1
+		double detAbsolute = Math.abs(c.crossProduct(b)); //Betrag der Determinante
+		double bLengthAbsolute = Math.abs(b.getNorm());
 		
-		double distance =  norm1 / norm2;
+		System.out.println("Marble Position - Corner 1 = " + marblePosition.getVector2d() + " - " + corner1.getVector2d() + " = " + c.getVector2d() );
+		System.out.println("b = " + b.getVector2d());
+		System.out.println("norm1 = " + detAbsolute);
+		System.out.println("norm2 = " + bLengthAbsolute);
+
+		double distance =  detAbsolute / bLengthAbsolute;
+		
+		System.out.println("CALCULATED DISTANCE: " + distance);
 				
 		return distance;
 	}
 	
 	//Falls Shape rotiert, rechne neue Eck-Koordinaten
-	public static RealVector calcRotCoordinates(double angle, RealVector corner, double[] rectCenter)
+	public static Vector2d calcRotCoordinates(double angle, Vector2d corner, double[] rectCenter)
 	{
-		RealVector newCoordinates = new ArrayRealVector(2);
 		double newCornerX;
 		double newCornerY;
 		
-		double[] cornerDouble = corner.toArray();
-		
 		//Formel: x' = (x - xc) * cos(phi) - (y - yc) * sin(phi) + xc 
 		double angleRadian = Math.toRadians(angle);
-		newCornerX = (cornerDouble[0] - rectCenter[0]) * Math.cos(angleRadian) - (cornerDouble[1] - rectCenter[1]) * Math.sin(angleRadian) + rectCenter[0];
-		newCornerY = ((cornerDouble[0] - rectCenter[0]) * Math.sin(angleRadian) + (cornerDouble[1] - rectCenter[1]) * Math.cos(angleRadian) + rectCenter[1]);
+		newCornerX = (corner.getX() - rectCenter[0]) * Math.cos(angleRadian) - (corner.getY() - rectCenter[1]) * Math.sin(angleRadian) + rectCenter[0];
+		newCornerY = ((corner.getX() - rectCenter[0]) * Math.sin(angleRadian) + (corner.getY() - rectCenter[1]) * Math.cos(angleRadian) + rectCenter[1]);
 		
-		newCoordinates.setEntry(0, newCornerX);
-		newCoordinates.setEntry(1, newCornerY);
+		Vector2d newCoordinates = new Vector2d(newCornerX, newCornerY);
 		
 		return newCoordinates;
 	}

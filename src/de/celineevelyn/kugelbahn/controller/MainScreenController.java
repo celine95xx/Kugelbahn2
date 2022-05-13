@@ -265,6 +265,7 @@ public class MainScreenController
 					if(NewCollisionManager.checkCollisionsStart())
 					{
 						System.out.println("COLLISION DETECTED");
+						end();
 					}
 					NewPhysicsManager.moveMarble(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());

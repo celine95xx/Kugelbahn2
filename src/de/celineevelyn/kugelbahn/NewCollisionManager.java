@@ -196,6 +196,8 @@ public class NewCollisionManager
 		
 	}
 	
+	//public static double calculateDistance()
+	
 	public static Vector2d calculateLFP(Vector2d q, Vector2d r, double s)
 	{
 		Vector2d rq = r.subtract(q); //Richtungvektor: Ecke 2 - Ecke 1
@@ -264,7 +266,7 @@ public class NewCollisionManager
 		Vector2d marbleRVnorm = marbleRV.normalize();
 		
 		Vector2d mq = q.subtract(marblePosition); //Corner 1 - marblePosition
-		Vector2d marbleRVnormT = marbleRVnorm.transform();
+		Vector2d marbleRVnormT = marbleRVnorm.normal();
 		
 		double qx = mq.getX() * marbleRVnorm.getX() + mq.getY() * marbleRVnorm.getY();
 		double qy = mq.getX() * marbleRVnormT.getX() + mq.getY() * marbleRVnormT.getY();
@@ -280,5 +282,15 @@ public class NewCollisionManager
 		Vector2d collisionPoint = marblePosition.add(marbleRVnorm.multiply(a));
 		
 		return collisionPoint;
+	}
+
+	public static Vector2d calculatePostCollisionVel() 
+	{
+		Vector2d marbleDV = marble.getDirectionVector();
+		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
+		double angle = marbleDV.calculateAngle(edgeNormal);
+		
+		
+		return null;
 	}
 }

@@ -85,7 +85,7 @@ public class Vector2d
 		return normalized;
 	}
 	
-	public Vector2d transform()
+	public Vector2d normal()
 	{
 		double x = this.getY() * (-1);
 		double y = this.getX();

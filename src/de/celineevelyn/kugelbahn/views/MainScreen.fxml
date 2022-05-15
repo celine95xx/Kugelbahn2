@@ -19,8 +19,10 @@
          <children>
             <Group fx:id="group" />
             <Circle fx:id="collisionCircle" fill="DODGERBLUE" layoutX="34.0" layoutY="520.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="235.0" layoutY="256.0" rotate="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="382.0" />
+            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="396.0" layoutY="231.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="466.0" />
             <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="33.0" layoutY="544.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="899.0" />
+            <Circle fill="#ff1f4a" layoutX="54.0" layoutY="346.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="5.0" />
+            <Rectangle fx:id="colRect21" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="34.0" layoutY="291.0" rotate="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="627.0" />
          </children></Pane>
       <Pane layoutY="580.0" prefHeight="182.0" prefWidth="899.0">
          <children>

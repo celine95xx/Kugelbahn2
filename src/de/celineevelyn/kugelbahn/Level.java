@@ -56,14 +56,14 @@ public class Level
 	 */
 	public BasicNode placeMarble(double x, double y) 
 	{
-		marble = new Marble(x, y, 8, 10,"green");
+		marble = new Marble(x, y, 8, 0.002,"green");
 		return marble;
 	}
 	
 	public void setMarbleStartVelocity(double currentVelX, double currentVelY)
 	{
-		marble.setCurrentVelocityX(currentVelX);
-		marble.setCurrentVelocityY(currentVelY);
+		marble.setCurrVelX(currentVelX);
+		marble.setCurrVelY(currentVelY);
 	}
 	
 	public Marble getMarble()

@@ -50,7 +50,7 @@ public class MainScreenController
 	private Circle collisionCircle;
 	
 	@FXML
-	private Rectangle colRect, colRect2;
+	private Rectangle colRect, colRect2, colRect21;
 	
 	@FXML
 	private ChoiceBox<String> gravity;
@@ -77,8 +77,19 @@ public class MainScreenController
 	@FXML
 	public void start(ActionEvent event) 
 	{
-		level.setMarbleStartVelocity(Double.parseDouble(startVelX.getText()), Double.parseDouble(startVelY.getText()));
-		level.setWindAcc(Double.parseDouble(windAcceleration.getText()));
+		double startVelocityX = 0;
+		double startVelocityY = 0;
+		double windAcc = 0;
+		if(!startVelX.getText().isEmpty())
+			startVelocityX = Double.parseDouble(startVelX.getText());
+		if(!startVelY.getText().isEmpty())
+			startVelocityY = Double.parseDouble(startVelY.getText());
+		
+		if(!windAcceleration.getText().isEmpty())
+			windAcc = Double.parseDouble(windAcceleration.getText());
+		
+		level.setMarbleStartVelocity(startVelocityX, startVelocityY);
+		level.setWindAcc(windAcc);
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
@@ -230,6 +241,8 @@ public class MainScreenController
                 {
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
+                	group.getChildren().add(level.getMarble().line);
+                	group.getChildren().add(level.getMarble().CollisionPoint);
                 	
                 	NewPhysicsManager.setMarble(level.getMarble());
                 	NewCollisionManager.setMarble(level.getMarble());
@@ -262,11 +275,11 @@ public class MainScreenController
 				double deltaTime = (double) ((now - last) / 1000_000_000.0);
 				if(last != 0)
 				{
-					if(NewCollisionManager.checkCollisionsStart())
-					{
-						System.out.println("COLLISION DETECTED");
-						end();
-					}
+//					if(NewCollisionManager.checkCollisionsStart())
+//					{
+//						//System.out.println("COLLISION DETECTED");
+//						//end();
+//					}
 					NewPhysicsManager.moveMarble(deltaTime);
 					showVelocities(level.getVelX(), level.getVelY());
 				}
@@ -277,7 +290,7 @@ public class MainScreenController
 
 	public void showVelocities(double velX, double velY)
 	{
-		currentVelX.setText(Double.toString(velX));
+		currentVelX.setText(Double.toString(Math.round(velX*1000)/1000.0)); //Rundung auf 3 Nachkommastellen
 		currentVelY.setText(Double.toString(velY * (-1)));
 	}
 	
@@ -285,6 +298,7 @@ public class MainScreenController
 	{	
 		envShapes.add(colRect);
 		envShapes.add(colRect2);
+		envShapes.add(colRect21);
 	}
 	
 	

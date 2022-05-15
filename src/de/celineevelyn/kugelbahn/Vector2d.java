@@ -70,6 +70,15 @@ public class Vector2d
 		Vector2d v = new Vector2d(x,y);
 		return v;
 	}
+	
+	public Vector2d divide(double s)
+	{
+		double x = this.getX() / s;
+		double y = this.getY() / s;
+		
+		Vector2d v = new Vector2d(x,y);
+		return v;
+	}
 
 	public double getNorm() //Euklidische Norm: sqrt(x^2 + y^2)
 	{

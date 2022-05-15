@@ -6,6 +6,7 @@ import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.Vector2d;
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 /**
  * 
@@ -32,16 +33,25 @@ public class Marble extends BasicNode
 	
 	private double lastPosX, lastPosY, currPosX, currPosY, nextPosX, nextPosY;
 	
+	public Line line;
+	public Circle CollisionPoint;
 	
 	public Marble (double startX, double startY, double radius, double weight, String color) 
 	{
-		super(new Circle(startX,startY,radius));
+		super(new Circle(0,0,radius));
 		
-		this.startX = startX;
-		this.startY = startY;
+		this.startX = 0;
+		this.startY = 0;
+		
+		this.setPosition(startX, startY);
+		
 		this.weight = weight; 
 		this.color = color; 
 		this.radius = radius;
+		
+		line = new Line(startX, startY, startX, startY);
+		CollisionPoint = new Circle(0,0,radius/5);
+		this.setCollisionShape(startX, startY);
 	}
 
 	public double getWeight() 
@@ -74,16 +84,6 @@ public class Marble extends BasicNode
 		this.color = color;
 	}
 	
-	public void setCurrentVelocityX(double currentVelX)
-	{
-		currentVelocityX = currentVelX;
-	}
-	
-	public void setCurrentVelocityY(double currentVelY)
-	{
-		currentVelocityY = currentVelY;
-	}
-	
 	public double getCurrentVelocityX()
 	{
 		return currentVelocityX;
@@ -104,6 +104,17 @@ public class Marble extends BasicNode
 		return startY;
 	}
 	
+	public void setCollisionShape(double x, double y)
+	{
+		this.CollisionPoint.setCenterX(x);;
+		this.CollisionPoint.setCenterY(y);
+	}
+	
+	public void applyNextPosition()
+	{
+		setPosition(this.nextPosX, this.nextPosY);
+	}
+	
 	public void setPosition(double sx, double sy)
 	{
 		this.node.setTranslateX(sx);
@@ -118,11 +129,25 @@ public class Marble extends BasicNode
 	public void setCurrVelX(double velX)
 	{
 		currentVelocityX = velX;
+		//updateLine();
 	}
 	
 	public void setCurrVelY(double velY)
 	{
 		currentVelocityY = velY;
+		//updateLine();
+	}
+	
+	public void updateLine(double velX, double velY)
+	{
+		//velX = currentVelocityX;
+		//velY = currentVelocityY;
+		Vector2d currentPosition = getCurrentPos();
+		line.setStartX(currentPosition.getX());
+		line.setStartY(currentPosition.getY());
+		System.out.println("set line: "+velX+" / "+velY);
+		line.setEndX(currentPosition.getX() + velX*100);
+		line.setEndY(currentPosition.getY() + velY*100);
 	}
 	
 //	public void saveLastPos(double lastPositionX, double lastPositionY)

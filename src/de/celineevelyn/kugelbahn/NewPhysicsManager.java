@@ -10,6 +10,7 @@ public class NewPhysicsManager
 
 	private static Marble marble;
 	private static boolean positionCorrected = false;
+	private static boolean isRolling = false;
 	
 	public static void setMarble (Marble m)
 	{
@@ -42,37 +43,82 @@ public class NewPhysicsManager
 		double syNext = marble.getNode().getTranslateY() + ((marble.getCurrentVelocityY() * deltaTime) 
 						+ (0.5*accY*deltaTime*deltaTime))*proportionFactor;
 		
-		marble.setNextPosition(sxNext, syNext);
 		
-		boolean collisionInNextFrame = NewCollisionManager.checkCollisionsStart();
-		if(collisionInNextFrame)
+//		System.out.println("CURRENT POSITION: X: " + marble.getCurrentPos().getVector2d());
+		marble.setNextPosition(sxNext, syNext);
+//		System.out.println("NEXT POSITION: X: " + marble.getCurrentPos().getX()+sxNext + " , Y: " +  marble.getCurrentPos().getY()+syNext );
+//		System.out.println("NEXT POSITION: X: " + sxNext + " , Y: " + syNext );
+		
+		int collisionType = NewCollisionManager.checkCollisionsStart();
+		System.out.println("COLLISION TYPE: " + collisionType);
+		//boolean collided = NewCollisionManager.checkCollisionsStart();
+		if(collisionType == 1)
 		{
-			
-			System.out.println("Before: " + marble.getCurrentPos().getVector2d());
 			Vector2d marblePosition = marble.getCurrentPos();
+			Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition);
 			
-			Vector2d translation = NewCollisionManager.calculateTranslation(marblePosition);
+			marble.setNextPosition(collisionPosition.getX(), collisionPosition.getY());
 			
-			sx = marble.getNode().getTranslateX() + translation.getX();
-			sy = marble.getNode().getTranslateY() + translation.getY();
+			marble.setCollisionShape(collisionPosition.getX(), collisionPosition.getY());
+			//Velocity nach Kollision neu berechnen und unten einfügen für nächsten Frame
 			
-			marble.setPosition(sx, sy);
-			System.out.println("After: " + marble.getCurrentPos().getVector2d());
+			Vector2d newVel = NewCollisionManager.calculatePostCollisionVel();
 			
+			marble.setCurrVelX(newVel.getX());
+			marble.setCurrVelY(newVel.getY());
+			
+			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
+			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
+			isRolling = false;
+		}
+		else if(collisionType == 2)
+		{
+			Vector2d marblePosition = marble.getCurrentPos();		
+			//marble.setPosition(sx, sy);
+			
+			Vector2d newAcc = NewCollisionManager.calculateAccelerations(gravity);
+			
+			accX = newAcc.getX();
+			accY = newAcc.getY();
+			
+			if(!isRolling)
+			{
+				isRolling = true;
+				Vector2d tangentVel = NewCollisionManager.calculateTangentialVelocity();
+				accX = tangentVel.getX();
+				accY = tangentVel.getY();
+				
+				marble.setCurrVelX(accX);
+				marble.setCurrVelY(accY);
+				
+				Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition);
+				marble.setNextPosition(collisionPosition.getX(), collisionPosition.getY());
+				marble.applyNextPosition();
+			}
+			
+			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
+			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
+			
+			marble.updateLine(accX, accY);
+			
+			sxNext = marblePosition.getX() 
+					+ ((marble.getCurrentVelocityX() * deltaTime) 
+					+ (0.5*accX*deltaTime*deltaTime))*proportionFactor;
+			syNext = marblePosition.getY()
+					+ ((marble.getCurrentVelocityY() * deltaTime) 
+					+ (0.5*accY*deltaTime*deltaTime))*proportionFactor;
+			
+			marble.setNextPosition(sxNext, syNext);
 		}
 		else
 		{
-			sx = sxNext;
-			sy = syNext;
-			
-			marble.setPosition(sx, sy);
+			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
+			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
+			isRolling = false;
 		}
 		
-		marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
-		marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
-		
-		//System.out.println("CurrentPosition: " + marble.getCurrentPos()[0] + ", " + marble.getCurrentPos()[1]);
-
+//		if(collisionType != 1)
+		marble.applyNextPosition();
 	}
 
 }

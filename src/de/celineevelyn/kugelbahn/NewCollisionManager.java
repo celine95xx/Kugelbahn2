@@ -255,28 +255,32 @@ public class NewCollisionManager
 		double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0;
 		System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
 		//double setback = marble.getRadius();
+		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
+		Vector2d marbleNew;
 		
 		double setback;
 		if(angle == Math.round((0.5*Math.PI)*10000)/10000.0)
 		{
 			//setback = marble.getRadius();
 			setback = 0.011; //Radius in m
+			marbleNew = collisionPoint.add(edge.normal().multiply(setback));
+			
 		}
 		else
 		{
 			//setback = ((marble.getRadius()) / Math.sin(angle));
 			setback = (0.011 / Math.sin(angle));
+			marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback));
 		}
 		
-		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
 		
-		if(collisionPoint == null)
-		{
-			return marblePosition;
-		}
+//		if(collisionPoint == null)
+//		{
+//			return marblePosition;
+//		}
 		
 		//setback = 0;
-		Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback));
+		//Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback));
 		
 		double tx = Math.abs(marblePosition.getX() - marbleNew.getX());
 		double ty = Math.abs(marblePosition.getY() - marbleNew.getY());
@@ -287,10 +291,6 @@ public class NewCollisionManager
 		Vector2d translation = new Vector2d(tx2, ty2);
 		Vector2d translation1 = new Vector2d(tx, ty);
 		
-//		System.out.println("MarbleGetPosition " + marblePosition.getVector2d() + ", marble New: " + marbleNew.getVector2d());
-//		System.out.println("Translation : " + translation1.getVector2d());
-//		System.out.println("Setback: " + setback);
-//		System.out.println("Marble Vector " + marbleDVreversednormalized.getVector2d());
 		System.out.println("Collision Point: " + collisionPoint.getVector2d());
 		
 		return collisionPoint;
@@ -299,42 +299,42 @@ public class NewCollisionManager
 	
 	public static Vector2d calculateCollisionPoint(Vector2d marblePosition, Vector2d q, Vector2d r)
 	{
-//		Vector2d marbleDirection = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
-//		Vector2d edgeDirection = r.subtract(q);
-//		Vector2d relativeDirection = q.subtract(marblePosition);
-//		double a1 = marbleDirection.getX();
-//		double a2 = marbleDirection.getY();
-//		double b1 = edgeDirection.getX();
-//		double b2 = edgeDirection.getY();
-//		double c1 = relativeDirection.getX();
-//		double c2 = relativeDirection.getY();
-//		
-//		double resultParam =  (c1*b2 - b1*c2) / (a1*b2 - b1*a2);
-//		
-//		Vector2d collisionPoint = marblePosition.add(marbleDirection.multiply(resultParam));
-//		//marble.SetCollisionShape(collisionPoint.getX(), collisionPoint.getY());
-//		return collisionPoint;
+		Vector2d marbleDirection = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
+		Vector2d edgeDirection = r.subtract(q);
+		Vector2d relativeDirection = q.subtract(marblePosition);
+		double a1 = marbleDirection.getX();
+		double a2 = marbleDirection.getY();
+		double b1 = edgeDirection.getX();
+		double b2 = edgeDirection.getY();
+		double c1 = relativeDirection.getX();
+		double c2 = relativeDirection.getY();
+		
+		double resultParam =  (c1*b2 - b1*c2) / (a1*b2 - b1*a2);
+		
+		Vector2d collisionPoint = marblePosition.add(marbleDirection.multiply(resultParam));
+		//marble.SetCollisionShape(collisionPoint.getX(), collisionPoint.getY());
+
 		//###################################################################
-		Vector2d rv = q.subtract(r); //Richtungsvektor Gerade
-		Vector2d marbleRV = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
-		Vector2d marbleRVnorm = marbleRV.normalize();
-		
-		Vector2d mq = q.subtract(marblePosition); //Corner 1 - marblePosition
-		Vector2d marbleRVnormT = marbleRVnorm.normal();
-		
-		double qx = mq.getX() * marbleRVnorm.getX() + mq.getY() * marbleRVnorm.getY();
-		double qy = mq.getX() * marbleRVnormT.getX() + mq.getY() * marbleRVnormT.getY();
-		
-		double sx = rv.getX() * marbleRVnorm.getX() + rv.getY() * marbleRVnorm.getY();
-		double sy = rv.getX() * marbleRVnormT.getX() + rv.getY() * marbleRVnormT.getY();
-		
-		if(sy == 0)
-			return null;
-		
-		double a = qx - qy * (sx / sy);
-		
-		Vector2d collisionPoint = marblePosition.add(marbleRVnorm.multiply(a));
-		
+//		Vector2d rv = q.subtract(r); //Richtungsvektor Gerade
+//		Vector2d marbleRV = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
+//		Vector2d marbleRVnorm = marbleRV.normalize();
+//		
+//		Vector2d mq = q.subtract(marblePosition); //Corner 1 - marblePosition
+//		Vector2d marbleRVnormT = marbleRVnorm.normal();
+//		
+//		double qx = mq.getX() * marbleRVnorm.getX() + mq.getY() * marbleRVnorm.getY();
+//		double qy = mq.getX() * marbleRVnormT.getX() + mq.getY() * marbleRVnormT.getY();
+//		
+//		double sx = rv.getX() * marbleRVnorm.getX() + rv.getY() * marbleRVnorm.getY();
+//		double sy = rv.getX() * marbleRVnormT.getX() + rv.getY() * marbleRVnormT.getY();
+//		
+//		if(sy == 0)
+//			return null;
+//		
+//		double a = qx - qy * (sx / sy);
+//		
+//		Vector2d collisionPoint = marblePosition.add(marbleRVnorm.multiply(a));
+//		
 		marble.setCollisionShape(collisionPoint.getX(), collisionPoint.getY());
 		
 		return collisionPoint;

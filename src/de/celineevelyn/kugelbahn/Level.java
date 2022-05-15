@@ -8,6 +8,7 @@ import org.apache.commons.math3.linear.RealVector;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * 
@@ -26,7 +27,7 @@ public class Level
 	private RealVector windDirection = new ArrayRealVector(new double []{-1,0});
 	private double windAngle = 0;
 	private double windAcc = 0;
-	
+	private double angle = 0;
 	/**
 	 * Liste aller Objekte auf der Bahn
 	 */
@@ -59,6 +60,7 @@ public class Level
 		marble = new Marble(x, y, 8, 0.002,"green");
 		return marble;
 	}
+	
 	
 	public void setMarbleStartVelocity(double currentVelX, double currentVelY)
 	{
@@ -111,6 +113,19 @@ public class Level
 	{
 		return windAcc;
 	}
+	
+	public void setBoxAngle(double angle)
+	{
+		this.angle = angle;
+	}
+	
+	public double getBoxAngle()
+	{
+		return angle;
+	}
+	
+	
+	
 
 	
 }

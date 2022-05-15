@@ -4,14 +4,9 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
-
-import de.celineevelyn.kugelbahn.CollisionManager;
 import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.NewCollisionManager;
 import de.celineevelyn.kugelbahn.NewPhysicsManager;
-import de.celineevelyn.kugelbahn.PhysicsManager;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
@@ -20,16 +15,13 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 
 /**
@@ -44,13 +36,13 @@ public class MainScreenController
 	private Button startBtn, resetBtn;
 
 	@FXML
-	private TextField startVelX, startVelY, currentVelX, currentVelY, windAcceleration;
+	private TextField startVelX, startVelY, currentVelX, currentVelY, windAcceleration, boxAngle;
 	
 	@FXML
 	private Circle collisionCircle;
 	
 	@FXML
-	private Rectangle colRect, colRect2, colRect21;
+	private Rectangle colRect, colRect1, colRect2, colRect21;
 	
 	@FXML
 	private ChoiceBox<String> gravity;
@@ -80,6 +72,7 @@ public class MainScreenController
 		double startVelocityX = 0;
 		double startVelocityY = 0;
 		double windAcc = 0;
+		double angle = 0;
 		if(!startVelX.getText().isEmpty())
 			startVelocityX = Double.parseDouble(startVelX.getText());
 		if(!startVelY.getText().isEmpty())
@@ -87,9 +80,14 @@ public class MainScreenController
 		
 		if(!windAcceleration.getText().isEmpty())
 			windAcc = Double.parseDouble(windAcceleration.getText());
+		if(!boxAngle.getText().isEmpty())
+			angle = Double.parseDouble(boxAngle.getText());
 		
 		level.setMarbleStartVelocity(startVelocityX, startVelocityY);
 		level.setWindAcc(windAcc);
+		level.setBoxAngle(angle);
+		
+		colRect1.setRotate(angle);
 		
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
@@ -255,6 +253,21 @@ public class MainScreenController
                 }
             }
         });
+		
+		double angle = 0;
+
+		boxAngle.textProperty().addListener(new ChangeListener<String>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+			{
+				level.setBoxAngle(Double.parseDouble(newValue));
+				colRect1.setRotate(Double.parseDouble(newValue));
+				
+			}
+		});
+			
+
 	}
 
 	
@@ -297,8 +310,10 @@ public class MainScreenController
 	public void addEnvShapesToList()
 	{	
 		envShapes.add(colRect);
+		envShapes.add(colRect1);
 		envShapes.add(colRect2);
 		envShapes.add(colRect21);
+		
 	}
 	
 	

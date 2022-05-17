@@ -28,6 +28,8 @@ public class Main extends Application
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+			System.out.println("Ich möchte nicht mehr. :-(");
+			
 			controller.postInit();
 		} 
 		catch(Exception e) 

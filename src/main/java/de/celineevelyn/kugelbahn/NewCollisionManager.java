@@ -85,7 +85,7 @@ public class NewCollisionManager
 			}
 			
 			//später entkommentieren???
-			if(shortestDistance <= (marble.getRadius()))
+			if(shortestDistance <= (marble.getRadius())) //Berührung detektiert!
 			{
 				//collisionDetected = true;
 				collisionType = 1;
@@ -93,10 +93,10 @@ public class NewCollisionManager
 			}
 		}
 		
-		if(closestRect != null)
-		{
-			//System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
-		}
+//		if(closestRect != null)
+//		{
+//			System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
+//		}
 		
 		if (collisionType == 1) 
 		{
@@ -105,12 +105,12 @@ public class NewCollisionManager
 			
 			if(isParallel())
 			{
-				collisionType = 2;
+				collisionType = 2; //Kontakt
 			}
-			else if(marbleVelocity.dotProduct(edgeNormal) > 0)
+			else if(marbleVelocity.dotProduct(edgeNormal) > 0) //Bedingung aus dem Skript, relative Geschwindigkeit mal Berührnormale größer Null
 			{
 				collisionType = 1;
-				System.out.println("(NewCollisionManager) COLLISION DETECTED, Shortest Distance: " + shortestDistance + ", Edge: " + edge );
+				System.out.println("(NewCollisionManager) COLLISION DETECTED, Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
 			}
 			else
 			{
@@ -183,7 +183,7 @@ public class NewCollisionManager
 		double s = dot1/dot2;
 		double distance;
 		
-		if(s>=0 && s<= 1)
+		if(s>=0 && s<= 1) //LFP ist auf Kante
 		{
 			Vector2d lfp = calculateLFP(q, r, s);
 			
@@ -191,7 +191,7 @@ public class NewCollisionManager
 			
 			distance = lp.getNorm();
 		}
-		else
+		else //LFP ist außerhalb
 		{
 			distance = 1000000;
 		}
@@ -202,8 +202,8 @@ public class NewCollisionManager
 	
 	public static Vector2d calculateLFP(Vector2d q, Vector2d r, double s)
 	{
-		Vector2d rq = r.subtract(q);
-		Vector2d lfp = q.add(rq.multiply(s));
+		Vector2d rq = r.subtract(q); //nochmal Richtungsvektor aufstellen
+		Vector2d lfp = q.add(rq.multiply(s)); //Geradengleichung aufstellen und Parameter s einsetzen
 		
 		return lfp;
 	}
@@ -335,7 +335,7 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
-		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize()));
+		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"grüner Pfeil" berechnet über orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
 		
 		return par;
 	}
@@ -345,7 +345,7 @@ public class NewCollisionManager
 		boolean isParallel = false;
 		
 		Vector2d par = calcRelativeVelocityToEdge();	
-		if(Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < 0.005)
+		if(Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < 0.005) //wenn das erfüllt ist, fliegt die Murmel fast parallel
 			isParallel = true;
 		
 		return isParallel;
@@ -354,12 +354,12 @@ public class NewCollisionManager
 	public static Vector2d calculateAccelerations(double gravity) 
 	{
 		double angle = Math.toRadians(closestRect.getRotate());
-		double friction = 0.004;
+		double friction = 0.004; //nochmal nachschauen, wird bei 0.4 für Holz auf Holz zu schnell??
 		
 		double accHValue = gravity * Math.sin(angle);
 		double accRValue = gravity * Math.cos(angle) * friction;
 		
-		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue);
+		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue); //aus den Werten Vektoren machen
 		Vector2d accR = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accRValue);
 		
 		Vector2d newAcc = accH.add(accR);

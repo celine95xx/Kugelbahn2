@@ -14,73 +14,73 @@
    <children>
    		
    
-      <Pane prefHeight="684.0" prefWidth="1500.0">
+      <Pane prefHeight="636.0" prefWidth="1500.0">
          <children>
             <Group fx:id="group" />
             <Rectangle fx:id="colRect1" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="80.0" layoutY="394.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="571.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="40.0" layoutX="-1.0" layoutY="644.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1507.0" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="40.0" layoutX="-1.0" layoutY="592.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1507.0" />
             <Rectangle fx:id="colRect3" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="684.0" layoutX="1475.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
-            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="684.0" layoutX="-1.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
+            <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="454.0" layoutX="-1.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
 
 
          </children></Pane>
       <Pane layoutX="-1.0" layoutY="698.0" prefHeight="182.0" prefWidth="1500.0">
          <children>
-            <TextField fx:id="startVelX" layoutX="256.0" layoutY="25.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="176.0" layoutY="29.0" text="X-Richtung">
+            <TextField fx:id="startVelX" layoutX="250.0" layoutY="-17.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="170.0" layoutY="-13.0" text="X-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="startVelY" layoutX="256.0" layoutY="59.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="176.0" layoutY="63.0" text="Y-Richtung">
+            <TextField fx:id="startVelY" layoutX="250.0" layoutY="17.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="170.0" layoutY="21.0" text="Y-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="startBtn" layoutX="725.0" layoutY="129.0" mnemonicParsing="false" onAction="#start" text="START" />
-            <ChoiceBox fx:id="gravity" layoutX="395.0" layoutY="25.0" prefHeight="25.0" prefWidth="169.0" />
-            <Label layoutX="205.0" text="Startgeschwindigkeit">
+            <Button fx:id="startBtn" layoutX="719.0" layoutY="87.0" mnemonicParsing="false" onAction="#start" text="START" />
+            <ChoiceBox fx:id="gravity" layoutX="389.0" layoutY="-17.0" prefHeight="25.0" prefWidth="169.0" />
+            <Label layoutX="199.0" layoutY="-42.0" text="Startgeschwindigkeit">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="448.0" text="Gravitation">
+            <Label layoutX="442.0" layoutY="-42.0" text="Gravitation">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="currentVelX" editable="false" layoutX="1087.0" layoutY="32.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="1007.0" layoutY="36.0" text="X-Richtung">
+            <TextField fx:id="currentVelX" editable="false" layoutX="1081.0" layoutY="-10.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="1001.0" layoutY="-6.0" text="X-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="currentVelY" editable="false" layoutX="1087.0" layoutY="66.0" prefHeight="25.0" prefWidth="88.0" />
-            <Label layoutX="1007.0" layoutY="70.0" text="Y-Richtung">
+            <TextField fx:id="currentVelY" editable="false" layoutX="1081.0" layoutY="24.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="1001.0" layoutY="28.0" text="Y-Richtung">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="1005.0" layoutY="3.0" text="Momentane Geschwindigkeit">
+            <Label layoutX="999.0" layoutY="-39.0" text="Momentane Geschwindigkeit">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="resetBtn" layoutX="824.0" layoutY="129.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
-            <ChoiceBox fx:id="windDirection" layoutX="612.0" layoutY="25.0" prefWidth="150.0" />
-            <TextField fx:id="windAcceleration" layoutX="613.0" layoutY="65.0" promptText="Wind Acceleration" />
-            <Label layoutX="672.0" text="Wind">
+            <Button fx:id="resetBtn" layoutX="818.0" layoutY="87.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+            <ChoiceBox fx:id="windDirection" layoutX="606.0" layoutY="-17.0" prefWidth="150.0" />
+            <TextField fx:id="windAcceleration" layoutX="607.0" layoutY="23.0" promptText="Wind Acceleration" />
+            <Label layoutX="666.0" layoutY="-42.0" text="Wind">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="867.0" text="Ebene">
+            <Label layoutX="861.0" layoutY="-42.0" text="Ebene">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="boxAngle" layoutX="810.0" layoutY="25.0" promptText="Winkel in Grad" />
+            <TextField fx:id="boxAngle" layoutX="804.0" layoutY="-17.0" promptText="Winkel in Grad" />
          </children>
       </Pane>
    </children>

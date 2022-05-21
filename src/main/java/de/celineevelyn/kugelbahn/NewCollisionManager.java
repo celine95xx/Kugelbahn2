@@ -321,11 +321,14 @@ public class NewCollisionManager
 		double marbleMass = marble.getWeight();
 		double boxMass = 1000; //SPÄTER NEU!!
 		Vector2d boxVel = new Vector2d(0,0);
+		Vector2d velDifference = par.subtract(boxVel);
+		double coeff = 0.9;
 		
-		Vector2d par2 = ((par.multiply(marbleMass).add((boxVel.multiply(boxMass))).divide(marbleMass + boxMass)).multiply(2)).subtract(par); //neu berechnet mit Formel aus Skript
+		//Vector2d par2 = ((par.multiply(marbleMass).add((boxVel.multiply(boxMass))).divide(marbleMass + boxMass)).multiply(2)).subtract(par); //neu berechnet mit Formel aus Skript
+		Vector2d par3 = ((par.multiply(marbleMass).add((boxVel.multiply(boxMass)))).subtract((velDifference.multiply(boxMass).multiply(coeff)))).divide(marbleMass + boxMass);
 		//To-do: boxVel2 !!
 		
-		Vector2d newVel = orth.add(par2);
+		Vector2d newVel = orth.add(par3);
 		
 		return newVel;
 	}
@@ -343,9 +346,25 @@ public class NewCollisionManager
 	private static boolean isParallel() 
 	{
 		boolean isParallel = false;
+		double angle = Math.toRadians(closestRect.getRotate());
+		double limit = 0.01; //fuer schiefe Ebenen geeignet
 		
-		Vector2d par = calcRelativeVelocityToEdge();	
-		if(Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < 0.005) //wenn das erfüllt ist, fliegt die Murmel fast parallel
+		if(Math.abs(Math.toDegrees(angle)) < 1)
+		{
+			limit = 0.00005;
+		}
+		
+		
+		Vector2d par = calcRelativeVelocityToEdge();
+		boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
+		boolean lowVel = marble.getCurrentVelocityX() < 0.00005 & marble.getCurrentVelocityY() < 0.00005;
+		
+		if(smallAngle)
+			System.out.println("----------- Der Winkel ist klein genug");
+		if(lowVel)
+			System.out.println("----------- Die Geschwindigkeit ist klein genug: " + marble.getCurrentVelocityX() + " / " + marble.getCurrentVelocityY());
+		System.out.println("------------- Parallele Geschwindigkeit: " + par.getVector2d());
+		if(smallAngle || lowVel) //wenn das erfüllt ist, fliegt die Murmel fast parallel
 			isParallel = true;
 		
 		return isParallel;
@@ -353,14 +372,20 @@ public class NewCollisionManager
 
 	public static Vector2d calculateAccelerations(double gravity) 
 	{
+		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
 		double angle = Math.toRadians(closestRect.getRotate());
 		double friction = 0.004; //nochmal nachschauen, wird bei 0.4 für Holz auf Holz zu schnell??
 		
 		double accHValue = gravity * Math.sin(angle);
 		double accRValue = gravity * Math.cos(angle) * friction;
 		
-		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue); //aus den Werten Vektoren machen
-		Vector2d accR = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accRValue);
+//		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue); //aus den Werten Vektoren machen
+//		Vector2d accR = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accRValue);
+		
+		Vector2d accH =  marbleVelocity.normalize().multiply(Math.abs(accHValue));
+		Vector2d accR =  marbleVelocity.normalize().multiply(Math.abs(accRValue)).multiply(-1);
+		
+		System.out.println("ACCELERATIONS::: accH: " + accH.getVector2d() + " / accR: " + accR.getVector2d() );
 		
 		Vector2d newAcc = accH.add(accR);
 		

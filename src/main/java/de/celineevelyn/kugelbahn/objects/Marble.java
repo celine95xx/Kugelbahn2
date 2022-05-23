@@ -120,7 +120,7 @@ public class Marble extends BasicNode
 		this.node.setTranslateX(sx);
 		this.node.setTranslateY(sy);
 		
-		if(this.node.getTranslateY() >= 700)
+		if(this.node.getTranslateY() >= 880)
 		{
 			MainScreenController.end();
 		}	
@@ -185,6 +185,8 @@ public class Marble extends BasicNode
 		double x = currPosX - lastPosX;
 		double y = currPosY - lastPosY;
 		
+		System.out.println(" Current Position : " + currPosX + ", " + currPosY + " / Last Position: " + lastPosX + ", " + lastPosY);
+		
 		Vector2d directionVector = new Vector2d(x,y);
 		
 		return directionVector;
@@ -206,4 +208,11 @@ public class Marble extends BasicNode
 		Vector2d nextPosition = new Vector2d(nextPosX, nextPosY);
 		return nextPosition;
 	}
+	
+	public void setLastPosition(Vector2d position)
+	{
+		lastPosX = position.getX();
+		lastPosY = position.getY();
+	}
+
 }

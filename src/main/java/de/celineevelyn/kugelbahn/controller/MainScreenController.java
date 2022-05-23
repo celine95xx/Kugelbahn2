@@ -96,6 +96,7 @@ public class MainScreenController
 		calculateSimulationTime(timeEnd);
 	}
 	
+	
 	public void endSimulation(ActionEvent event) throws Exception
 	{
 		timer.stop();
@@ -106,7 +107,6 @@ public class MainScreenController
 	{
 		long simulationTime = (timeEnd - timeStart);
 		System.out.println("Die Gesamtzeit betrug: " + (simulationTime/1000.0) + "Sekunden, bzw " + simulationTime + " Millisekunden");
-		
 	}
 	
 	/**

@@ -72,7 +72,7 @@ public class MainScreenController
 	{ 
 		gravity.getItems().addAll(FXCollections.observableArrayList("keine Gravitation", "Erde", "Mond"));
 		gravity.setValue("Gravitation");
-		winddirection.getItems().addAll(FXCollections.observableArrayList("Nord","Ost", "Süd", "West"));
+		winddirection.getItems().addAll(FXCollections.observableArrayList("Nord","Ost", "Sued", "West"));
 		winddirection.setValue("West");
 			
 	}

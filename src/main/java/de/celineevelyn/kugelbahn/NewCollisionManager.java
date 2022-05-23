@@ -14,7 +14,7 @@ public class NewCollisionManager
 	private static Vector2d closestEdgeCorner2;
 	private static Rectangle closestRect;
 	
-	public static void initializeCollisionManager(List<Rectangle> env) //ArrayList<Circle> list
+	public static <envShapes> void initializeCollisionManager(List<Rectangle> env) //ArrayList<Circle> list
 	{
 		//testList = list;
 		envShapes = env;
@@ -239,26 +239,40 @@ public class NewCollisionManager
 		
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0; //Ebenenwinkel gerundet auf 4 Nachkommastellen
+		double boxAngle = closestRect.getRotate();
 		System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
 		
-		double setback;
-		if(angle == Math.round((0.5*Math.PI)*10000)/10000.0) //Wenn Winkel = 90 Grad
+		double setback1;
+		double setback2;
+		double setback3;
+//		if(angle == Math.round((0.5*Math.PI)*10000)/10000.0) //Wenn Winkel = 90 Grad
+//		{
+//			setback = 0.011; //Radius in m
+//			System.out.println("ANGLE = 90 GRAD");
+//		}
+//		else
+//		{
+//			setback = (0.011 / Math.sin(angle)); //spaeter neu schreiben, damit Murmel nicht so weit zurueckbewegt wird
+//			System.out.println("ANGLE IS NOT 90 GRAD");
+//		}
+		
+		if(boxAngle == 0 & marble.getDirectionVector().getX() != 0) //Wenn Winkel = 90 Grad
 		{
-			setback = 0.011; //Radius in m
+			setback3 = marble.getRadius();
 		}
 		else
 		{
-			setback = (0.011 / Math.sin(angle)); //später neu schreiben, damit Murmel nicht so weit zurückbewegt wird
+			setback3 = marble.getRadius() / Math.sin(angle);
 		}
 		
 		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
 		
 		if(collisionPoint == null)
 		{
-			return marblePosition;
+			collisionPoint = marblePosition;
 		}
-		
-		Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback)); //Vom Kollisionspunkt eine bestimmte Strecke in Bewegungsrichtung zurück
+
+		Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback3)); //Vom Kollisionspunkt eine bestimmte Strecke in Bewegungsrichtung zurueck
 		
 		return marbleNew;
 
@@ -266,9 +280,10 @@ public class NewCollisionManager
 	
 	public static Vector2d calculateCollisionPoint(Vector2d marblePosition, Vector2d q, Vector2d r)
 	{
-		//Gleichungssystem lösen mit Cramersche Regel: http://www.feuerbachers-matheseite.de/Cramer.pdf
+		//Gleichungssystem loesen mit Cramersche Regel: http://www.feuerbachers-matheseite.de/Cramer.pdf
 		//Schnittpunkt zweier Geraden
-		Vector2d marbleDirection = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
+		//Vector2d marbleDirection = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
+		Vector2d marbleDirection = marble.getDirectionVector();
 		Vector2d edgeDirection = r.subtract(q);
 		Vector2d relativeDirection = q.subtract(marblePosition);
 		double a1 = marbleDirection.getX();
@@ -279,6 +294,8 @@ public class NewCollisionManager
 		double c2 = relativeDirection.getY();
 		
 		double param =  (c1*b2 - b1*c2) / (a1*b2 - b1*a2);
+		if(Math.abs(param) == Double.POSITIVE_INFINITY)
+			return null;
 		
 		Vector2d collisionPoint = marblePosition.add(marbleDirection.multiply(param));
 		//marble.SetCollisionShape(collisionPoint.getX(), collisionPoint.getY());
@@ -338,7 +355,7 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
-		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"grüner Pfeil" berechnet über orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
+		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"gruener Pfeil" berechnet über orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
 		
 		return par;
 	}
@@ -347,26 +364,21 @@ public class NewCollisionManager
 	{
 		boolean isParallel = false;
 		double angle = Math.toRadians(closestRect.getRotate());
-		double limit = 0.01; //fuer schiefe Ebenen geeignet
-		
-		if(Math.abs(Math.toDegrees(angle)) < 1)
-		{
-			limit = 0.00005;
-		}
-		
+		System.out.println("GET ROTATE: " + Math.toDegrees(angle));
+		double limit = 0.01; //fuer schiefe Ebenen geeignet		
 		
 		Vector2d par = calcRelativeVelocityToEdge();
 		boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
-		boolean lowVel = marble.getCurrentVelocityX() < 0.00005 & marble.getCurrentVelocityY() < 0.00005;
+		boolean lowVel = Math.abs(marble.getCurrentVelocityX()) < 0.05 & Math.abs(marble.getCurrentVelocityY()) < 0.05;
 		
 		if(smallAngle)
 			System.out.println("----------- Der Winkel ist klein genug");
 		if(lowVel)
 			System.out.println("----------- Die Geschwindigkeit ist klein genug: " + marble.getCurrentVelocityX() + " / " + marble.getCurrentVelocityY());
 		System.out.println("------------- Parallele Geschwindigkeit: " + par.getVector2d());
-		if(smallAngle || lowVel) //wenn das erfüllt ist, fliegt die Murmel fast parallel
+		if(smallAngle || lowVel) //wenn das erfuellt ist, fliegt die Murmel fast parallel
 			isParallel = true;
-		
+
 		return isParallel;
 	}
 

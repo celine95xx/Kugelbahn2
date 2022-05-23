@@ -1,6 +1,7 @@
 package de.celineevelyn.kugelbahn;
 
 
+import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import de.celineevelyn.kugelbahn.objects.Marble;
 
 public class NewPhysicsManager 
@@ -41,7 +42,9 @@ public class NewPhysicsManager
 		double syNext = marble.getNode().getTranslateY() + ((marble.getCurrentVelocityY() * deltaTime) 
 						+ (0.5*accY*deltaTime*deltaTime))*proportionFactor;
 		
-		marble.setNextPosition(sxNext, syNext); //nächste Position speichern
+		marble.setLastPosition(marble.getCurrentPos());
+		
+		marble.setNextPosition(sxNext, syNext); //naechste Position speichern
 		
 		int collisionType = NewCollisionManager.checkCollisionsStart(); //Collision Types: Keine Berührung, Kollision, Kontakt
 		System.out.println("COLLISION TYPE: " + collisionType);
@@ -54,13 +57,14 @@ public class NewPhysicsManager
 			
 			marble.setNextPosition(collisionPosition.getX(), collisionPosition.getY());
 			
-			//marble.setCollisionShape(collisionPosition.getX(), collisionPosition.getY());
+			marble.setCollisionShape(collisionPosition.getX(), collisionPosition.getY());
 			
 			Vector2d newVel = NewCollisionManager.calculatePostCollisionVel();
 			
-			marble.setCurrVelX(newVel.getX() + (accX * deltaTime)); //Geschwindigkeit für nächsten Frame updaten
+			marble.setCurrVelX(newVel.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
 			marble.setCurrVelY(newVel.getY() + (accY * deltaTime));
 			isRolling = false;
+			//MainScreenController.end();
 		}
 		////Kontakt
 		else if(collisionType == 2)
@@ -72,7 +76,7 @@ public class NewPhysicsManager
 			accX = newAcc.getX(); //korrigieren, eigentlich fehlt Gravitation und Wind
 			accY = newAcc.getY();
 			
-			//Falls die Murmel vorher nicht rollte, aber jetzt anfängt
+			//Falls die Murmel vorher nicht rollte, aber jetzt anfaengt
 			if(!isRolling)
 			{
 				isRolling = true;
@@ -83,15 +87,15 @@ public class NewPhysicsManager
 				
 				Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition); //Position korrigieren
 				marble.setNextPosition(collisionPosition.getX(), collisionPosition.getY());
-				marble.applyNextPosition(); //muss später weg ??
+				marble.applyNextPosition(); //muss spaeter weg ??
 			}
 			
-			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime)); //Geschwindigkeiten für nächsten Frame updaten
+			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime)); //Geschwindigkeiten fuer naechsten Frame updaten
 			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
 			
 			marble.updateLine(accX, accY);
 			
-			//Position für nächsten Frame
+			//Position fuer naechsten Frame
 			sxNext = marblePosition.getX() 
 					+ ((marble.getCurrentVelocityX() * deltaTime) 
 					+ (0.5*accX*deltaTime*deltaTime))*proportionFactor;
@@ -101,15 +105,21 @@ public class NewPhysicsManager
 			
 			marble.setNextPosition(sxNext, syNext);
 		}
-		////Keine Berührung
+		////Keine Beruehrung
 		else 
 		{
 			marble.setCurrVelX(marble.getCurrentVelocityX() + (accX * deltaTime));
 			marble.setCurrVelY(marble.getCurrentVelocityY() + (accY * deltaTime));
 			isRolling = false;
 		}
-		
+
 		marble.applyNextPosition(); //Murmel zeichnen
+		
+		if(Math.abs(marble.getCurrentVelocityX()) < 0.00001 & Math.abs(marble.getCurrentVelocityY()) < 0.00001)
+		{
+			MainScreenController.end();
+			System.out.println("Beendet mit den Geschwindigkeiten: x: " + marble.getCurrentVelocityX() + " / y: " + marble.getCurrentVelocityY());
+		}
 	}
 
 }

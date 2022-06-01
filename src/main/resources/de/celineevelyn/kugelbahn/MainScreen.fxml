@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -21,6 +22,7 @@
             <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="40.0" layoutX="-1.0" layoutY="592.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1507.0" />
             <Rectangle fx:id="colRect3" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="684.0" layoutX="1475.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
             <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="636.0" layoutX="-1.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
+            <Circle fill="DODGERBLUE" layoutX="853.0" layoutY="592.0" radius="3.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
 
 
          </children></Pane>

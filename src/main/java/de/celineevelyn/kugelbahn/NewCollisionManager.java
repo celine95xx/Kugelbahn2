@@ -355,7 +355,7 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
-		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"gruener Pfeil" berechnet über orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
+		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"gruener Pfeil" berechnet ueber orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
 		
 		return par;
 	}
@@ -371,12 +371,15 @@ public class NewCollisionManager
 		boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
 		boolean lowVel = Math.abs(marble.getCurrentVelocityX()) < 0.05 & Math.abs(marble.getCurrentVelocityY()) < 0.05;
 		
+//		if(smallAngle)
+//			System.out.println("----------- Der Winkel ist klein genug");
+//		if(lowVel)
+//			System.out.println("----------- Die Geschwindigkeit ist klein genug: " + marble.getCurrentVelocityX() + " / " + marble.getCurrentVelocityY());
+//		System.out.println("------------- Parallele Geschwindigkeit: " + par.getVector2d());
+//		if(smallAngle || lowVel) //wenn das erfuellt ist, fliegt die Murmel fast parallel
+//			isParallel = true;
+		
 		if(smallAngle)
-			System.out.println("----------- Der Winkel ist klein genug");
-		if(lowVel)
-			System.out.println("----------- Die Geschwindigkeit ist klein genug: " + marble.getCurrentVelocityX() + " / " + marble.getCurrentVelocityY());
-		System.out.println("------------- Parallele Geschwindigkeit: " + par.getVector2d());
-		if(smallAngle || lowVel) //wenn das erfuellt ist, fliegt die Murmel fast parallel
 			isParallel = true;
 
 		return isParallel;
@@ -385,8 +388,13 @@ public class NewCollisionManager
 	public static Vector2d calculateAccelerations(double gravity) 
 	{
 		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
+		
 		double angle = Math.toRadians(closestRect.getRotate());
 		double friction = 0.004; //nochmal nachschauen, wird bei 0.4 für Holz auf Holz zu schnell??
+		
+		if(angle < 0)
+			edge = edge.multiply(-1);
 		
 		double accHValue = gravity * Math.sin(angle);
 		double accRValue = gravity * Math.cos(angle) * friction;
@@ -394,7 +402,7 @@ public class NewCollisionManager
 //		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue); //aus den Werten Vektoren machen
 //		Vector2d accR = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accRValue);
 		
-		Vector2d accH =  marbleVelocity.normalize().multiply(Math.abs(accHValue));
+		Vector2d accH =  edge.normalize().multiply(Math.abs(accHValue)); //Hangabtriebsbeschleunigung in Richtung der Ebene nach unten
 		Vector2d accR =  marbleVelocity.normalize().multiply(Math.abs(accRValue)).multiply(-1);
 		
 		System.out.println("ACCELERATIONS::: accH: " + accH.getVector2d() + " / accR: " + accR.getVector2d() );

@@ -146,8 +146,8 @@ public class Marble extends BasicNode
 		line.setStartX(currentPosition.getX());
 		line.setStartY(currentPosition.getY());
 		System.out.println("set line: "+velX+" / "+velY);
-		line.setEndX(currentPosition.getX() + velX*100);
-		line.setEndY(currentPosition.getY() + velY*100);
+		line.setEndX(currentPosition.getX() + velX*1000);
+		line.setEndY(currentPosition.getY() + velY*1000);
 	}
 	
 //	public void saveLastPos(double lastPositionX, double lastPositionY)

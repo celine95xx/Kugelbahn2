@@ -365,19 +365,12 @@ public class NewCollisionManager
 		boolean isParallel = false;
 		double angle = Math.toRadians(closestRect.getRotate());
 		System.out.println("GET ROTATE: " + Math.toDegrees(angle));
-		double limit = 0.01; //fuer schiefe Ebenen geeignet		
+		//double limit = 0.01; //fuer schiefe Ebenen geeignet		
 		
 		Vector2d par = calcRelativeVelocityToEdge();
-		boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
-		boolean lowVel = Math.abs(marble.getCurrentVelocityX()) < 0.05 & Math.abs(marble.getCurrentVelocityY()) < 0.05;
-		
-//		if(smallAngle)
-//			System.out.println("----------- Der Winkel ist klein genug");
-//		if(lowVel)
-//			System.out.println("----------- Die Geschwindigkeit ist klein genug: " + marble.getCurrentVelocityX() + " / " + marble.getCurrentVelocityY());
-//		System.out.println("------------- Parallele Geschwindigkeit: " + par.getVector2d());
-//		if(smallAngle || lowVel) //wenn das erfuellt ist, fliegt die Murmel fast parallel
-//			isParallel = true;
+		//boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
+		boolean smallAngle = par.getNorm() < 0.05 ; //Betrag von par reicht für vergleich mit limit
+		//boolean lowVel = Math.abs(marble.getCurrentVelocityX()) < 0.05 & Math.abs(marble.getCurrentVelocityY()) < 0.05;
 		
 		if(smallAngle)
 			isParallel = true;

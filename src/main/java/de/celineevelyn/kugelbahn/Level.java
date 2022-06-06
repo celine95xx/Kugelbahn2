@@ -27,14 +27,14 @@ public class Level
 	/**
 	 * Liste aller Objekte auf der Bahn
 	 */
-	private ArrayList<BasicNode> nodeList;
+	private ArrayList<Marble> marbleList;
 	private ArrayList<Circle> testList;
 	
 	
 
 	public Level() 
 	{
-		this.testList = new ArrayList<>();
+		this.marbleList = new ArrayList<>();
 	}	
 	
 	public void addToNodeList(Circle circle)
@@ -47,14 +47,20 @@ public class Level
 		return testList;
 	}
 	
-	
-	/**
-	 * Temporäre Methode damit Marble vor dem Start der Simulation platziert werden kann
-	 */
 	public BasicNode placeMarble(double x, double y) 
 	{
-		marble = new Marble(x, y, 8, 0.002,"green");
+		marble = new Marble(x, y, 8, 0.002, "green");
+		
+		addToMarbleList(marble);
+		
+		marble.setId(marbleList.size());
+		
 		return marble;
+	}
+	
+	public void addToMarbleList(Marble marble)
+	{
+		marbleList.add(marble);
 	}
 	
 	public void setMarbleStartVelocity(double currentVelX, double currentVelY)
@@ -66,6 +72,11 @@ public class Level
 	public Marble getMarble()
 	{
 		return marble;
+	}
+	
+	public ArrayList<Marble> getMarbleList()
+	{
+		return marbleList;
 	}
 	
 	public void setGravity(double gravity)

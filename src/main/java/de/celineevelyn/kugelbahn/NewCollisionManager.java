@@ -3,12 +3,13 @@ package de.celineevelyn.kugelbahn;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 import javafx.scene.shape.Rectangle;
 
 public class NewCollisionManager 
 {
-	private static Marble marble;
+	private static Marble m;
 	private static List<Rectangle> envShapes;
 	private static Vector2d closestEdgeCorner1;
 	private static Vector2d closestEdgeCorner2;
@@ -16,28 +17,24 @@ public class NewCollisionManager
 	
 	public static <envShapes> void initializeCollisionManager(List<Rectangle> env) //ArrayList<Circle> list
 	{
-		//testList = list;
 		envShapes = env;
 	}
 	
-	public static int checkCollisionsStart()
+	public static int checkCollisionsStart(Marble marble)
 	{
+		m = marble;
 		return checkCollisions(envShapes);
-	}
-	
-	public static void setMarble(Marble marble2)
-	{
-		marble = marble2;
 	}
 	
 	public static int checkCollisions(List<Rectangle> shape)
 	{
 		closestRect = null;
 		double shortestDistance = 10000;
-		
-		Vector2d marblePosition =  marble.getCurrentPos();
-		
 		int collisionType = 0; //0 = kein Beruehrung, 1 = Kollision, 2 = Kontakt
+		
+		Vector2d marblePosition =  m.getCurrentPos();
+		
+//		int collisionType = 0; //0 = kein Beruehrung, 1 = Kollision, 2 = Kontakt
 		closestEdgeCorner1 = new Vector2d(0,0);
 		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
@@ -84,8 +81,8 @@ public class NewCollisionManager
 				edge = "edge 4";
 			}
 			
-			//später entkommentieren???
-			if(shortestDistance <= (marble.getRadius())) //Berührung detektiert!
+			//spaeter entkommentieren???
+			if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
 			{
 				//collisionDetected = true;
 				collisionType = 1;
@@ -100,7 +97,7 @@ public class NewCollisionManager
 		
 		if (collisionType == 1) 
 		{
-			Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+			Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 			Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 			
 			if(isParallel())
@@ -110,21 +107,17 @@ public class NewCollisionManager
 			else if(marbleVelocity.dotProduct(edgeNormal) > 0) //Bedingung aus dem Skript, relative Geschwindigkeit mal Berührnormale größer Null
 			{
 				collisionType = 1;
-				System.out.println("(NewCollisionManager) COLLISION DETECTED, Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
+				System.out.println("(NewCollisionManager) COLLISION DETECTED, Marble: " + m.getId() + ", Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
 			}
 			else
 			{
 				collisionType = 0;
-			}
-//			else(marbleVelocity.dotProduct(edgeNormal) < 0)
-//			{
-//				collisionType = 0;
-//			}
-			
+			}		
 		}
+		
 		return collisionType; 
 		
-	}
+}
 	
 
 	//Get corner coordinates of a rectangle
@@ -232,7 +225,7 @@ public class NewCollisionManager
 
 	public static Vector2d calculateSetbackPosition(Vector2d marblePosition) 
 	{
-		Vector2d marbleDV = marble.getDirectionVector(); //Richtungsvektor Murmel
+		Vector2d marbleDV = m.getDirectionVector(); //Richtungsvektor Murmel
 		Vector2d marbleDVreversed = marbleDV.multiply(-1); //umgekehrter Richtungsvektor
 		Vector2d marbleDVreversednormalized = marbleDVreversed.normalize(); //als Einheitsvektor
 		
@@ -256,13 +249,13 @@ public class NewCollisionManager
 //			System.out.println("ANGLE IS NOT 90 GRAD");
 //		}
 		
-		if(boxAngle == 0 & marble.getDirectionVector().getX() != 0) //Wenn Winkel = 90 Grad
+		if(boxAngle == 0 & m.getDirectionVector().getX() != 0) //Wenn Winkel = 90 Grad
 		{
-			setback3 = marble.getRadius();
+			setback3 = m.getRadius();
 		}
 		else
 		{
-			setback3 = marble.getRadius() / Math.sin(angle);
+			setback3 = m.getRadius() / Math.sin(angle);
 		}
 		
 		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
@@ -283,7 +276,7 @@ public class NewCollisionManager
 		//Gleichungssystem loesen mit Cramersche Regel: http://www.feuerbachers-matheseite.de/Cramer.pdf
 		//Schnittpunkt zweier Geraden
 		//Vector2d marbleDirection = new Vector2d(marble.getCurrentVelocityX(), marble.getCurrentVelocityY());// marble.getDirectionVector();
-		Vector2d marbleDirection = marble.getDirectionVector();
+		Vector2d marbleDirection = m.getDirectionVector();
 		Vector2d edgeDirection = r.subtract(q);
 		Vector2d relativeDirection = q.subtract(marblePosition);
 		double a1 = marbleDirection.getX();
@@ -329,13 +322,13 @@ public class NewCollisionManager
 
 	public static Vector2d calculatePostCollisionVel() 
 	{
-		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
 		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //Geschwindigkeit parallel, berechnet über orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
 		Vector2d orth = marbleVelocity.subtract(par); //Geschwindigkeit orthogonal
 		
-		double marbleMass = marble.getWeight();
+		double marbleMass = m.getWeight();
 		double boxMass = 1000; //SPÄTER NEU!!
 		Vector2d boxVel = new Vector2d(0,0);
 		Vector2d velDifference = par.subtract(boxVel);
@@ -352,7 +345,7 @@ public class NewCollisionManager
 	
 	public static Vector2d calcRelativeVelocityToEdge()
 	{
-		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
 		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //"gruener Pfeil" berechnet ueber orthogonale Projection --> Murmel fliegt sehr tief wenn der Wert klein ist
@@ -369,8 +362,7 @@ public class NewCollisionManager
 		
 		Vector2d par = calcRelativeVelocityToEdge();
 		//boolean smallAngle = Math.abs(par.getX()) < 0.005 & Math.abs(par.getY()) < limit;
-		boolean smallAngle = par.getNorm() < 0.05 ; //Betrag von par reicht für vergleich mit limit
-		//boolean lowVel = Math.abs(marble.getCurrentVelocityX()) < 0.05 & Math.abs(marble.getCurrentVelocityY()) < 0.05;
+		boolean smallAngle = par.getNorm() < 0.05 ; //Betrag von par reicht fuer vergleich mit limit
 		
 		if(smallAngle)
 			isParallel = true;
@@ -380,20 +372,17 @@ public class NewCollisionManager
 
 	public static Vector2d calculateAccelerations(double gravity) 
 	{
-		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		
 		double angle = Math.toRadians(closestRect.getRotate());
-		double friction = 0.004; //nochmal nachschauen, wird bei 0.4 für Holz auf Holz zu schnell??
+		double friction = 0.004; //nochmal nachschauen?
 		
 		if(angle < 0)
 			edge = edge.multiply(-1);
 		
 		double accHValue = gravity * Math.sin(angle);
 		double accRValue = gravity * Math.cos(angle) * friction;
-		
-//		Vector2d accH = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accHValue); //aus den Werten Vektoren machen
-//		Vector2d accR = new Vector2d(Math.cos(angle), Math.sin(angle)).multiply(accRValue);
 		
 		Vector2d accH =  edge.normalize().multiply(Math.abs(accHValue)); //Hangabtriebsbeschleunigung in Richtung der Ebene nach unten
 		Vector2d accR =  marbleVelocity.normalize().multiply(Math.abs(accRValue)).multiply(-1);
@@ -407,7 +396,7 @@ public class NewCollisionManager
 	
 	public static Vector2d calculateTangentialVelocity() 
 	{
-		Vector2d marbleVelocity = new Vector2d( marble.getCurrentVelocityX(), marble.getCurrentVelocityY());
+		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
 		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); 

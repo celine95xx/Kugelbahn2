@@ -228,18 +228,23 @@ public class MainScreenController
                 double mouseX = event.getSceneX();
                 double mouseY = event.getSceneY();
                 
-                // Erstelle eine Test-Marble zum Platzieren mit der Maus
-                if(group.getChildren().isEmpty())
+                // Erstelle eine Marble zum Platzieren mit der Maus
+                if(group.getChildren().size() <= 6) //isEmpty() //In Group: fuer jede Marble 3 Elemente: Circle, Line, CollisionPoint
                 {
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
                 	group.getChildren().add(level.getMarble().line);
                 	group.getChildren().add(level.getMarble().CollisionPoint);
                 	
-                	NewPhysicsManager.setMarble(level.getMarble());
-                	NewCollisionManager.setMarble(level.getMarble());
+                	//level.addToMarbleList(marbleNode);
                 	
-                	NewCollisionManager.checkCollisionsStart();
+                	NewPhysicsManager.setMarbles(level.getMarbleList());
+                	//NewCollisionManager.setMarbles(level.getMarbleList());
+                	
+//                	NewPhysicsManager.setMarble(level.getMarble());
+//                	NewCollisionManager.setMarble(level.getMarble());
+                	
+                	//NewCollisionManager.checkCollisionsStart();  //braucht man das ???? 
                 }
                 else
                 {

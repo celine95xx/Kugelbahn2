@@ -3,23 +3,33 @@ package de.celineevelyn.kugelbahn;
 
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import java.util.ArrayList;
+import de.celineevelyn.kugelbahn.objects.BasicNode;
 
 public class NewPhysicsManager 
 {
 
-	private static Marble marble;
+	//private static Marble marble;
+	private static ArrayList<Marble> marbles;
 	private static boolean positionCorrected = false;
 	private static boolean isRolling = false;
 	
-	public static void setMarble (Marble m)
+//	public static void setMarble (Marble m)
+//	{
+//		marble = m;
+//	}
+	
+	public static void setMarbles(ArrayList<Marble> marbleList)
 	{
-		marble = m;
+		marbles = marbleList;
 	}
 	
 	public static void moveMarble(double deltaTime)
 	{
-		double sx;
-		double sy;
+		for(Marble marble : marbles)
+		{
+//		double sx;
+//		double sy;
 		double proportionFactor = 727; //1667 = 12mm Durchmesser, 727 = 8px Radius, 11mm Radius
 		double gravity = Level.instance.getGravity();
 		
@@ -46,14 +56,17 @@ public class NewPhysicsManager
 		
 		marble.setNextPosition(sxNext, syNext); //naechste Position speichern
 		
-		int collisionType = NewCollisionManager.checkCollisionsStart(); //Collision Types: Keine Berührung, Kollision, Kontakt
+		int collisionType = NewCollisionManager.checkCollisionsStart(marble); //Collision Types: Keine Beruehrung, Kollision, Kontakt
 		System.out.println("COLLISION TYPE: " + collisionType);
 
 		////Richtige Kollision, Aufeinandertreffen
 		if(collisionType == 1)
 		{
 			Vector2d marblePosition = marble.getCurrentPos(); 
-			Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition); //Position der Murmel, nachdem sie zurückgesetzt wurde, um nicht im Shape zu stecken
+			
+			System.out.println("NPM: Marble ID: " + marble.getId() + " | Current Position: " + marblePosition.getVector2d());
+			
+			Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition); //Position der Murmel, nachdem sie zurueckgesetzt wurde, um nicht im Shape zu stecken
 			
 			marble.setNextPosition(collisionPosition.getX(), collisionPosition.getY());
 			
@@ -120,6 +133,8 @@ public class NewPhysicsManager
 			MainScreenController.end();
 			System.out.println("Beendet mit den Geschwindigkeiten: x: " + marble.getCurrentVelocityX() + " / y: " + marble.getCurrentVelocityY());
 		}
+	}
+		
 	}
 
 }

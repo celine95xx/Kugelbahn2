@@ -17,19 +17,11 @@ import javafx.scene.shape.Line;
 public class Marble extends BasicNode  
 {
  	
-	private double startX;
-	
-	private double startY;
-	
-	public double weight;
-	
-	public double radius;
+	private double startX, startY, weight, radius, id;
 
 	public  String color;
 	
-	private static double currentVelocityX;
-	
-	private static double currentVelocityY;
+	private double currentVelocityX, currentVelocityY;
 	
 	private double lastPosX, lastPosY, currPosX, currPosY, nextPosX, nextPosY;
 	
@@ -64,7 +56,7 @@ public class Marble extends BasicNode
 		this.weight = weight;
 	}
 	
-	public  double getRadius() 
+	public double getRadius() 
 	{
 		return radius;
 	}
@@ -72,6 +64,16 @@ public class Marble extends BasicNode
 	public void setRadius(double radius)
 	{
 		this.radius = radius;
+	}
+	
+	public double getId() 
+	{
+		return id;
+	}
+
+	public void setId(double id)
+	{
+		this.id = id;
 	}
 	
 	public  String getColor() 
@@ -86,22 +88,22 @@ public class Marble extends BasicNode
 	
 	public double getCurrentVelocityX()
 	{
-		return currentVelocityX;
+		return this.currentVelocityX;
 	}
 
 	public double getCurrentVelocityY()
 	{
-		return currentVelocityY;
+		return this.currentVelocityY;
 	}
 	
 	public double getStartX()
 	{
-		return startX;
+		return this.startX;
 	}
 	
 	public double getStartY()
 	{
-		return startY;
+		return this.startY;
 	}
 	
 	public void setCollisionShape(double x, double y)
@@ -128,13 +130,13 @@ public class Marble extends BasicNode
 	
 	public void setCurrVelX(double velX)
 	{
-		currentVelocityX = velX;
+		this.currentVelocityX = velX;
 		//updateLine();
 	}
 	
 	public void setCurrVelY(double velY)
 	{
-		currentVelocityY = velY;
+		this.currentVelocityY = velY;
 		//updateLine();
 	}
 	
@@ -164,8 +166,8 @@ public class Marble extends BasicNode
 	
 	public void setNextPosition(double nextPosX, double nextPosY) //to check if marble would collide in the next frame
 	{
-		currPosX = nextPosX;
-		currPosY = nextPosY;
+		this.currPosX = nextPosX;
+		this.currPosY = nextPosY;
 		
 		this.nextPosX = nextPosX;
 		this.nextPosY = nextPosY;
@@ -182,10 +184,10 @@ public class Marble extends BasicNode
 	
 	public Vector2d getDirectionVector()
 	{	
-		double x = currPosX - lastPosX;
-		double y = currPosY - lastPosY;
+		double x = this.currPosX - this.lastPosX;
+		double y = this.currPosY - this.lastPosY;
 		
-		System.out.println(" Current Position : " + currPosX + ", " + currPosY + " / Last Position: " + lastPosX + ", " + lastPosY);
+		//System.out.println(" Current Position : " + currPosX + ", " + currPosY + " / Last Position: " + lastPosX + ", " + lastPosY);
 		
 		Vector2d directionVector = new Vector2d(x,y);
 		
@@ -205,14 +207,14 @@ public class Marble extends BasicNode
 	
 	public Vector2d getNextPosition()
 	{
-		Vector2d nextPosition = new Vector2d(nextPosX, nextPosY);
+		Vector2d nextPosition = new Vector2d(this.nextPosX, this.nextPosY);
 		return nextPosition;
 	}
 	
 	public void setLastPosition(Vector2d position)
 	{
-		lastPosX = position.getX();
-		lastPosY = position.getY();
+		this.lastPosX = position.getX();
+		this.lastPosY = position.getY();
 	}
 
 }

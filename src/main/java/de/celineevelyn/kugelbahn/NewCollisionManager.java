@@ -6,16 +6,17 @@ import java.util.List;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 
 public class NewCollisionManager 
 {
 	private static Marble m;
-	private static List<Rectangle> envShapes;
+	private static List<Shape> envShapes;
 	private static Vector2d closestEdgeCorner1;
 	private static Vector2d closestEdgeCorner2;
 	private static Rectangle closestRect;
 	
-	public static <envShapes> void initializeCollisionManager(List<Rectangle> env) //ArrayList<Circle> list
+	public static <envShapes> void initializeCollisionManager(List<Shape> env) //List<Rectangle>
 	{
 		envShapes = env;
 	}
@@ -26,7 +27,7 @@ public class NewCollisionManager
 		return checkCollisions(envShapes);
 	}
 	
-	public static int checkCollisions(List<Rectangle> shape)
+	public static int checkCollisions(List<Shape> shape)
 	{
 		closestRect = null;
 		double shortestDistance = 10000;
@@ -39,56 +40,117 @@ public class NewCollisionManager
 		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
 		
-		for(Rectangle rect : shape)
+		for(Shape s : shape)
 		{
-			List<Vector2d> cornerList = shapeToCorners(rect);
-			
-			double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
-			double d2 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(0)); //links
-			double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
-			double d4 = calculateDistance(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
-			
-			if(d1 < shortestDistance)
+			if(s instanceof Rectangle)
 			{
-				shortestDistance = d1;
-				closestRect = rect;
-				closestEdgeCorner1 = cornerList.get(0);
-				closestEdgeCorner2 = cornerList.get(1);
-				edge = "edge 1";
-			}
-			if(d2 < shortestDistance)
-			{
-				shortestDistance = d2;
-				closestRect = rect;
-				closestEdgeCorner1 = cornerList.get(2);
-				closestEdgeCorner2 = cornerList.get(0);
-				edge = "edge 2";
-			}
-			if(d3 < shortestDistance)
-			{
-				shortestDistance = d3;
-				closestRect = rect;
-				closestEdgeCorner1 = cornerList.get(1);
-				closestEdgeCorner2 = cornerList.get(3);
-				edge = "edge 3";
-			}
-			if(d4 < shortestDistance)
-			{
-				shortestDistance = d4;
-				closestRect = rect;
-				closestEdgeCorner1 = cornerList.get(3);
-				closestEdgeCorner2 = cornerList.get(2);
-				edge = "edge 4";
-			}
-			
-			//spaeter entkommentieren???
-			if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
-			{
-				//collisionDetected = true;
-				collisionType = 1;
-				break;
+				Rectangle rect = (Rectangle) s;
+				
+				List<Vector2d> cornerList = shapeToCorners(rect);
+				
+				double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
+				double d2 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(0)); //links
+				double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
+				double d4 = calculateDistance(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
+				
+				if(d1 < shortestDistance)
+				{
+					shortestDistance = d1;
+					closestRect = rect;
+					closestEdgeCorner1 = cornerList.get(0);
+					closestEdgeCorner2 = cornerList.get(1);
+					edge = "edge 1";
+				}
+				if(d2 < shortestDistance)
+				{
+					shortestDistance = d2;
+					closestRect = rect;
+					closestEdgeCorner1 = cornerList.get(2);
+					closestEdgeCorner2 = cornerList.get(0);
+					edge = "edge 2";
+				}
+				if(d3 < shortestDistance)
+				{
+					shortestDistance = d3;
+					closestRect = rect;
+					closestEdgeCorner1 = cornerList.get(1);
+					closestEdgeCorner2 = cornerList.get(3);
+					edge = "edge 3";
+				}
+				if(d4 < shortestDistance)
+				{
+					shortestDistance = d4;
+					closestRect = rect;
+					closestEdgeCorner1 = cornerList.get(3);
+					closestEdgeCorner2 = cornerList.get(2);
+					edge = "edge 4";
+				}
 			}
 		}
+		
+		
+		if(shape instanceof Rectangle)
+		{
+			System.out.println("Is a rectangle");
+			
+			Rectangle rectangle = (Rectangle) shape;
+			
+			for(Rectangle rect : shape)
+			{
+//				List<Vector2d> cornerList = shapeToCorners(rect);
+//				
+//				double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
+//				double d2 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(0)); //links
+//				double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
+//				double d4 = calculateDistance(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
+//				
+//				if(d1 < shortestDistance)
+//				{
+//					shortestDistance = d1;
+//					closestRect = rect;
+//					closestEdgeCorner1 = cornerList.get(0);
+//					closestEdgeCorner2 = cornerList.get(1);
+//					edge = "edge 1";
+//				}
+//				if(d2 < shortestDistance)
+//				{
+//					shortestDistance = d2;
+//					closestRect = rect;
+//					closestEdgeCorner1 = cornerList.get(2);
+//					closestEdgeCorner2 = cornerList.get(0);
+//					edge = "edge 2";
+//				}
+//				if(d3 < shortestDistance)
+//				{
+//					shortestDistance = d3;
+//					closestRect = rect;
+//					closestEdgeCorner1 = cornerList.get(1);
+//					closestEdgeCorner2 = cornerList.get(3);
+//					edge = "edge 3";
+//				}
+//				if(d4 < shortestDistance)
+//				{
+//					shortestDistance = d4;
+//					closestRect = rect;
+//					closestEdgeCorner1 = cornerList.get(3);
+//					closestEdgeCorner2 = cornerList.get(2);
+//					edge = "edge 4";
+//				}
+				
+				//spaeter entkommentieren???
+				if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
+				{
+					//collisionDetected = true;
+					collisionType = 1;
+					break;
+				}
+			}
+		}
+		else
+		{
+			System.out.println("Is not a rectangle");
+		}
+
 		
 //		if(closestRect != null)
 //		{

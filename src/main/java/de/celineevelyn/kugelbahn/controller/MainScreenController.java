@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 
 
 /**
@@ -56,7 +57,7 @@ public class MainScreenController
 	
 	private static long timeStart;
 	
-	private static List<Rectangle> envShapes = new ArrayList<Rectangle>();
+	private static List<Shape> envShapes = new ArrayList<Shape>();
 	
 	@FXML
 	private Group group;
@@ -307,7 +308,7 @@ public class MainScreenController
 	}
 	
 	
-	public List<Rectangle> getEnvShapes()
+	public List<Shape> getEnvShapes()
 	{
 		return envShapes;
 	}

@@ -14,7 +14,8 @@ public class NewCollisionManager
 	private static List<Shape> envShapes;
 	private static Vector2d closestEdgeCorner1;
 	private static Vector2d closestEdgeCorner2;
-	private static Rectangle closestRect;
+//	private static Rectangle closestRect;
+	private static Shape closestShape;
 	
 	public static <envShapes> void initializeCollisionManager(List<Shape> env) //List<Rectangle>
 	{
@@ -29,13 +30,12 @@ public class NewCollisionManager
 	
 	public static int checkCollisions(List<Shape> shape)
 	{
-		closestRect = null;
+		closestShape = null;
 		double shortestDistance = 10000;
 		int collisionType = 0; //0 = kein Beruehrung, 1 = Kollision, 2 = Kontakt
 		
 		Vector2d marblePosition =  m.getCurrentPos();
 		
-//		int collisionType = 0; //0 = kein Beruehrung, 1 = Kollision, 2 = Kontakt
 		closestEdgeCorner1 = new Vector2d(0,0);
 		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
@@ -56,7 +56,7 @@ public class NewCollisionManager
 				if(d1 < shortestDistance)
 				{
 					shortestDistance = d1;
-					closestRect = rect;
+					closestShape = rect;
 					closestEdgeCorner1 = cornerList.get(0);
 					closestEdgeCorner2 = cornerList.get(1);
 					edge = "edge 1";
@@ -64,7 +64,7 @@ public class NewCollisionManager
 				if(d2 < shortestDistance)
 				{
 					shortestDistance = d2;
-					closestRect = rect;
+					closestShape = rect;
 					closestEdgeCorner1 = cornerList.get(2);
 					closestEdgeCorner2 = cornerList.get(0);
 					edge = "edge 2";
@@ -72,7 +72,7 @@ public class NewCollisionManager
 				if(d3 < shortestDistance)
 				{
 					shortestDistance = d3;
-					closestRect = rect;
+					closestShape = rect;
 					closestEdgeCorner1 = cornerList.get(1);
 					closestEdgeCorner2 = cornerList.get(3);
 					edge = "edge 3";
@@ -80,93 +80,40 @@ public class NewCollisionManager
 				if(d4 < shortestDistance)
 				{
 					shortestDistance = d4;
-					closestRect = rect;
+					closestShape = rect;
 					closestEdgeCorner1 = cornerList.get(3);
 					closestEdgeCorner2 = cornerList.get(2);
 					edge = "edge 4";
 				}
 			}
-		}
-		
-		
-		if(shape instanceof Rectangle)
-		{
-			System.out.println("Is a rectangle");
 			
-			Rectangle rectangle = (Rectangle) shape;
-			
-			for(Rectangle rect : shape)
+			else
 			{
-//				List<Vector2d> cornerList = shapeToCorners(rect);
-//				
-//				double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
-//				double d2 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(0)); //links
-//				double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
-//				double d4 = calculateDistance(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
-//				
-//				if(d1 < shortestDistance)
-//				{
-//					shortestDistance = d1;
-//					closestRect = rect;
-//					closestEdgeCorner1 = cornerList.get(0);
-//					closestEdgeCorner2 = cornerList.get(1);
-//					edge = "edge 1";
-//				}
-//				if(d2 < shortestDistance)
-//				{
-//					shortestDistance = d2;
-//					closestRect = rect;
-//					closestEdgeCorner1 = cornerList.get(2);
-//					closestEdgeCorner2 = cornerList.get(0);
-//					edge = "edge 2";
-//				}
-//				if(d3 < shortestDistance)
-//				{
-//					shortestDistance = d3;
-//					closestRect = rect;
-//					closestEdgeCorner1 = cornerList.get(1);
-//					closestEdgeCorner2 = cornerList.get(3);
-//					edge = "edge 3";
-//				}
-//				if(d4 < shortestDistance)
-//				{
-//					shortestDistance = d4;
-//					closestRect = rect;
-//					closestEdgeCorner1 = cornerList.get(3);
-//					closestEdgeCorner2 = cornerList.get(2);
-//					edge = "edge 4";
-//				}
-				
-				//spaeter entkommentieren???
-				if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
-				{
-					//collisionDetected = true;
-					collisionType = 1;
-					break;
-				}
+				//Fuer Circles
+			}
+			
+			//spaeter entkommentieren???
+			if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
+			{
+				//collisionDetected = true;
+				collisionType = 1;
+				break;
 			}
 		}
-		else
-		{
-			System.out.println("Is not a rectangle");
-		}
-
 		
-//		if(closestRect != null)
-//		{
-//			System.out.println("Marble Position: " + marblePos[0] + ", " + marblePos[1]);
-//		}
 		
 		if (collisionType == 1) 
 		{
 			Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 			Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 			
+			// Fallunterscheidung: Rectangle oder Circle?
+			
 			if(isParallel())
 			{
 				collisionType = 2; //Kontakt
 			}
-			else if(marbleVelocity.dotProduct(edgeNormal) > 0) //Bedingung aus dem Skript, relative Geschwindigkeit mal Berührnormale größer Null
+			else if(marbleVelocity.dotProduct(edgeNormal) > 0) //Bedingung aus dem Skript, relative Geschwindigkeit mal Beruehrnormale groesser Null
 			{
 				collisionType = 1;
 				System.out.println("(NewCollisionManager) COLLISION DETECTED, Marble: " + m.getId() + ", Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
@@ -294,7 +241,7 @@ public class NewCollisionManager
 		
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0; //Ebenenwinkel gerundet auf 4 Nachkommastellen
-		double boxAngle = closestRect.getRotate();
+		double boxAngle = closestShape.getRotate();
 		System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
 		
 		double setback1;
@@ -418,7 +365,7 @@ public class NewCollisionManager
 	private static boolean isParallel() 
 	{
 		boolean isParallel = false;
-		double angle = Math.toRadians(closestRect.getRotate());
+		double angle = Math.toRadians(closestShape.getRotate());
 		System.out.println("GET ROTATE: " + Math.toDegrees(angle));
 		//double limit = 0.01; //fuer schiefe Ebenen geeignet		
 		
@@ -437,7 +384,7 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		
-		double angle = Math.toRadians(closestRect.getRotate());
+		double angle = Math.toRadians(closestShape.getRotate());
 		double friction = 0.004; //nochmal nachschauen?
 		
 		if(angle < 0)

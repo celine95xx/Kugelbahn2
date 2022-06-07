@@ -1,8 +1,5 @@
 package de.celineevelyn.kugelbahn.objects;
 
-import java.util.Vector;
-
-import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.Vector2d;
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import javafx.scene.shape.Circle;
@@ -14,7 +11,7 @@ import javafx.scene.shape.Line;
  * @author Celine Viehmann
  *
  */
-public class Marble extends BasicNode  
+public class Marble extends BasicNode
 {
  	
 	private double startX, startY, weight, radius, id;

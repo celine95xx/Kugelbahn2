@@ -237,6 +237,8 @@ public class MainScreenController
                 	group.getChildren().add(level.getMarble().line);
                 	group.getChildren().add(level.getMarble().CollisionPoint);
                 	
+                	//envShapes.add(level.getMarble());
+                	
                 	//level.addToMarbleList(marbleNode);
                 	
                 	NewPhysicsManager.setMarbles(level.getMarbleList());
@@ -249,7 +251,7 @@ public class MainScreenController
                 }
                 else
                 {
-                	System.out.println("There is a marble already.");
+                	System.out.println("You cannot add more marbles.");
                 }
             }
         });

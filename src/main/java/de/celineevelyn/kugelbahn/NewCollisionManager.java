@@ -6,18 +6,19 @@ import java.util.List;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.Node;
 import javafx.scene.shape.*;
 
 public class NewCollisionManager 
 {
 	private static Marble m;
-	private static List<Shape> envShapes;
+	private static List<Node> envShapes;
 	private static Vector2d closestEdgeCorner1;
 	private static Vector2d closestEdgeCorner2;
 //	private static Rectangle closestRect;
-	private static Shape closestShape;
+	private static Node closestNode;
 	
-	public static <envShapes> void initializeCollisionManager(List<Shape> env) //List<Rectangle>
+	public static <envShapes> void initializeCollisionManager(List<Node> env) //List<Rectangle>
 	{
 		envShapes = env;
 	}
@@ -28,9 +29,9 @@ public class NewCollisionManager
 		return checkCollisions(envShapes);
 	}
 	
-	public static int checkCollisions(List<Shape> shape)
+	public static int checkCollisions(List<Node> nodes)
 	{
-		closestShape = null;
+		closestNode = null;
 		double shortestDistance = 10000;
 		int collisionType = 0; //0 = kein Beruehrung, 1 = Kollision, 2 = Kontakt
 		
@@ -40,23 +41,23 @@ public class NewCollisionManager
 		closestEdgeCorner2 = new Vector2d(0,0);
 		String edge = "No Edgels";
 		
-		for(Shape s : shape)
+		for(Node n : nodes)
 		{
-			if(s instanceof Rectangle)
+			if(n instanceof Rectangle)
 			{
-				Rectangle rect = (Rectangle) s;
+				Rectangle rect = (Rectangle) n;
 				
 				List<Vector2d> cornerList = shapeToCorners(rect);
 				
-				double d1 = calculateDistance(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
-				double d2 = calculateDistance(marblePosition, cornerList.get(2), cornerList.get(0)); //links
-				double d3 = calculateDistance(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
-				double d4 = calculateDistance(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
+				double d1 = calculateDistanceToRectangle(marblePosition, cornerList.get(0), cornerList.get(1)); //oben
+				double d2 = calculateDistanceToRectangle(marblePosition, cornerList.get(2), cornerList.get(0)); //links
+				double d3 = calculateDistanceToRectangle(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
+				double d4 = calculateDistanceToRectangle(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
 				
 				if(d1 < shortestDistance)
 				{
 					shortestDistance = d1;
-					closestShape = rect;
+					closestNode = rect;
 					closestEdgeCorner1 = cornerList.get(0);
 					closestEdgeCorner2 = cornerList.get(1);
 					edge = "edge 1";
@@ -64,7 +65,7 @@ public class NewCollisionManager
 				if(d2 < shortestDistance)
 				{
 					shortestDistance = d2;
-					closestShape = rect;
+					closestNode = rect;
 					closestEdgeCorner1 = cornerList.get(2);
 					closestEdgeCorner2 = cornerList.get(0);
 					edge = "edge 2";
@@ -72,7 +73,7 @@ public class NewCollisionManager
 				if(d3 < shortestDistance)
 				{
 					shortestDistance = d3;
-					closestShape = rect;
+					closestNode = rect;
 					closestEdgeCorner1 = cornerList.get(1);
 					closestEdgeCorner2 = cornerList.get(3);
 					edge = "edge 3";
@@ -80,7 +81,7 @@ public class NewCollisionManager
 				if(d4 < shortestDistance)
 				{
 					shortestDistance = d4;
-					closestShape = rect;
+					closestNode = rect;
 					closestEdgeCorner1 = cornerList.get(3);
 					closestEdgeCorner2 = cornerList.get(2);
 					edge = "edge 4";
@@ -90,6 +91,10 @@ public class NewCollisionManager
 			else
 			{
 				//Fuer Circles
+				//andere Marble rausfinden
+				
+				double d = calculateDistanceToRectangle(marblePosition, //andereMarble);
+				if()
 			}
 			
 			//spaeter entkommentieren???
@@ -175,7 +180,7 @@ public class NewCollisionManager
 		return cornerList;
 	}
 	
-	public static double calculateDistance(Vector2d p, Vector2d q, Vector2d r)
+	public static double calculateDistanceToRectangle(Vector2d p, Vector2d q, Vector2d r)
 	{
 		Vector2d rq = r.subtract(q); //Richtungvektor: Ecke 2 - Ecke 1
 		Vector2d qp = q.subtract(p); //Ecke1 - marblePosition
@@ -202,6 +207,7 @@ public class NewCollisionManager
 		
 	}
 	
+	
 	public static Vector2d calculateLFP(Vector2d q, Vector2d r, double s)
 	{
 		Vector2d rq = r.subtract(q); //nochmal Richtungsvektor aufstellen
@@ -227,6 +233,17 @@ public class NewCollisionManager
 		return newCoordinates;
 	}
 	
+	public static double calculateDistanceToCircle(Vector2d m1, Marble cm)
+	{
+		Vector2d cmPos = cm.getCurrentPos(); //Mittelpunkt der collisionMarble
+		Vector2d m2m1 = cmPos.subtract(m1); //Richtungvektor: Ecke 2 - Ecke 1
+		
+		double distance = m2m1.getNorm() - m.getRadius() - cm.getRadius();
+		
+		return distance;
+		
+	}
+	
 	public static Vector2d calculateRollPosition(Vector2d marblePosition)
 	{
 		return new Vector2d(0,0);
@@ -241,7 +258,7 @@ public class NewCollisionManager
 		
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0; //Ebenenwinkel gerundet auf 4 Nachkommastellen
-		double boxAngle = closestShape.getRotate();
+		double boxAngle = closestNode.getRotate();
 		System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
 		
 		double setback1;
@@ -365,7 +382,7 @@ public class NewCollisionManager
 	private static boolean isParallel() 
 	{
 		boolean isParallel = false;
-		double angle = Math.toRadians(closestShape.getRotate());
+		double angle = Math.toRadians(closestNode.getRotate());
 		System.out.println("GET ROTATE: " + Math.toDegrees(angle));
 		//double limit = 0.01; //fuer schiefe Ebenen geeignet		
 		
@@ -384,7 +401,7 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
 		
-		double angle = Math.toRadians(closestShape.getRotate());
+		double angle = Math.toRadians(closestNode.getRotate());
 		double friction = 0.004; //nochmal nachschauen?
 		
 		if(angle < 0)

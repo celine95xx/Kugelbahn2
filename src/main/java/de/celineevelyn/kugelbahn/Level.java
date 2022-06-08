@@ -53,7 +53,6 @@ public class Level
 		
 		addToMarbleList(marble);
 		
-		marble.setId(marbleList.size());
 		
 		return marble;
 	}

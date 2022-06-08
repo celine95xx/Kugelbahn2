@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -57,7 +58,7 @@ public class MainScreenController
 	
 	private static long timeStart;
 	
-	private static List<Shape> envShapes = new ArrayList<Shape>();
+	private static List<Node> envShapes = new ArrayList<Node>();
 	
 	@FXML
 	private Group group;
@@ -237,7 +238,7 @@ public class MainScreenController
                 	group.getChildren().add(level.getMarble().line);
                 	group.getChildren().add(level.getMarble().CollisionPoint);
                 	
-                	//envShapes.add(level.getMarble());
+                	envShapes.add(level.getMarble());
                 	
                 	//level.addToMarbleList(marbleNode);
                 	
@@ -310,7 +311,7 @@ public class MainScreenController
 	}
 	
 	
-	public List<Shape> getEnvShapes()
+	public List<Node> getEnvShapes()
 	{
 		return envShapes;
 	}

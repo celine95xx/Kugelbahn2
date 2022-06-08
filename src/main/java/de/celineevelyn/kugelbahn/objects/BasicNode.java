@@ -8,7 +8,7 @@ import javafx.scene.Node;
  * @author Celine Viehmann
  *
  */
-public abstract class BasicNode {
+public abstract class BasicNode extends Node{
 	
 	
 	/**

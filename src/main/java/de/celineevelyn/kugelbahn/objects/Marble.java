@@ -14,7 +14,7 @@ import javafx.scene.shape.Line;
 public class Marble extends BasicNode
 {
  	
-	private double startX, startY, weight, radius, id;
+	private double startX, startY, weight, radius;
 
 	public  String color;
 	
@@ -61,16 +61,6 @@ public class Marble extends BasicNode
 	public void setRadius(double radius)
 	{
 		this.radius = radius;
-	}
-	
-	public double getId() 
-	{
-		return id;
-	}
-
-	public void setId(double id)
-	{
-		this.id = id;
 	}
 	
 	public  String getColor() 

@@ -49,7 +49,12 @@ public class Level
 	
 	public BasicNode placeMarble(double x, double y) 
 	{
-		marble = new Marble(x, y, 8, 0.002, "green");
+		String color = "green";
+		if(marbleList.size() == 1)
+		{
+			color = "red";
+		}
+		marble = new Marble(x, y, 8, 0.002, color);
 		
 		addToMarbleList(marble);
 		

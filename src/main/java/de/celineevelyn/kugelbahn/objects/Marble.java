@@ -73,6 +73,19 @@ public class Marble extends BasicNode
 		this.color = color;
 	}
 	
+	@Override
+	public boolean equals (Object o)
+	{	
+		if ( this == o )
+			return true;
+		
+		if( o ==  null || getClass() != o.getClass())
+			return false;
+		
+		Marble m = (Marble) o;
+		return startX == m.startX && startY == m.startY && radius == m.radius && weight == m.weight && color.equals(m.color);
+	}
+	
 	public double getCurrentVelocityX()
 	{
 		return this.currentVelocityX;

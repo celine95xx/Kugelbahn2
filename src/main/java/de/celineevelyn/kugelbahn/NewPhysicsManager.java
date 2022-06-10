@@ -65,7 +65,7 @@ public class NewPhysicsManager
 		{
 			Vector2d marblePosition = marble.getCurrentPos(); 
 			
-			System.out.println("NPM: Marble ID: " + marble.getId() + " | Current Position: " + marblePosition.getVector2d());
+			//System.out.println("NPM: Marble ID: " + marble.getId() + " | Current Position: " + marblePosition.getVector2d());
 			
 			Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition); //Position der Murmel, nachdem sie zurueckgesetzt wurde, um nicht im Shape zu stecken
 			

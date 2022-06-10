@@ -17,6 +17,7 @@ public class NewCollisionManager
 	private static Vector2d closestEdgeCorner2;
 //	private static Rectangle closestRect;
 	private static Node closestNode;
+	private static Marble collisionMarble;
 	
 	public static <envShapes> void initializeCollisionManager(List<Node> env) //List<Rectangle>
 	{
@@ -93,8 +94,22 @@ public class NewCollisionManager
 				//Fuer Circles
 				//andere Marble rausfinden
 				
-				double d = calculateDistanceToRectangle(marblePosition, //andereMarble);
-				if()
+				if(!n.equals(m))
+				{
+					Marble cm = (Marble) n;
+					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Marble1 Color = " + m.getColor() + " | Marble2 Color = " + cm.getColor() );
+					
+					double d = calculateDistanceToCircle(marblePosition, cm);
+					
+					if(d < shortestDistance)
+					{
+						shortestDistance = d;
+						closestNode = n;
+						collisionMarble = (Marble) n;
+					}
+					
+				}
+				
 			}
 			
 			//spaeter entkommentieren???
@@ -107,7 +122,7 @@ public class NewCollisionManager
 		}
 		
 		
-		if (collisionType == 1) 
+		if (closestNode instanceof Rectangle & collisionType == 1) 
 		{
 			Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 			Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
@@ -254,44 +269,55 @@ public class NewCollisionManager
 		Vector2d marbleDV = m.getDirectionVector(); //Richtungsvektor Murmel
 		Vector2d marbleDVreversed = marbleDV.multiply(-1); //umgekehrter Richtungsvektor
 		Vector2d marbleDVreversednormalized = marbleDVreversed.normalize(); //als Einheitsvektor
-		
-		
-		Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
-		double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0; //Ebenenwinkel gerundet auf 4 Nachkommastellen
-		double boxAngle = closestNode.getRotate();
-		System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
-		
-		double setback1;
-		double setback2;
+
 		double setback3;
-//		if(angle == Math.round((0.5*Math.PI)*10000)/10000.0) //Wenn Winkel = 90 Grad
-//		{
-//			setback = 0.011; //Radius in m
-//			System.out.println("ANGLE = 90 GRAD");
-//		}
-//		else
-//		{
-//			setback = (0.011 / Math.sin(angle)); //spaeter neu schreiben, damit Murmel nicht so weit zurueckbewegt wird
-//			System.out.println("ANGLE IS NOT 90 GRAD");
-//		}
+		Vector2d collisionPoint = marblePosition;
+		Vector2d marbleNew;
 		
-		if(boxAngle == 0 & m.getDirectionVector().getX() != 0) //Wenn Winkel = 90 Grad
+		if(closestNode instanceof Marble)
 		{
+			Vector2d cmPosition = collisionMarble.getCurrentPos();
 			setback3 = m.getRadius();
+			collisionPoint = cmPosition.add(marbleDVreversednormalized.multiply(collisionMarble.getRadius()));
 		}
+		
 		else
 		{
-			setback3 = m.getRadius() / Math.sin(angle);
-		}
-		
-		Vector2d collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
-		
-		if(collisionPoint == null)
-		{
-			collisionPoint = marblePosition;
-		}
+			Vector2d edge = closestEdgeCorner2.subtract(closestEdgeCorner1);
+			double angle = Math.round(marbleDVreversed.calculateAngle(edge)*10000)/10000.0; //Ebenenwinkel gerundet auf 4 Nachkommastellen
+			double boxAngle = closestNode.getRotate();
+			System.out.println("marble DV: " + marbleDVreversednormalized.getVector2d() + ", Angle in Degrees: " + Math.toDegrees(angle) + ", Angle in Radian " + angle);
 
-		Vector2d marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback3)); //Vom Kollisionspunkt eine bestimmte Strecke in Bewegungsrichtung zurueck
+//			if(angle == Math.round((0.5*Math.PI)*10000)/10000.0) //Wenn Winkel = 90 Grad
+//			{
+//				setback = 0.011; //Radius in m
+//				System.out.println("ANGLE = 90 GRAD");
+//			}
+//			else
+//			{
+//				setback = (0.011 / Math.sin(angle)); //spaeter neu schreiben, damit Murmel nicht so weit zurueckbewegt wird
+//				System.out.println("ANGLE IS NOT 90 GRAD");
+//			}
+			
+			if(closestNode instanceof Marble || boxAngle == 0 & m.getDirectionVector().getX() != 0) //Wenn Winkel = 90 Grad
+			{
+				setback3 = m.getRadius();
+			}
+			else
+			{
+				setback3 = m.getRadius() / Math.sin(angle);
+			}
+			
+			collisionPoint = calculateCollisionPoint(marblePosition, closestEdgeCorner1, closestEdgeCorner2);
+			
+			if(collisionPoint == null)
+			{
+				collisionPoint = marblePosition;
+			}
+		}
+		
+
+		marbleNew = collisionPoint.add(marbleDVreversednormalized.multiply(setback3)); //Vom Kollisionspunkt eine bestimmte Strecke in Bewegungsrichtung zurueck
 		
 		return marbleNew;
 
@@ -351,11 +377,11 @@ public class NewCollisionManager
 		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		
-		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //Geschwindigkeit parallel, berechnet über orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //Geschwindigkeit parallel, berechnet ueber orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
 		Vector2d orth = marbleVelocity.subtract(par); //Geschwindigkeit orthogonal
 		
 		double marbleMass = m.getWeight();
-		double boxMass = 1000; //SPÄTER NEU!!
+		double boxMass = 1000; //SPAETER NEU!!
 		Vector2d boxVel = new Vector2d(0,0);
 		Vector2d velDifference = par.subtract(boxVel);
 		double coeff = 0.9;

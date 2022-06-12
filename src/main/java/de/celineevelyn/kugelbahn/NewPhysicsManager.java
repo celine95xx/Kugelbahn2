@@ -46,7 +46,7 @@ public class NewPhysicsManager
 		accY += windAccY;
 		accX += windAccX;
 		
-		//Berechne Position der Murmel im nächsten Frame
+		//Berechne Position der Murmel im naechsten Frame
 		double sxNext = marble.getNode().getTranslateX() + ((marble.getCurrentVelocityX() * deltaTime) 
 						+ (0.5*accX*deltaTime*deltaTime))*proportionFactor;
 		double syNext = marble.getNode().getTranslateY() + ((marble.getCurrentVelocityY() * deltaTime) 
@@ -73,10 +73,26 @@ public class NewPhysicsManager
 			
 			marble.setCollisionShape(collisionPosition.getX(), collisionPosition.getY());
 			
-			Vector2d newVel = NewCollisionManager.calculatePostCollisionVel();
+			Vector2d newVel1 = NewCollisionManager.calculatePostCollisionVel1();
 			
-			marble.setCurrVelX(newVel.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
-			marble.setCurrVelY(newVel.getY() + (accY * deltaTime));
+			// if collision node is a marble
+			// let NCM calculate post collision velocities for collision marble!
+			
+//			if(NewCollisionManager.collisionWithMarble())
+//			{
+//				Vector2d newVel2 = NewCollisionManager.calculatePostCollisionVel2();
+//				
+//				Marble cm = NewCollisionManager.getCollisionMarble();
+//				
+//				cm.setCurrVelX(newVel2.getX() + (accX * deltaTime));
+//				cm.setCurrVelY(newVel2.getY() + (accY * deltaTime));
+//			}
+			
+			marble.setCurrVelX(newVel1.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
+			marble.setCurrVelY(newVel1.getY() + (accY * deltaTime));
+			
+			
+			
 			isRolling = false;
 			//MainScreenController.end();
 		}

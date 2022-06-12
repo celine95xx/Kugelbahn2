@@ -44,7 +44,7 @@ public class NewCollisionManager
 		
 		for(Node n : nodes)
 		{
-			if(n instanceof Rectangle)
+			if(n instanceof Rectangle) //RECTANGLE
 			{
 				Rectangle rect = (Rectangle) n;
 				
@@ -91,13 +91,10 @@ public class NewCollisionManager
 			
 			else
 			{
-				//Fuer Circles
-				//andere Marble rausfinden
-				
+				//MARBLE
 				if(!n.equals(m))
 				{
 					Marble cm = (Marble) n;
-					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Marble1 Color = " + m.getColor() + " | Marble2 Color = " + cm.getColor() );
 					
 					double d = calculateDistanceToCircle(marblePosition, cm);
 					
@@ -213,7 +210,7 @@ public class NewCollisionManager
 			
 			distance = lp.getNorm();
 		}
-		else //LFP ist außerhalb
+		else //LFP ist ausserhalb
 		{
 			distance = 1000000;
 		}
@@ -372,25 +369,88 @@ public class NewCollisionManager
 //		return collisionPoint;
 	}
 
-	public static Vector2d calculatePostCollisionVel() 
+	public static Vector2d calculatePostCollisionVel1() 
 	{
 		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
-		Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
+		double marbleMass = m.getWeight();
 		
-		Vector2d par = edgeNormal.normalize().multiply(marbleVelocity.dotProduct(edgeNormal.normalize())); //Geschwindigkeit parallel, berechnet ueber orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+		Vector2d normal = new Vector2d(0,0);
+		Vector2d csVelocity = new Vector2d(0,0); //collisionShape Velocity
+		double csMass = 0;
+		double coeff = 0.8;
+		
+		if(closestNode instanceof Marble) //MARBLE
+		{
+			System.out.println("!!!!!!!!!!!!!!!!!!!! ITSA MARBLE");
+			csMass = collisionMarble.getWeight();
+			csVelocity = new Vector2d( collisionMarble.getCurrentVelocityX(), collisionMarble.getCurrentVelocityY());
+			
+			normal = collisionMarble.getCurrentPos().subtract(m.getCurrentPos());
+		}
+		else //RECTANGLE 
+		{
+			System.out.println("!!!!!!!!!!!!!!!!!!!! ITSA RECTANGLE");
+			csMass = 1000; //SPAETER NEU!!
+			csVelocity = new Vector2d(0,0);
+			
+			normal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
+		}
+		
+		//aktive Murmel
+		Vector2d par = normal.normalize().multiply(marbleVelocity.dotProduct(normal.normalize())); //Geschwindigkeit parallel, berechnet ueber orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
 		Vector2d orth = marbleVelocity.subtract(par); //Geschwindigkeit orthogonal
 		
-		double marbleMass = m.getWeight();
-		double boxMass = 1000; //SPAETER NEU!!
-		Vector2d boxVel = new Vector2d(0,0);
-		Vector2d velDifference = par.subtract(boxVel);
-		double coeff = 0.9;
+		//Kollisionsshape
+		Vector2d csPar = normal.normalize().multiply(csVelocity.dotProduct(normal.normalize())); 
 		
-		//Vector2d par2 = ((par.multiply(marbleMass).add((boxVel.multiply(boxMass))).divide(marbleMass + boxMass)).multiply(2)).subtract(par); //neu berechnet mit Formel aus Skript
-		Vector2d par3 = ((par.multiply(marbleMass).add((boxVel.multiply(boxMass)))).subtract((velDifference.multiply(boxMass).multiply(coeff)))).divide(marbleMass + boxMass);
+		Vector2d velDifference = par.subtract(csPar);
+		
+		Vector2d parNew = ((par.multiply(marbleMass).add((csPar.multiply(csMass)))).subtract((velDifference.multiply(csMass).multiply(coeff)))).divide(marbleMass + csMass);
 		//To-do: boxVel2 !!
 		
-		Vector2d newVel = orth.add(par3);
+		Vector2d newVel = orth.add(parNew);
+		
+		return newVel;
+	}
+	
+	public static Vector2d calculatePostCollisionVel2() 
+	{
+		Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
+		double marbleMass = m.getWeight();
+		
+		Vector2d normal = new Vector2d(0,0);
+		Vector2d csVelocity = new Vector2d(0,0); //collisionShape Velocity
+		double csMass = 0;
+		double coeff = 0.9;
+		
+		if(closestNode instanceof Marble) //MARBLE
+		{
+			csMass = collisionMarble.getWeight();
+			csVelocity = new Vector2d( collisionMarble.getCurrentVelocityX(), collisionMarble.getCurrentVelocityY());
+			
+			normal = collisionMarble.getCurrentPos().subtract(m.getCurrentPos());
+		}
+		else //RECTANGLE
+		{ 	
+			csMass = 1000; //SPAETER NEU!!
+			csVelocity = new Vector2d(0,0);
+			
+			normal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
+		}
+		
+		//aktive Murmel
+		Vector2d par = normal.normalize().multiply(marbleVelocity.dotProduct(normal.normalize())); //Geschwindigkeit parallel, berechnet ueber orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+		
+		//Kollisionsshape
+		Vector2d csPar = normal.normalize().multiply(csVelocity.dotProduct(normal.normalize())); //Geschwindigkeit parallel, berechnet ueber orthogonale Projektion: https://de.wikipedia.org/wiki/Skalarprodukt#Orthogonalit%C3%A4t_und_orthogonale_Projektion
+		Vector2d csOrth = csVelocity.subtract(csPar); //Geschwindigkeit orthogonal
+
+		
+		Vector2d velDifference = csPar.subtract(par);
+		
+		Vector2d parNew = ((par.multiply(marbleMass).add((csPar.multiply(csMass)))).subtract((velDifference.multiply(marbleMass).multiply(coeff)))).divide(marbleMass + csMass);
+		
+		Vector2d newVel = csOrth.add(parNew);
 		
 		return newVel;
 	}
@@ -455,5 +515,19 @@ public class NewCollisionManager
 		Vector2d orth = marbleVelocity.subtract(par); 
 		
 		return orth;
+	}
+	
+	public static Marble getCollisionMarble()
+	{
+		return collisionMarble;
+	}
+
+	public static boolean collisionWithMarble() 
+	{
+		boolean marbleCollision = false;
+		if(closestNode instanceof Marble)
+			marbleCollision = true;
+		
+		return marbleCollision;
 	}
 }

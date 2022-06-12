@@ -54,7 +54,7 @@ public class Level
 		{
 			color = "red";
 		}
-		marble = new Marble(x, y, 8, 0.002, color);
+		marble = new Marble(x, y, 8, 0.02, color); //0.002kg
 		
 		addToMarbleList(marble);
 		

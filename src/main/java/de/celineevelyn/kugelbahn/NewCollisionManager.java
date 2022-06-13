@@ -434,6 +434,7 @@ public class NewCollisionManager
 		{ 	
 			csMass = 1000; //SPAETER NEU!!
 			csVelocity = new Vector2d(0,0);
+			//kommentar spaeter loeschen
 			
 			normal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		}

@@ -381,7 +381,6 @@ public class NewCollisionManager
 		
 		if(closestNode instanceof Marble) //MARBLE
 		{
-			System.out.println("!!!!!!!!!!!!!!!!!!!! ITSA MARBLE");
 			csMass = collisionMarble.getWeight();
 			csVelocity = new Vector2d( collisionMarble.getCurrentVelocityX(), collisionMarble.getCurrentVelocityY());
 			
@@ -389,7 +388,6 @@ public class NewCollisionManager
 		}
 		else //RECTANGLE 
 		{
-			System.out.println("!!!!!!!!!!!!!!!!!!!! ITSA RECTANGLE");
 			csMass = 1000; //SPAETER NEU!!
 			csVelocity = new Vector2d(0,0);
 			

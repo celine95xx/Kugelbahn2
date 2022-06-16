@@ -11,19 +11,19 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="880.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
+<AnchorPane prefHeight="780.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
    <children>
    		
    
       <Pane layoutX="-1.0" prefHeight="710.0" prefWidth="1500.0">
          <children>
             <Group fx:id="group" />
-            <Rectangle fx:id="colRect1" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="-30.0" layoutY="148.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="571.0" />
-            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="290.0" layoutX="-1.0" layoutY="512.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1507.0" />
+            <Rectangle fx:id="colRect1" arcHeight="5.0" arcWidth="5.0" fill="#f0a3306f" height="25.0" layoutX="178.0" layoutY="384.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="430.0" />
+            <Rectangle fx:id="colRect" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="208.0" layoutX="-1.0" layoutY="575.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1507.0" />
             <Rectangle fx:id="colRect3" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="684.0" layoutX="1475.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
             <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="636.0" layoutX="-1.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
             <Circle fill="DODGERBLUE" layoutX="853.0" layoutY="592.0" radius="3.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Pane layoutX="21.0" layoutY="553.0" prefHeight="182.0" prefWidth="1500.0">
+            <Pane layoutX="21.0" layoutY="593.0" prefHeight="182.0" prefWidth="1500.0">
                <children>
                   <TextField fx:id="startVelX" layoutX="174.0" layoutY="39.0" prefHeight="25.0" prefWidth="88.0" />
                   <Label layoutX="94.0" layoutY="43.0" text="X-Richtung">
@@ -82,6 +82,8 @@
                   <TextField fx:id="boxAngle" layoutX="728.0" layoutY="39.0" promptText="Winkel in Grad" />
                </children>
             </Pane>
+            <Rectangle fx:id="colRect11" arcHeight="5.0" arcWidth="5.0" fill="#a1b1b5" height="15.0" layoutX="1137.0" layoutY="180.0" rotate="-70.0" stroke="BLACK" strokeType="INSIDE" width="350.0" />
+            <Rectangle fx:id="colRect111" arcHeight="5.0" arcWidth="5.0" fill="#c6dbe1" height="15.0" layoutX="1137.0" layoutY="180.0" rotate="-110.0" stroke="BLACK" strokeType="INSIDE" width="350.0" />
 
 
          </children></Pane>

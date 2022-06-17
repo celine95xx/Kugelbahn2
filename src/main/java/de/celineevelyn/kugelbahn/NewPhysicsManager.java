@@ -77,15 +77,15 @@ public class NewPhysicsManager
 			// if collision node is a marble
 			// let NCM calculate post collision velocities for collision marble!
 			
-//			if(NewCollisionManager.collisionWithMarble())
-//			{
-//				Vector2d newVel2 = NewCollisionManager.calculatePostCollisionVel2();
-//				
-//				Marble cm = NewCollisionManager.getCollisionMarble();
-//				
-//				cm.setCurrVelX(newVel2.getX() + (accX * deltaTime));
-//				cm.setCurrVelY(newVel2.getY() + (accY * deltaTime));
-//			}
+			if(NewCollisionManager.collisionWithMarble())
+			{
+				Vector2d newVel2 = NewCollisionManager.calculatePostCollisionVel2();
+				
+				Marble cm = NewCollisionManager.getCollisionMarble();
+				
+				cm.setCurrVelX(newVel2.getX() + (accX * deltaTime));
+				cm.setCurrVelY(newVel2.getY() + (accY * deltaTime));
+			}
 			
 			marble.setCurrVelX(newVel1.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
 			marble.setCurrVelY(newVel1.getY() + (accY * deltaTime));

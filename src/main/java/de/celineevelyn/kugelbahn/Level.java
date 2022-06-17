@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import de.celineevelyn.kugelbahn.objects.Scissors;
 import javafx.scene.shape.Circle;
 
 /**
@@ -18,6 +19,7 @@ public class Level
 	public static Level instance;
 	
 	private Marble marble;
+	private Scissors s;
 	
 	private double gravity = 9.81;
 	private double windAngle = 0;
@@ -60,6 +62,13 @@ public class Level
 		
 		
 		return marble;
+	}
+	
+	public BasicNode placeScissors()
+	{
+		s = new Scissors();
+		
+		return s;
 	}
 	
 	public void addToMarbleList(Marble marble)

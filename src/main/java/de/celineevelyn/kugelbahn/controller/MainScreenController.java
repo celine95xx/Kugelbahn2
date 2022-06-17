@@ -35,7 +35,7 @@ import javafx.scene.shape.*;
 public class MainScreenController 
 {
 	@FXML
-	private Button startBtn, resetBtn;
+	private Button startBtn, resetBtn, scissorsBtn;
 
 	@FXML
 	private TextField startVelX, startVelY, currentVelX, currentVelY, windAcceleration, boxAngle;
@@ -44,7 +44,7 @@ public class MainScreenController
 	private Circle collisionCircle;
 	
 	@FXML
-	private Rectangle colRect, colRect1, colRect2, colRect3;
+	private Rectangle colRect, colRect1, colRect2, colRect3, scissors_2;
 	
 	@FXML
 	private ChoiceBox<String> gravity;
@@ -102,7 +102,17 @@ public class MainScreenController
 	public void endSimulation(ActionEvent event) throws Exception
 	{
 		timer.stop();
+	}
+	
+	public void addScissors(ActionEvent event)
+	{
+		BasicNode scissorsNode = level.placeScissors();
+		scissors_2 = new Rectangle(737, 364, 350, 15);
+		scissors_2.setRotate(-70);
+		scissors_2.setFill(javafx.scene.paint.Color.DARKGREY);
 		
+		group.getChildren().add(scissorsNode.getNode());
+		group.getChildren().add(scissors_2);
 	}
 	
 	public static void calculateSimulationTime(long timeEnd)

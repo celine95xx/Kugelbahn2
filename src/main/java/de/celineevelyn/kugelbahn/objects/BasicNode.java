@@ -4,11 +4,11 @@ import javafx.scene.Node;
 
 
 /**
- * Grundklasse für alle Objekte, die später auf dem Bildschirm gezeichnet werden sollen und Teil der Murmelbahn sind
+ * Grundklasse fuer alle Objekte, die spaeter auf dem Bildschirm gezeichnet werden sollen und Teil der Murmelbahn sind
  * @author Celine Viehmann
  *
  */
-public abstract class BasicNode extends Node{
+public abstract class BasicNode extends Node {
 	
 	
 	/**

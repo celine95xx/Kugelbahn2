@@ -60,7 +60,6 @@ public class NewPhysicsManager
 		System.out.println("COLLISION TYPE: " + collisionType);
 
 		////Richtige Kollision, Aufeinandertreffen
-		//// To Do?: Kollisionstyp mit einer anderen Kugel, dann newVel für beide Kugeln berechnen und updaten
 		if(collisionType == 1)
 		{
 			Vector2d marblePosition = marble.getCurrentPos(); 

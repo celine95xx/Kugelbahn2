@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.celineevelyn.kugelbahn.objects.BasicNode;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import de.celineevelyn.kugelbahn.objects.Scissors;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Node;
 import javafx.scene.shape.*;
@@ -18,6 +19,9 @@ public class NewCollisionManager
 //	private static Rectangle closestRect;
 	private static Node closestNode;
 	private static Marble collisionMarble;
+	private static Scissors scissors;
+	private static boolean isBlade = false;
+	private static boolean collisionWithBlade = false;
 	
 	public static <envShapes> void initializeCollisionManager(List<Node> env) //List<Rectangle>
 	{
@@ -44,8 +48,20 @@ public class NewCollisionManager
 		
 		for(Node n : nodes)
 		{
-			if(n instanceof Rectangle) //RECTANGLE
+			if(n instanceof Rectangle || n instanceof Scissors) //RECTANGLE
 			{
+				//System.out.println("DAS IST EIN RECTANGLE");
+				
+				if(n instanceof Scissors)
+				{
+					//System.out.println("DAS IST EINE SCHERE");
+					scissors = (Scissors) n;
+					n = ((Scissors) n).getNode();
+					isBlade = true;
+				}
+				else
+					isBlade = false;
+					
 				Rectangle rect = (Rectangle) n;
 				
 				List<Vector2d> cornerList = shapeToCorners(rect);
@@ -54,6 +70,8 @@ public class NewCollisionManager
 				double d2 = calculateDistanceToRectangle(marblePosition, cornerList.get(2), cornerList.get(0)); //links
 				double d3 = calculateDistanceToRectangle(marblePosition, cornerList.get(1), cornerList.get(3)); //rechts
 				double d4 = calculateDistanceToRectangle(marblePosition, cornerList.get(3), cornerList.get(2)); //unten
+				
+				//System.out.println("Ecke 1: " + cornerList.get(0).getVector2d() + ", Ecke 2: " + cornerList.get(1).getVector2d() + ", Ecke 3: " + cornerList.get(3).getVector2d() + ", Ecke 4: " + cornerList.get(2).getVector2d());
 				
 				if(d1 < shortestDistance)
 				{
@@ -88,7 +106,6 @@ public class NewCollisionManager
 					edge = "edge 4";
 				}
 			}
-			
 			else
 			{
 				//MARBLE
@@ -104,13 +121,11 @@ public class NewCollisionManager
 						closestNode = n;
 						collisionMarble = (Marble) n;
 					}
-					
 				}
-				
 			}
 			
 			//spaeter entkommentieren???
-			if(shortestDistance <= (m.getRadius())) //Beruehrung detektiert!
+			if(shortestDistance <= (m.getRadius() - 0.1)) //Beruehrung detektiert!
 			{
 				//collisionDetected = true;
 				collisionType = 1;
@@ -119,11 +134,15 @@ public class NewCollisionManager
 		}
 		
 		
-		if (closestNode instanceof Rectangle & collisionType == 1) 
+		if ((closestNode instanceof Rectangle || closestNode instanceof Scissors) & collisionType == 1) 
 		{
 			Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
 			Vector2d edgeNormal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 			
+			if(isBlade)
+				collisionWithBlade = true;
+			else
+				collisionWithBlade = false;
 			// Fallunterscheidung: Rectangle oder Circle?
 			
 			if(isParallel())
@@ -155,6 +174,8 @@ public class NewCollisionManager
 		double[] rectCenter = new double[2];
 		rectCenter[0] = rect.getLayoutX() + 0.5 * width;
 		rectCenter[1] = rect.getLayoutY() + 0.5 * height;
+		
+		//System.out.println("Width: " + width + ", Height: " + height + ", Angle: " + angle + ", rectCenterX: " + rect.getLayoutX() + ", rectCenterY: " + rect.getLayoutY());
 		
 		
 		List<Vector2d> cornerList = new ArrayList<Vector2d>();
@@ -516,9 +537,48 @@ public class NewCollisionManager
 		return orth;
 	}
 	
+	public static double bladeRotation()
+	{
+		Vector2d marbleVelocity = new Vector2d(m.getCurrentVelocityX(), m.getCurrentVelocityY());
+		double velocityValue = marbleVelocity.getNorm() * 6.05f; // Faktor spaeter raus!
+		double leverArm = calculateLeverArm();
+		
+		double omega = velocityValue / leverArm;
+		System.out.println("VelocityValue = " + velocityValue + "Omega = " + omega);
+		
+		return omega;
+	}
+	
+	public static double calculateLeverArm()
+	{
+		Vector2d collisionPoint = calculateCollisionPoint(m.getCurrentPos(), closestEdgeCorner1, closestEdgeCorner2);
+		Vector2d edgeCenter = calculateEdgeCenter(closestEdgeCorner1, closestEdgeCorner2);
+		
+		Vector2d centerToCollisionPoint = collisionPoint.subtract(edgeCenter);
+		double leverArm = centerToCollisionPoint.getNorm();
+		
+		System.out.println("!!!!!!!!!!!CollisionPoint: " + collisionPoint.getVector2d() + ", edgeCenter: " + edgeCenter.getVector2d() + ", LEVERARM: " + leverArm);
+		
+		return leverArm;
+		
+	}
+	
+	public static Vector2d calculateEdgeCenter(Vector2d q, Vector2d r)
+	{
+		Vector2d rq = r.subtract(q);
+		Vector2d edgeCenter = q.add((rq.multiply(0.5)));
+		
+		return edgeCenter;
+	}
+	
 	public static Marble getCollisionMarble()
 	{
 		return collisionMarble;
+	}
+	
+	public static Scissors getScissors()
+	{
+		return scissors;
 	}
 
 	public static boolean collisionWithMarble() 
@@ -528,5 +588,10 @@ public class NewCollisionManager
 			marbleCollision = true;
 		
 		return marbleCollision;
+	}
+	
+	public static boolean collisionWithBlade()
+	{
+		return collisionWithBlade;
 	}
 }

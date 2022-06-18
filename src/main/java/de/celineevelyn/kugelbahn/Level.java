@@ -64,12 +64,14 @@ public class Level
 		return marble;
 	}
 	
-	public BasicNode placeScissors()
+	public Scissors placeScissors()
 	{
 		s = new Scissors();
+		s.setPosition();
 		
 		return s;
 	}
+	
 	
 	public void addToMarbleList(Marble marble)
 	{

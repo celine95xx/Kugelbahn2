@@ -8,6 +8,7 @@ import de.celineevelyn.kugelbahn.Level;
 import de.celineevelyn.kugelbahn.NewCollisionManager;
 import de.celineevelyn.kugelbahn.NewPhysicsManager;
 import de.celineevelyn.kugelbahn.objects.BasicNode;
+import de.celineevelyn.kugelbahn.objects.Scissors;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -85,6 +86,8 @@ public class MainScreenController
 		level.setMarbleStartVelocity(startVelocityX, startVelocityY);
 		level.setWindAcc(windAcc);
 		
+		NewCollisionManager.initializeCollisionManager(envShapes);
+
 		// Starte Physiksimulation
 		timeStart = System.currentTimeMillis();
 		timer.start(); //handle-Methode wird in jedem Frame ausgefuehrt
@@ -106,13 +109,21 @@ public class MainScreenController
 	
 	public void addScissors(ActionEvent event)
 	{
-		BasicNode scissorsNode = level.placeScissors();
-		scissors_2 = new Rectangle(737, 364, 350, 15);
+		Scissors scissorsNode = level.placeScissors();
+
+		scissors_2 = new Rectangle();
+		scissors_2.setLayoutX(737);
+		scissors_2.setLayoutY(364);
+		scissors_2.setWidth(350);
+		scissors_2.setHeight(15);
 		scissors_2.setRotate(-70);
 		scissors_2.setFill(javafx.scene.paint.Color.DARKGREY);
 		
 		group.getChildren().add(scissorsNode.getNode());
 		group.getChildren().add(scissors_2);
+		
+		envShapes.add(scissors_2);
+		envShapes.add(scissorsNode);
 	}
 	
 	public static void calculateSimulationTime(long timeEnd)
@@ -219,7 +230,7 @@ public class MainScreenController
 		addEnvShapesToList();
 		//level.addToNodeList(collisionCircle);
 		
-		NewCollisionManager.initializeCollisionManager(envShapes);
+//		NewCollisionManager.initializeCollisionManager(envShapes);
 		
 		
 		// Timer initialisieren

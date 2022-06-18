@@ -4,13 +4,12 @@ import javafx.scene.shape.Rectangle;
 
 public class Scissors extends BasicNode
 {
+	
 	public Scissors() 
 	{
-		super(new Rectangle(737, 364, 350, 15));
-		
+		super(new Rectangle(0, 0, 350, 15));
+	
 		this.setRotation(70);
-		
-		this.setStyle("-fx-fill: red;");
 	}
 	
 	public void setRotation(double degree)
@@ -22,4 +21,12 @@ public class Scissors extends BasicNode
 	{
 		return this.node.getRotate();
 	}
+
+	
+	public void setPosition()
+	{
+		this.node.setLayoutX(737);
+		this.node.setLayoutY(364);
+	}
+
 }

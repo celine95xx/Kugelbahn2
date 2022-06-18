@@ -3,16 +3,19 @@ package de.celineevelyn.kugelbahn;
 
 import de.celineevelyn.kugelbahn.controller.MainScreenController;
 import de.celineevelyn.kugelbahn.objects.Marble;
+import de.celineevelyn.kugelbahn.objects.Scissors;
 import java.util.ArrayList;
-import de.celineevelyn.kugelbahn.objects.BasicNode;
 
 public class NewPhysicsManager 
 {
 
 	//private static Marble marble;
 	private static ArrayList<Marble> marbles;
+	private static Scissors s;
 	private static boolean positionCorrected = false;
 	private static boolean isRolling = false;
+	private static boolean bladeIsMoving = false;
+	private static double degreeAdded = 0;
 	
 //	public static void setMarble (Marble m)
 //	{
@@ -87,6 +90,14 @@ public class NewPhysicsManager
 				cm.setCurrVelY(newVel2.getY() + (accY * deltaTime));
 			}
 			
+			if(NewCollisionManager.collisionWithBlade())
+			{
+				degreeAdded += NewCollisionManager.bladeRotation();
+				double degreeNow = NewCollisionManager.getScissors().getRotation();
+				NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
+				//let Scissors rotate
+			}
+			
 			marble.setCurrVelX(newVel1.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
 			marble.setCurrVelY(newVel1.getY() + (accY * deltaTime));
 			
@@ -149,6 +160,12 @@ public class NewPhysicsManager
 			MainScreenController.end();
 			System.out.println("Beendet mit den Geschwindigkeiten: x: " + marble.getCurrentVelocityX() + " / y: " + marble.getCurrentVelocityY());
 		}
+		
+			double degreeNow = NewCollisionManager.getScissors().getRotation();
+			NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
+			
+			System.out.println("+++++++++++++++Degree Added: " + degreeAdded);
+			//let Scissors rotate
 	}
 		
 	}

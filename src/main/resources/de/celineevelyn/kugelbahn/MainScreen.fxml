@@ -7,11 +7,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="780.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.celineevelyn.kugelbahn.controller.MainScreenController">
    <children>
+      <Rectangle fx:id="colRect11" arcHeight="5.0" arcWidth="5.0" fill="#a1b1b5" height="15.0" layoutX="737.0" layoutY="364.0" rotate="-70.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="350.0" />
    		
    
       <Pane layoutX="-1.0" prefHeight="710.0" prefWidth="1500.0">
@@ -86,8 +88,11 @@
                   </Label>
                </children>
             </Pane>
-            <Rectangle fx:id="colRect11" arcHeight="5.0" arcWidth="5.0" fill="#a1b1b5" height="15.0" layoutX="748.0" layoutY="364.0" rotate="-70.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="350.0" />
             <Rectangle fx:id="colRect111" arcHeight="5.0" arcWidth="5.0" fill="#c6dbe1" height="15.0" layoutX="735.0" layoutY="364.0" rotate="-110.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="350.0" />
+            <Circle fill="DODGERBLUE" layoutX="108.0" layoutY="169.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="227.0" layoutY="-159.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="241.0" layoutY="-154.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="122.0" layoutY="174.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
 
 
          </children></Pane>

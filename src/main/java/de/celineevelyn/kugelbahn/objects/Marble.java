@@ -14,7 +14,7 @@ import javafx.scene.shape.Line;
 public class Marble extends BasicNode
 {
  	
-	private double startX, startY, weight, radius;
+	private double startX, startY, weight, radius, id;
 
 	public  String color;
 	
@@ -25,7 +25,7 @@ public class Marble extends BasicNode
 	public Line line;
 	public Circle CollisionPoint;
 	
-	public Marble (double startX, double startY, double radius, double weight, String color) 
+	public Marble (double startX, double startY, double radius, double weight, String color, double id) 
 	{
 		super(new Circle(0,0,radius));
 		
@@ -37,6 +37,7 @@ public class Marble extends BasicNode
 		this.weight = weight; 
 		this.color = color; 
 		this.radius = radius;
+		this.id = id;
 		
 		line = new Line(startX, startY, startX, startY);
 		CollisionPoint = new Circle(0,0,radius/5);
@@ -71,6 +72,11 @@ public class Marble extends BasicNode
 	public void setColor(String color) 
 	{
 		this.color = color;
+	}
+	
+	public double getMarbleId() 
+	{
+		return id;
 	}
 	
 	@Override

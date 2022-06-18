@@ -129,6 +129,7 @@ public class NewCollisionManager
 			{
 				//collisionDetected = true;
 				collisionType = 1;
+				
 				break;
 			}
 		}
@@ -143,7 +144,6 @@ public class NewCollisionManager
 				collisionWithBlade = true;
 			else
 				collisionWithBlade = false;
-			// Fallunterscheidung: Rectangle oder Circle?
 			
 			if(isParallel())
 			{
@@ -152,12 +152,25 @@ public class NewCollisionManager
 			else if(marbleVelocity.dotProduct(edgeNormal) > 0) //Bedingung aus dem Skript, relative Geschwindigkeit mal Beruehrnormale groesser Null
 			{
 				collisionType = 1;
-				System.out.println("(NewCollisionManager) COLLISION DETECTED, Marble: " + m.getId() + ", Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
+				System.out.println("(NewCollisionManager) COLLISION DETECTED, Marble: " + m.getMarbleId() + ", Shortest Distance: " + shortestDistance + ", Edge: " + edge ); //Kollision
 			}
 			else
 			{
 				collisionType = 0;
 			}		
+		}
+		
+		//hier zweite Abfrage f¸r closestNode instanceof marble + collisionType1, damit sie auch aus kollision rausgehen
+		
+		if(closestNode instanceof Marble & collisionType == 1)
+		{
+			Vector2d marbleVelocity = new Vector2d( m.getCurrentVelocityX(), m.getCurrentVelocityY());
+			Vector2d normal = collisionMarble.getCurrentPos().subtract(m.getCurrentPos());
+			
+			if(marbleVelocity.dotProduct(normal) > 0)
+				collisionType = 1;
+			else
+				collisionType = 0;
 		}
 		
 		return collisionType; 
@@ -409,7 +422,11 @@ public class NewCollisionManager
 		}
 		else //RECTANGLE 
 		{
-			csMass = 1000; //SPAETER NEU!!
+			if(isBlade)
+				csMass = scissors.getWeight();
+			else
+				csMass = 1000; //SPAETER NEU!!
+			
 			csVelocity = new Vector2d(0,0);
 			
 			normal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
@@ -539,12 +556,26 @@ public class NewCollisionManager
 	
 	public static double bladeRotation()
 	{
-		Vector2d marbleVelocity = new Vector2d(m.getCurrentVelocityX(), m.getCurrentVelocityY());
-		double velocityValue = marbleVelocity.getNorm() * 6.05f; // Faktor spaeter raus!
+		Vector2d marbleVelocityBefore = new Vector2d(m.getCurrentVelocityX(), m.getCurrentVelocityY());
+		Vector2d marbleVelocityAfter = calculatePostCollisionVel1();
+		double marbleMass = m.getWeight();
+		double bladeMass = scissors.getWeight();
+		
+		Vector2d velocityDifference = marbleVelocityBefore.subtract(marbleVelocityAfter);
+		
+		double velocityValueAfter = velocityDifference.getNorm() * 6.05f; // Faktor spaeter raus!
+		
+		//Velocity nach dem Stoﬂ:
+		
 		double leverArm = calculateLeverArm();
 		
-		double omega = velocityValue / leverArm;
-		System.out.println("VelocityValue = " + velocityValue + "Omega = " + omega);
+		//double omega = marbleVelocityBefore.getNorm() / leverArm; //Test
+		
+		
+		double omega = Math.sqrt((marbleMass * Math.pow(velocityValueAfter, 2)) / (bladeMass * Math.pow(leverArm, 2)));
+		
+
+		//System.out.println("VelocityValue = " + velocityValueAfter + "Omega = " + omega);
 		
 		return omega;
 	}

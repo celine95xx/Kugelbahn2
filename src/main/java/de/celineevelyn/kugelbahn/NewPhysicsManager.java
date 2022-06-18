@@ -161,10 +161,14 @@ public class NewPhysicsManager
 			System.out.println("Beendet mit den Geschwindigkeiten: x: " + marble.getCurrentVelocityX() + " / y: " + marble.getCurrentVelocityY());
 		}
 		
+		if(NewCollisionManager.getScissors() != null)
+		{
 			double degreeNow = NewCollisionManager.getScissors().getRotation();
 			NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
 			
 			System.out.println("+++++++++++++++Degree Added: " + degreeAdded);
+		}
+			
 			//let Scissors rotate
 	}
 		

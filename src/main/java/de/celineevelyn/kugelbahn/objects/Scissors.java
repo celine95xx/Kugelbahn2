@@ -4,12 +4,14 @@ import javafx.scene.shape.Rectangle;
 
 public class Scissors extends BasicNode
 {
+	private double weight;
 	
 	public Scissors() 
 	{
 		super(new Rectangle(0, 0, 350, 15));
 	
-		this.setRotation(70);
+		this.setRotation(0); //70
+		this.weight = 0.03;
 	}
 	
 	public void setRotation(double degree)
@@ -27,6 +29,11 @@ public class Scissors extends BasicNode
 	{
 		this.node.setLayoutX(737);
 		this.node.setLayoutY(364);
+	}
+	
+	public double getWeight()
+	{
+		return this.weight;
 	}
 
 }

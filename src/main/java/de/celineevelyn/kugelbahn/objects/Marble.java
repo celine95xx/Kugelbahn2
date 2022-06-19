@@ -7,7 +7,6 @@ import javafx.scene.shape.Line;
 
 /**
  * 
- * @author Evelyn Romanjuk
  * @author Celine Viehmann
  *
  */
@@ -19,7 +18,6 @@ public class Marble extends BasicNode
 	public  String color;
 	
 	private double currentVelocityX, currentVelocityY;
-	
 	private double lastPosX, lastPosY, currPosX, currPosY, nextPosX, nextPosY;
 	
 	public Line line;
@@ -137,19 +135,15 @@ public class Marble extends BasicNode
 	public void setCurrVelX(double velX)
 	{
 		this.currentVelocityX = velX;
-		//updateLine();
 	}
 	
 	public void setCurrVelY(double velY)
 	{
 		this.currentVelocityY = velY;
-		//updateLine();
 	}
 	
 	public void updateLine(double velX, double velY)
 	{
-		//velX = currentVelocityX;
-		//velY = currentVelocityY;
 		Vector2d currentPosition = getCurrentPos();
 		line.setStartX(currentPosition.getX());
 		line.setStartY(currentPosition.getY());
@@ -158,19 +152,7 @@ public class Marble extends BasicNode
 		line.setEndY(currentPosition.getY() + velY*1000);
 	}
 	
-//	public void saveLastPos(double lastPositionX, double lastPositionY)
-//	{
-//		lastPosX = lastPositionX;
-//		lastPosY = lastPositionY;
-//	}
-//	
-//	public void saveCurrentPos(double currPositionX, double currPositionY)
-//	{
-//		currPosX = currPositionX;
-//		currPosY = currPositionY;
-//	}
-	
-	public void setNextPosition(double nextPosX, double nextPosY) //to check if marble would collide in the next frame
+	public void setNextPosition(double nextPosX, double nextPosY) //um zu pruefen, ob in dem naechsten Frame eine Kollision stattfindet
 	{
 		this.currPosX = nextPosX;
 		this.currPosY = nextPosY;
@@ -179,21 +161,10 @@ public class Marble extends BasicNode
 		this.nextPosY = nextPosY;
 	}
 	
-//	public double[] getCurrentPosition2()
-//	{
-//		double[] currentPosition = new double[2];
-//		currentPosition[0] = currPosX;
-//		currentPosition[1] = currPosY;
-//		
-//		return currentPosition;
-//	}
-	
 	public Vector2d getDirectionVector()
 	{	
 		double x = this.currPosX - this.lastPosX;
 		double y = this.currPosY - this.lastPosY;
-		
-		//System.out.println(" Current Position : " + currPosX + ", " + currPosY + " / Last Position: " + lastPosX + ", " + lastPosY);
 		
 		Vector2d directionVector = new Vector2d(x,y);
 		

@@ -24,8 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.*;
-
 
 /**
  * 
@@ -187,7 +185,6 @@ public class MainScreenController
 		windDirection.getSelectionModel().select(3);
 		windDirection.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{
-
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) 
 			{
@@ -228,10 +225,6 @@ public class MainScreenController
 
 		
 		addEnvShapesToList();
-		//level.addToNodeList(collisionCircle);
-		
-//		NewCollisionManager.initializeCollisionManager(envShapes);
-		
 		
 		// Timer initialisieren
 		initTimer();
@@ -252,7 +245,7 @@ public class MainScreenController
                 double mouseY = event.getSceneY();
                 
                 // Erstelle eine Marble zum Platzieren mit der Maus
-                if(group.getChildren().size() <= 6) //isEmpty() //In Group: fuer jede Marble 3 Elemente: Circle, Line, CollisionPoint
+                if(group.getChildren().size() <= 6) //In Group: fuer jede Marble 3 Elemente: Circle, Line, CollisionPoint
                 {
                 	BasicNode marbleNode = level.placeMarble(mouseX, mouseY);
                 	group.getChildren().add(marbleNode.getNode());
@@ -261,15 +254,7 @@ public class MainScreenController
                 	
                 	envShapes.add(level.getMarble());
                 	
-                	//level.addToMarbleList(marbleNode);
-                	
                 	NewPhysicsManager.setMarbles(level.getMarbleList());
-                	//NewCollisionManager.setMarbles(level.getMarbleList());
-                	
-//                	NewPhysicsManager.setMarble(level.getMarble());
-//                	NewCollisionManager.setMarble(level.getMarble());
-                	
-                	//NewCollisionManager.checkCollisionsStart();  //braucht man das ???? 
                 }
                 else
                 {

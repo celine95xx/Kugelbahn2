@@ -10,7 +10,6 @@ import javafx.scene.shape.Circle;
 /**
  * 
  * @author Evelyn Romanjuk
- * @author Celine Viehmann
  *
  */
 public class Level 
@@ -26,13 +25,9 @@ public class Level
 	private double windAcc = 0;
 	private double angle = 0;
 	
-	/**
-	 * Liste aller Objekte auf der Bahn
-	 */
 	private ArrayList<Marble> marbleList;
 	private ArrayList<Circle> testList;
-	
-	
+
 
 	public Level() 
 	{
@@ -68,10 +63,8 @@ public class Level
 	{
 		s = new Scissors();
 		s.setPosition();
-		
 		return s;
 	}
-	
 	
 	public void addToMarbleList(Marble marble)
 	{
@@ -123,7 +116,6 @@ public class Level
 	{
 		return windAngle;
 	}
-
 	
 	public void setWindAcc(double windAcc)
 	{
@@ -144,7 +136,4 @@ public class Level
 	{
 		return angle;
 	}
-
-
-	
 }

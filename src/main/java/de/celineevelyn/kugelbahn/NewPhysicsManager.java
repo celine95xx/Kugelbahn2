@@ -6,10 +6,16 @@ import de.celineevelyn.kugelbahn.objects.Marble;
 import de.celineevelyn.kugelbahn.objects.Scissors;
 import java.util.ArrayList;
 
+
+/**
+ * 
+ * @author Celine Viehmann
+ * @author Evelyn Romanjuk
+ *
+ */
+
 public class NewPhysicsManager 
 {
-
-	//private static Marble marble;
 	private static ArrayList<Marble> marbles;
 	private static Scissors s;
 	private static boolean positionCorrected = false;
@@ -17,10 +23,6 @@ public class NewPhysicsManager
 	private static boolean bladeIsMoving = false;
 	private static double degreeAdded = 0;
 	
-//	public static void setMarble (Marble m)
-//	{
-//		marble = m;
-//	}
 	
 	public static void setMarbles(ArrayList<Marble> marbleList)
 	{
@@ -31,9 +33,7 @@ public class NewPhysicsManager
 	{
 		for(Marble marble : marbles)
 		{
-//		double sx;
-//		double sy;
-		double proportionFactor = 727; //1667 = 12mm Durchmesser, 727 = 8px Radius, 11mm Radius
+		double proportionFactor = 727; //727 = 8px Radius, 11mm Radius
 		double gravity = Level.instance.getGravity();
 		
 		double windAngle =  Level.instance.getWindAngle();
@@ -60,14 +60,11 @@ public class NewPhysicsManager
 		marble.setNextPosition(sxNext, syNext); //naechste Position speichern
 		
 		int collisionType = NewCollisionManager.checkCollisionsStart(marble); //Collision Types: Keine Beruehrung, Kollision, Kontakt
-		System.out.println("COLLISION TYPE: " + collisionType);
 
 		////Richtige Kollision, Aufeinandertreffen
 		if(collisionType == 1)
 		{
 			Vector2d marblePosition = marble.getCurrentPos(); 
-			
-			//System.out.println("NPM: Marble ID: " + marble.getId() + " | Current Position: " + marblePosition.getVector2d());
 			
 			Vector2d collisionPosition = NewCollisionManager.calculateSetbackPosition(marblePosition); //Position der Murmel, nachdem sie zurueckgesetzt wurde, um nicht im Shape zu stecken
 			
@@ -77,9 +74,7 @@ public class NewPhysicsManager
 			
 			Vector2d newVel1 = NewCollisionManager.calculatePostCollisionVel1();
 			
-			// if collision node is a marble
-			// let NCM calculate post collision velocities for collision marble!
-			
+			//Wenn Kollision mit Murmel muss fuer sie auch Geschwindigkeit nach dem Stoss berechnet werden
 			if(NewCollisionManager.collisionWithMarble())
 			{
 				Vector2d newVel2 = NewCollisionManager.calculatePostCollisionVel2();
@@ -90,6 +85,7 @@ public class NewPhysicsManager
 				cm.setCurrVelY(newVel2.getY() + (accY * deltaTime));
 			}
 			
+			//Wenn Kollision mit Schere, muss Rotation berechnet werden
 			if(NewCollisionManager.collisionWithBlade())
 			{
 				double degreeNow = NewCollisionManager.getScissors().getRotation();
@@ -98,17 +94,13 @@ public class NewPhysicsManager
 					degreeAdded += NewCollisionManager.bladeRotation();
 					NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
 				}
-				
-				//let Scissors rotate
 			}
 			
 			marble.setCurrVelX(newVel1.getX() + (accX * deltaTime)); //Geschwindigkeit fuer naechsten Frame updaten
 			marble.setCurrVelY(newVel1.getY() + (accY * deltaTime));
 			
-			
-			
 			isRolling = false;
-			//MainScreenController.end();
+
 		}
 		////Kontakt
 		else if(collisionType == 2)
@@ -162,7 +154,6 @@ public class NewPhysicsManager
 		if(Math.abs(marble.getCurrentVelocityX()) < 0.00001 & Math.abs(marble.getCurrentVelocityY()) < 0.00001)
 		{
 			MainScreenController.end();
-			System.out.println("Beendet mit den Geschwindigkeiten: x: " + marble.getCurrentVelocityX() + " / y: " + marble.getCurrentVelocityY());
 		}
 		
 		if(NewCollisionManager.getScissors() != null)

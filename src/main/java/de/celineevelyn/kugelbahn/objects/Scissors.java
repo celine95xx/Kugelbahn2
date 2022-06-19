@@ -10,7 +10,7 @@ public class Scissors extends BasicNode
 	{
 		super(new Rectangle(0, 0, 350, 15));
 	
-		this.setRotation(70); //70
+		this.setRotation(70);
 		this.weight = 0.03;
 	}
 	
@@ -24,7 +24,6 @@ public class Scissors extends BasicNode
 		return this.node.getRotate();
 	}
 
-	
 	public void setPosition()
 	{
 		this.node.setLayoutX(737);

@@ -92,9 +92,13 @@ public class NewPhysicsManager
 			
 			if(NewCollisionManager.collisionWithBlade())
 			{
-				degreeAdded += NewCollisionManager.bladeRotation();
 				double degreeNow = NewCollisionManager.getScissors().getRotation();
-				NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
+				if(degreeNow > (-20))
+				{
+					degreeAdded += NewCollisionManager.bladeRotation();
+					NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
+				}
+				
 				//let Scissors rotate
 			}
 			
@@ -164,12 +168,13 @@ public class NewPhysicsManager
 		if(NewCollisionManager.getScissors() != null)
 		{
 			double degreeNow = NewCollisionManager.getScissors().getRotation();
-			NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
 			
-			System.out.println("+++++++++++++++Degree Added: " + degreeAdded);
+			if(degreeNow > (-20))
+			{
+				NewCollisionManager.getScissors().setRotation(degreeNow-degreeAdded);
+			}
+
 		}
-			
-			//let Scissors rotate
 	}
 		
 	}

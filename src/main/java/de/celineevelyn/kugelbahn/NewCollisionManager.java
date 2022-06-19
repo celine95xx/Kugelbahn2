@@ -427,7 +427,7 @@ public class NewCollisionManager
 			else
 				csMass = 1000; //SPAETER NEU!!
 			
-			csVelocity = new Vector2d(0,0);
+			csVelocity = new Vector2d(0,0); //Geschwindigkeit fuer Schere hier neu berechnen
 			
 			normal = (closestEdgeCorner2.subtract(closestEdgeCorner1)).normal();
 		}
@@ -563,19 +563,12 @@ public class NewCollisionManager
 		
 		Vector2d velocityDifference = marbleVelocityBefore.subtract(marbleVelocityAfter);
 		
-		double velocityValueAfter = velocityDifference.getNorm() * 6.05f; // Faktor spaeter raus!
-		
-		//Velocity nach dem Stoﬂ:
+		double velocityDifferenceValue = velocityDifference.getNorm();
 		
 		double leverArm = calculateLeverArm();
 		
-		//double omega = marbleVelocityBefore.getNorm() / leverArm; //Test
 		
-		
-		double omega = Math.sqrt((marbleMass * Math.pow(velocityValueAfter, 2)) / (bladeMass * Math.pow(leverArm, 2)));
-		
-
-		//System.out.println("VelocityValue = " + velocityValueAfter + "Omega = " + omega);
+		double omega = Math.sqrt((marbleMass * Math.pow(velocityDifferenceValue, 2)) / (bladeMass * Math.pow(leverArm, 2)));
 		
 		return omega;
 	}
@@ -588,7 +581,7 @@ public class NewCollisionManager
 		Vector2d centerToCollisionPoint = collisionPoint.subtract(edgeCenter);
 		double leverArm = centerToCollisionPoint.getNorm();
 		
-		System.out.println("!!!!!!!!!!!CollisionPoint: " + collisionPoint.getVector2d() + ", edgeCenter: " + edgeCenter.getVector2d() + ", LEVERARM: " + leverArm);
+		//System.out.println("!!!!!!!!!!!CollisionPoint: " + collisionPoint.getVector2d() + ", edgeCenter: " + edgeCenter.getVector2d() + ", LEVERARM: " + leverArm);
 		
 		return leverArm;
 		

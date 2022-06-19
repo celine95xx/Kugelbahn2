@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -25,74 +26,80 @@
             <Rectangle fx:id="colRect2" arcHeight="5.0" arcWidth="5.0" fill="#97cc2d67" height="636.0" layoutX="-1.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="22.0" />
             <Pane layoutX="21.0" layoutY="593.0" prefHeight="182.0" prefWidth="1500.0">
                <children>
-                  <TextField fx:id="startVelX" layoutX="174.0" layoutY="39.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label layoutX="94.0" layoutY="43.0" text="X-Richtung">
+                  <TextField fx:id="startVelX" layoutX="203.0" layoutY="70.0" prefHeight="25.0" prefWidth="88.0" promptText="X-Richtung" />
+                  <TextField fx:id="startVelY" layoutX="203.0" layoutY="104.0" prefHeight="25.0" prefWidth="88.0" promptText="Y-Richtung" />
+                  <Button fx:id="startBtn" layoutX="1200.0" layoutY="64.0" mnemonicParsing="false" onAction="#start" text="START" />
+                  <ChoiceBox fx:id="gravity" layoutX="567.0" layoutY="65.0" prefHeight="25.0" prefWidth="169.0" />
+                  <Label layoutX="188.0" layoutY="45.0" text="Startgeschwindigkeit">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="startVelY" layoutX="174.0" layoutY="73.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label layoutX="94.0" layoutY="77.0" text="Y-Richtung">
+                  <Label layoutX="620.0" layoutY="40.0" text="Gravitation">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="startBtn" layoutX="643.0" layoutY="143.0" mnemonicParsing="false" onAction="#start" text="START" />
-                  <ChoiceBox fx:id="gravity" layoutX="313.0" layoutY="39.0" prefHeight="25.0" prefWidth="169.0" />
-                  <Label layoutX="123.0" layoutY="14.0" text="Startgeschwindigkeit">
+                  <Button fx:id="resetBtn" layoutX="1288.0" layoutY="63.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+                  <ChoiceBox fx:id="windDirection" layoutX="392.0" layoutY="66.0" prefWidth="150.0" />
+                  <TextField fx:id="windAcceleration" layoutX="393.0" layoutY="100.0" promptText="Beschleunigung" />
+                  <Label layoutX="452.0" layoutY="41.0" text="Wind">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="366.0" layoutY="14.0" text="Gravitation">
+                  <Label layoutX="869.0" layoutY="46.0" text="Ebene">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="currentVelX" editable="false" layoutX="1005.0" layoutY="38.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label layoutX="924.0" layoutY="42.0" text="X-Richtung">
+                  <TextField fx:id="boxAngle" layoutX="820.0" layoutY="71.0" promptText="Winkel" />
+                  <Button fx:id="scissorsBtn" layoutX="1040.0" layoutY="71.0" mnemonicParsing="false" onAction="#addScissors" text="Schere" />
+                  <Label layoutX="1010.0" layoutY="47.0" text="Element hinzufügen">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="currentVelY" editable="false" layoutX="1005.0" layoutY="72.0" prefHeight="25.0" prefWidth="88.0" />
-                  <Label layoutX="924.0" layoutY="76.0" text="Y-Richtung">
+                  <Line endX="100.0" layoutX="254.0" layoutY="6.0" startX="99.99998474121094" startY="141.39999389648438" />
+                  <Label layoutX="184.0" layoutY="-10.0" prefHeight="34.0" prefWidth="134.0" text="Murmelparameter">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="923.0" layoutY="14.0" text="Momentane Geschwindigkeit">
+                  <Line endX="100.0" layoutX="678.0" layoutY="7.0" startX="99.99998474121094" startY="141.39999389648438" />
+                  <Label layoutX="501.0" layoutY="-9.0" prefHeight="34.0" prefWidth="119.0" text="Umwelteinflüsse">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Button fx:id="resetBtn" layoutX="742.0" layoutY="143.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
-                  <ChoiceBox fx:id="windDirection" layoutX="530.0" layoutY="39.0" prefWidth="150.0" />
-                  <TextField fx:id="windAcceleration" layoutX="531.0" layoutY="73.0" promptText="Wind Acceleration" />
-                  <Label layoutX="590.0" layoutY="14.0" text="Wind">
+                  <Label layoutX="909.0" layoutY="-10.0" prefHeight="34.0" prefWidth="156.0" text="Besondere Elemente">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="785.0" layoutY="14.0" text="Ebene">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="boxAngle" layoutX="728.0" layoutY="39.0" promptText="Winkel in Grad" />
-                  <Button fx:id="scissorsBtn" layoutX="1180.0" layoutY="38.0" mnemonicParsing="false" onAction="#addScissors" text="Schere" />
-                  <Label layoutX="1150.0" layoutY="14.0" text="Element hinzufügen">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
+                  <Line endX="100.0" layoutX="1059.0" layoutY="5.0" startX="99.99998474121094" startY="141.39999389648438" />
                </children>
             </Pane>
             <Rectangle fx:id="colRect111" arcHeight="5.0" arcWidth="5.0" fill="#c6dbe1" height="15.0" layoutX="735.0" layoutY="364.0" rotate="-110.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="350.0" />
-            <Circle fill="DODGERBLUE" layoutX="108.0" layoutY="169.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="DODGERBLUE" layoutX="227.0" layoutY="-159.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="DODGERBLUE" layoutX="241.0" layoutY="-154.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="122.0" layoutY="174.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+            <TextField fx:id="currentVelX" editable="false" layoutX="1398.0" layoutY="55.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="1317.0" layoutY="59.0" text="X-Richtung" textFill="#817c7c">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="currentVelY" editable="false" layoutX="1398.0" layoutY="89.0" prefHeight="25.0" prefWidth="88.0" />
+            <Label layoutX="1317.0" layoutY="93.0" text="Y-Richtung" textFill="#817c7c">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="1316.0" layoutY="31.0" text="Momentane Geschwindigkeit" textFill="#817c7c">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
 
 
          </children></Pane>

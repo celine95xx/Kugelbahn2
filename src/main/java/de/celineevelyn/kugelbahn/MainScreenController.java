@@ -1,6 +1,8 @@
 package de.celineevelyn.kugelbahn;
 
 
+import java.awt.event.ActionListener;
+
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ public class MainScreenController
 {
 	@FXML
 	private Button startBtn;
+
 	
 	@FXML
 	private Circle circle;
@@ -40,6 +43,7 @@ public class MainScreenController
 	
 	private double weight = 6;
 	
+	
 	public void start (ActionEvent event) throws Exception
 	{
 	    AnimationTimer timer = new AnimationTimer() 
@@ -55,6 +59,8 @@ public class MainScreenController
         };
         timer.start();
 	}
+
+	
 	
 	public void dosomething(float deltaT)
 	{

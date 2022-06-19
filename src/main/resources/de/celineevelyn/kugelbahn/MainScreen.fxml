@@ -40,7 +40,7 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="resetBtn" layoutX="1288.0" layoutY="63.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
+                  <Button fx:id="resetBtn" layoutX="1287.0" layoutY="65.0" mnemonicParsing="false" onAction="#endSimulation" text="RESET" />
                   <ChoiceBox fx:id="windDirection" layoutX="392.0" layoutY="66.0" prefWidth="150.0" />
                   <TextField fx:id="windAcceleration" layoutX="393.0" layoutY="100.0" promptText="Beschleunigung" />
                   <Label layoutX="452.0" layoutY="41.0" text="Wind">
@@ -83,13 +83,13 @@
             <Rectangle fx:id="colRect111" arcHeight="5.0" arcWidth="5.0" fill="#c6dbe1" height="15.0" layoutX="735.0" layoutY="364.0" rotate="-110.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="350.0" />
             <Circle fill="DODGERBLUE" layoutX="227.0" layoutY="-159.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="DODGERBLUE" layoutX="241.0" layoutY="-154.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
-            <TextField fx:id="currentVelX" editable="false" layoutX="1398.0" layoutY="55.0" prefHeight="25.0" prefWidth="88.0" />
+            <TextField fx:id="currentVelX" disable="true" editable="false" layoutX="1398.0" layoutY="55.0" prefHeight="25.0" prefWidth="88.0" />
             <Label layoutX="1317.0" layoutY="59.0" text="X-Richtung" textFill="#817c7c">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="currentVelY" editable="false" layoutX="1398.0" layoutY="89.0" prefHeight="25.0" prefWidth="88.0" />
+            <TextField fx:id="currentVelY" disable="true" editable="false" layoutX="1398.0" layoutY="89.0" prefHeight="25.0" prefWidth="88.0" />
             <Label layoutX="1317.0" layoutY="93.0" text="Y-Richtung" textFill="#817c7c">
                <font>
                   <Font name="System Bold" size="12.0" />
